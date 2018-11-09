@@ -8,9 +8,8 @@ export default {
   data: function() {
     return {
       isLoading: false
-     
 
-     
+      
           };
   },
   mounted() {
