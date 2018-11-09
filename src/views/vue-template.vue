@@ -9,11 +9,13 @@
 export default {  
   data: function() {
     return {
- 
+        
     };
   },
   methods: {
-    
+    aa:function(){
+     let i=0;
+    }
   },
   mounted: function() {
        this.$bus.$emit('changeMenuItem',['样衣管理','找样衣']);
