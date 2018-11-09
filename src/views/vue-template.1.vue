@@ -15,6 +15,7 @@ export default {
   methods: {
     aa:function(){
      let i=0;
+     i++;
     }
   },
   mounted: function() {
