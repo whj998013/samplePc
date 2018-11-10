@@ -4,10 +4,10 @@
   <div>
 
     <Tabs value="name0">
-      <TabPane label="已入库样衣管理" name="name0">
+      <TabPane label="借用审批" name="name0">
         <Lend></Lend>
       </TabPane>
-      <TabPane label="入库审批" name="name1">
+      <TabPane label="已借出样衣" name="name1">
         <LendOut></LendOut>
       </TabPane>
     </Tabs>
