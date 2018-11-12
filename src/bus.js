@@ -8,6 +8,15 @@ export default new Vue({
                 IsDd: false
             },
             currentUser: undefined,
+            AuthList: [{
+                    authName: "auth1",
+                    authValue: true
+                },
+                {
+                    authName: "auth2",
+                    authValue: true
+                },
+            ],
             Setting: {
                 IsInputStrageNeedAlow: false,
                 InStrageAlowChange: false,
@@ -18,8 +27,9 @@ export default new Vue({
         };
     },
     computed: {
+
         isLogin() {
-            console.log("user:",this.currentUser,"islogin:",this.currentUser == undefined ? false : true);
+            console.log("user:", this.currentUser, "islogin:", this.currentUser == undefined ? false : true);
             return this.currentUser == undefined ? false : true;
         },
         isLimt() {
@@ -27,6 +37,13 @@ export default new Vue({
         },
     },
     methods: {
+        Auth(value) {
+            if (value) {
+                let v = this.AuthList.find(p => p.authName == value);
+                if (v) return v.authValue;
+            }
+            return false;
+        },
         setCookieUser(user) {
             this.currentUser = user;
             cookie.setSessionCookie('sgud', JSON.stringify(user), "/");
@@ -68,4 +85,4 @@ export default new Vue({
         }
     },
 
-}); 
+});

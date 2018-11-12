@@ -10,6 +10,7 @@ import loginApi from "./libs/loginApi.js";
 import 'iview/dist/styles/iview.css';
 
 Vue.prototype.$bus = bus;
+Vue.prototype.$Auth=bus.Auth;
 Vue.prototype.$util = Util;
 Vue.prototype.$dd = dd;
 Vue.use(VueRouter);

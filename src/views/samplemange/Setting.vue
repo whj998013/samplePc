@@ -24,6 +24,12 @@
       <TabPane label="用户及管理员同步" name="name1">
         <Button type="primary" size="large" @click="upUserDataByDd">从钉钉同步管理员设置及用户</Button>
       </TabPane>
+      <TabPane label="测试" name="name2">
+        <H1 v-if="$Auth(test.v1)">HELLO WORLD</H1>
+        <Input v-model="test.v1" placeholder="Enter v1..." style="width: 300px" />
+        <Input v-model="test.v2" placeholder="Enter v2..." style="width: 300px" />
+        <Button type="primary" @click="auth">Primary</Button>
+      </TabPane>
     </Tabs>
 
   </div>
@@ -33,24 +39,34 @@
 export default {
   data: function() {
     return {
+      test: {
+        v1: "",
+        v2: ""
+      },
       Setting: {
         IsInputStrageNeedAlow: false,
         InStrageAlowChange: false,
         EnableLimtView: false,
-        AllSampleCanLend:false,
+        AllSampleCanLend: false
       }
     };
   },
   methods: {
+    auth() {
+      this.test.v2 = this.$bus.Auth(this.test.v1);
+    },
+    auth2() {
+      return this.$bus.Auth(this.test.v1);
+    },
     upUserDataByDd() {
-     this.$bus.BeginLoading();
+      this.$bus.BeginLoading();
       this.$util.get("/Setting/UpUserDataByDd", this.Setting).then(p => {
         this.$Notice.success({
           title: "成功",
           desc: "同步样衣管理员和工艺人员成功！",
           duration: 4
         });
-         this.$bus.EndLoading();
+        this.$bus.EndLoading();
       });
     },
     saveSetting() {
