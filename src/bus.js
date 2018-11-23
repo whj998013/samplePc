@@ -51,7 +51,7 @@ export default new Vue({
 
         getSystemSetting() {
             return new Promise((resolve, reject) => {
-                this.$util.get("/Setting/GetSetting").then(result => {
+                this.$util.get("/SampleSetting/GetSampleSetting").then(result => {
                     this.Setting = result.data;
                     resolve(result.data);
                 }).catch(re => {

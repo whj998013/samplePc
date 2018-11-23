@@ -26,6 +26,8 @@
           </template>
           <MenuItem :name="item.name" v-for="item in m.menuItem" :key="item.name" v-if="!item.needmange||isMange">{{item.text}}</MenuItem>
         </Submenu>
+
+       
       </Menu>
     </Sider>
     <Layout :style="{marginLeft: '200px'}">

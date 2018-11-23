@@ -87,7 +87,7 @@ export default {
     }
   },
   mounted: function() {
-    this.$bus.$emit("changeMenuItem", ["样衣管理", "入库申请管理"]);
+    this.$bus.$emit("changeMenuItem", ["样衣管理", "入库管理"]);
     //取得有入库申请的用户清单
     this.$util.get("/InOutStorage/GetInStorageUserList").then(result => {
       result.data.map(item => {

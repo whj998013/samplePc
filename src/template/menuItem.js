@@ -23,8 +23,8 @@ let menuObj = [
     //菜单2
     {
         subMenuName: 'mangeMenu',
-        iconType: 'ios-list-box',
-        subMenuText: '样衣库管理',
+        iconType: 'ios-clipboard-outline',
+        subMenuText: '样衣管理',
         needmange:true,
         menuItem: [
             {
@@ -39,14 +39,32 @@ let menuObj = [
                 needmange:true,
                
             },
-            {
-                name: '/samplemange/Setting',
-                text: '系统设置',
-                needmange:true,
-              
-            },
+        
         ]
     },
+
+        //菜单2
+        {
+            subMenuName: 'setting',
+            iconType: 'md-construct',
+            subMenuText: '系统设置',
+            needmange:true,
+            menuItem: [
+                {
+                    name: '/system/RoleSetting',
+                    text: '角色权限配置', 
+                    needmange:true,
+                              
+                },
+                {
+                    name: '/system/SampleSetting',
+                    text: '样衣系统配置', 
+                    needmange:true,
+                              
+                },
+            
+            ]
+        },
     
 ];
 export default menuObj; 

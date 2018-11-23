@@ -92,16 +92,26 @@ const routers = [
                 component: (resolve) => require(['./views/samplemange/LendMange.vue'], resolve)
             },
             {
-                path: '/samplemange/Setting',
+                path: '/system/RoleSetting',
                 meta: {
                     title: '系统设置',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/samplemange/Setting.vue'], resolve)
+                component: (resolve) => require(['./views/system/RoleSetting.vue'], resolve)
+            },
+            {
+                path: '/system/SampleSetting',
+                meta: {
+                    title: '样衣设置',
+                    requireAuth: true,
+                },
+                component: (resolve) => require(['./views/system/SampleSetting.vue'], resolve)
             }
+           
         ]
 
     },
+   
 
 ];
 export default routers;
