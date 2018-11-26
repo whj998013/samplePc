@@ -45,12 +45,13 @@
           <div :style="{float:'right',margin: '7px 0'}">
               
             <Avatar icon="ios-person" :src="currentUser.Avatar" size="large"></Avatar>&nbsp&nbsp
-            <h3 :style="{display:'inline'}">{{currentUser.Name}}</h3>&nbsp&nbsp
+            <h3 :style="{display:'inline'}">{{currentUser.UserName}}</h3>&nbsp&nbsp
           </div>
           </Col>
         </Row>
         <Card>
           <div id='ContentDiv' :style="{'min-height': minheight+'px'}">
+          <!-- <div id='ContentDiv' style="height:100%"> -->
              <Spin v-if="isLoading" fix size="large"></Spin>
             <router-view></router-view>
             <br/> <br> <br></div>

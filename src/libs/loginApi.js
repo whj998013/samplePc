@@ -27,7 +27,6 @@ let loginApi = {
     loginFinsh(user) {
         ///设置免登cookie
         cookie.set("lh", user.LoginCookie, user.LoginOverTime);
-        console.log("Login Finsh! UserName:", user.Name);
         bus.setCookieUser(user);
         bus.getSystemSetting();
 

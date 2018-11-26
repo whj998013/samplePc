@@ -39,13 +39,6 @@ export default {
     };
   },
   methods: {
-    auth() {
-      this.test.v2 = this.$bus.Auth(this.test.v1);
-    },
-    auth2() {
-      return this.$bus.Auth(this.test.v1);
-    },
-   
     saveSetting() {
       this.$bus.BeginLoading();
       this.$util.post("/SampleSetting/SaveSampleSetting", this.Setting).then(p => {
