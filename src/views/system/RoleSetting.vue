@@ -40,7 +40,17 @@
   overflow: auto;
   padding: 5px 0 0 10px;
 }
+.noedit{
+pointer-events: none;
+}
 </style>
+<style>
+input[disabled] {
+  color: #87ceeb;
+  opacity: 1;
+}
+</style>
+
 <template>
 
   <div id="main" :style="{'height': height+'px'}">
@@ -51,7 +61,7 @@
           <span><Button type="default" size="small" @click="upUserDataByDd">从钉钉同步用户角色</Button></span>
         </div>
         <div class="content">
-          <CellGroup>
+          <CellGroup @on-click="roleClick">
             <Cell v-for="p in urp" :name="p.Role.RoleId" label="单击查看清单" :key="p.Role.RoleId" :selected="p.selected">
               <h4>
                 <Icon size="25" type="ios-contacts" />{{p.Role.RoleName}}</h4>
@@ -61,11 +71,11 @@
       </div>
       <div id="bottom" class="brod">
         <div class="head">
-          <h3>该角色的用户</h3>
+          <h3>{{currentRole.Role.RoleName}}的用户</h3>
         </div>
         <div class="content">
           <CellGroup>
-            <Cell v-for="u in userList" :name="u.DdId" :label="u.RoleName" :key="u.DdId">
+            <Cell v-for="u in currentRole.UserList" :name="u.DdId" :label="u.RoleName" :key="u.DdId">
               <h4>
                 <Icon size="25" type="ios-contact" />{{u.UserName}}</h4>
             </Cell>
@@ -75,40 +85,70 @@
     </div>
     <div id="right" class="brod float">
       <div class="head">
-        <h3>角色权限</h3>
-        <span><Button size="small" type="default" @click="">取消</Button>
-          <Button size="small" type="default" @click="savePermision">保存</Button>
+        <h3>{{currentRole.Role.RoleName}}的权限</h3>
+        <span>
+          <Button v-if="!isModify" size="small" type="default" @click="modifyRole">修改</Button>
+          <Button v-if="isModify" size="small" type="default" @click="cancelModify">取消</Button>
+          <Button v-if="isModify" size="small" type="default" @click="savePermision">保存</Button>
         </span>
       </div>
-      <div class="content2">
+      <div class="content2" v-bind:class="{noedit:!isModify}">
         <Tree ref="pTree" :data="permisionView" show-checkbox multiple></Tree>
       </div>
     </div>
   </div>
-  <!-- </TabPane>
-
-    </Tabs> -->
 
 </template>
 <script>
-//import bus from "../bus.js";
 export default {
   data: function() {
     return {
       height: window.innerHeight - 235,
+      currentRole: { Role: { RoleName: "" } },
       urp: [],
-      userList: [],
+      isModify: false,
       permisionList: [],
-      permisionView: [],
+      permisionView: []
     };
   },
+  watch: {
+    currentRole: function(val, oldVal) {
+      this.permisionList.forEach(p => {
+        p.checked = false;
+        if (p.children.length == 0) {
+          let obj = this.currentRole.PermissionList.find(t => t.Key == p.key);
+          if (obj != undefined) {
+            p.checked = true;
+          }
+        }
+      });
+      this.permisionList.forEach(p => {
+        if (p.indeterminate) p.indeterminate = this.getIndeterminate(p);
+      });
+    }
+  },
   methods: {
-    savePermision(){
-      console.log(this.permisionList[0]);
-      let re=this.$refs.pTree.flatState;
-      console.log("pt",re);
+    getIndeterminate(val) {
+      let tv = false;
+      if (val.children.length > 0) {
+        val.children.forEach(p => {
+          tv = this.getIndeterminate(p);
+        });
+      } else tv = val.checked;
+      return tv;
     },
-    addPermision(plist, obj) {},
+    modifyRole() {
+      this.isModify = true;
+    },
+    cancelModify() {
+      this.isModify = false;
+    },
+    roleClick(roleId) {
+      this.currentRole.selected = false;
+      this.currentRole = this.urp.find(u => u.Role.RoleId == roleId);
+      this.currentRole.selected = true;
+    },
+
     upUserDataByDd() {
       this.$bus.BeginLoading();
       this.$util.get("/RoleSetting/UpUserDataByDd").then(p => {
@@ -126,22 +166,22 @@ export default {
         u.selected = false;
       });
       //根节点
+      this.permisionList = [];
       this.permisionList.push({
         title: "管理系统",
         key: "P000000",
         expand: true,
-        checked:false,
-        selected: true,
+        checked: false,
+        selected: false,
         children: []
       });
-         //生成权限节点
+      //生成权限节点
       obj.data.plist.forEach(p => {
         this.permisionList.push({
           title: p.CnName,
           key: p.Key,
           expand: true,
-          checked:false,
-          selected: false,
+          checked: false,
           upKey: p.UpKey,
           children: []
         });
@@ -153,10 +193,9 @@ export default {
         });
         if (re != undefined) re.children.push(p);
       });
-      console.log("p", this.permisionList[0]);
-      this.permisionView=this.permisionList[0].children;
-      this.userList = this.urp[0].UserList;
-     
+      this.permisionView = this.permisionList[0].children;
+      this.currentRole = this.urp[0];
+      this.currentRole.selected = true;
     },
     getData() {
       this.$bus.BeginLoading();
@@ -164,6 +203,16 @@ export default {
         this.setData(p);
       });
       this.$bus.EndLoading();
+    },
+    savePermision() {
+      this.$bus.BeginLoading();
+      this.isModify = false;
+      let re = this.$refs.pTree.getCheckedAndIndeterminateNodes();
+      let plist = re.map(p => p.key);
+      let obj = { RoleId: this.currentRole.Role.RoleId, PermissionKey: plist };
+      this.$util.post("/RoleSetting/SaveRoleData", obj).then(p => {
+        this.getData();
+      });
     }
   },
   mounted: function() {
