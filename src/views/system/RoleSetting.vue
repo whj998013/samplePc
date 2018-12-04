@@ -157,6 +157,7 @@ export default {
           desc: "同步用户角色成功！",
           duration: 4
         });
+        this.getData();
         this.$bus.EndLoading();
       });
     },

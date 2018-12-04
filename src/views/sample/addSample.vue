@@ -1,6 +1,11 @@
 <style scoped>
 
 </style>
+<style>
+ #color .ivu-select-dropdown {
+  max-height: 180px;
+ }
+</style>
 <template>
   <div>
     <Row>
@@ -35,7 +40,7 @@
 
         <Col :xs="24" :sm="12" :md="12" :lg="8">
         <FormItem label='颜色' prop="Color">
-          <AutoComplete v-model="sample.Color" :data="colorlist" placeholder="输入颜色"></AutoComplete>
+          <AutoComplete id="color"  v-model="sample.Color" :data="colorlist" placeholder="输入颜色"></AutoComplete>
         </FormItem>
         </Col>
 
@@ -361,7 +366,6 @@ export default {
     saveSample() {
       this.validate().then(p => {
         if (p) {
-          // console.log(JSON.stringify(this.sample));
           this.$bus.BeginLoading();
           this.$util
             .post("/sample/SaveSample", this.sample)
@@ -409,7 +413,6 @@ export default {
     Init() {
       //初始化各项插件
       this.$util.get("/sample/GetSelectList").then(result => {
-        //console.log("re",result);
         if (result.data) {
           let data = result.data;
           this.colorlist = data.ColorList;
@@ -421,7 +424,6 @@ export default {
           this.selectTagList = data.TagList;
           this.kindslist = data.KindsList;
         }
-        console.log("mat", this.materialist);
       });
     },
     newStyle() {

@@ -8,15 +8,6 @@ export default new Vue({
                 IsDd: false
             },
             currentUser: undefined,
-            AuthList: [{
-                    authName: "auth1",
-                    authValue: true
-                },
-                {
-                    authName: "auth2",
-                    authValue: true
-                },
-            ],
             Setting: {
                 IsInputStrageNeedAlow: false,
                 InStrageAlowChange: false,
@@ -38,9 +29,12 @@ export default new Vue({
     },
     methods: {
         Auth(value) {
+      
             if (value) {
-                let v = this.AuthList.find(p => p.authName == value);
-                if (v) return v.authValue;
+                let v = this.currentUser.plist.find(p => p == value);
+                if (v != undefined) {
+                    return true;
+                }
             }
             return false;
         },
@@ -48,7 +42,6 @@ export default new Vue({
             this.currentUser = user;
             cookie.setSessionCookie('sgud', JSON.stringify(user), "/");
         },
-
         getSystemSetting() {
             return new Promise((resolve, reject) => {
                 this.$util.get("/SampleSetting/GetSampleSetting").then(result => {

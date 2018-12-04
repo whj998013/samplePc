@@ -13,7 +13,7 @@
       </Col>
       <Col>
       <Button @click="handleUpdata" type="info">刷新</Button>
-      <Button type="primary" @click="newSample" span='8'>录入新样衣</Button>
+      <Button type="primary" v-if="$Auth('Sample_MySample_NewSample')" @click="newSample" span='8'>录入新样衣</Button>
       </Col>
     </Row>
 
