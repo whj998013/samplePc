@@ -2,9 +2,8 @@
 </style>
 <template>
   <div>
-
-    <Tabs value="name0">
-      <TabPane label="样衣系统配置" name="name0">
+    <!-- <Tabs value="name0">
+      <TabPane label="样衣系统配置" name="name0"> -->
         <Form>
           <FormItem label='入库申请后需管理员审批后方可入库：'>
             <Switch v-model="Setting.IsInputStrageNeedAlow" />
@@ -20,9 +19,8 @@
           </FormItem>
           <Button type="primary" @click="saveSetting">保存</Button>
         </Form>
-      </TabPane>
-    </Tabs>
-
+      <!-- </TabPane>
+    </Tabs> -->
   </div>
 </template>
 <script>

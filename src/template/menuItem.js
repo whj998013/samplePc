@@ -28,8 +28,7 @@ let menuObj = [
         menuItem: [{
                 name: '/samplemange/inOutmange',
                 text: '入库管理',
-                authKey: 'SampleMange_inOutMange',
-
+                authKey: 'SampleMange_InOutMange',
             },
             {
                 name: '/samplemange/LendMange',
@@ -55,7 +54,6 @@ let menuObj = [
             {
                 name: '/system/SampleSetting',
                 text: '样衣系统配置',
-              
                 authKey:'SampleMange_SystemMange_SampleMange', 
 
             },
