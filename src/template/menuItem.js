@@ -16,6 +16,16 @@ let menuObj = [
                 text: '我的样衣',
                 authKey: 'Sample_MySample',
             },
+            {
+                name: '/sample/inOutmange',
+                text: '入库管理',
+                authKey: 'Sample_InOutMange',
+            },
+            {
+                name: '/sample/LendMange',
+                text: '借用管理',
+                authKey: 'Sample_LendMange',
+            },
 
         ]
     },
@@ -23,18 +33,9 @@ let menuObj = [
     {
         subMenuName: 'mangeMenu',
         iconType: 'ios-clipboard-outline',
-        subMenuText: '样衣管理',
+        subMenuText: '成衣仓库',
         authKey: 'SampleMange',
-        menuItem: [{
-                name: '/samplemange/inOutmange',
-                text: '入库管理',
-                authKey: 'SampleMange_InOutMange',
-            },
-            {
-                name: '/samplemange/LendMange',
-                text: '借用管理',
-                authKey: 'SampleMange_LendMange',
-            },
+        menuItem: [
 
         ]
     },
@@ -44,17 +45,17 @@ let menuObj = [
         subMenuName: 'setting',
         iconType: 'md-construct',
         subMenuText: '系统设置',
-        authKey: 'SampleMange_SystemMange',
+        authKey: 'SystemMange',
         menuItem: [{
                 name: '/system/RoleSetting',
                 text: '角色权限配置',
-                authKey: 'SampleMange_SystemMange_RoleUserMange',
+                authKey: 'SystemMange_RoleUserMange',
 
             },
             {
                 name: '/system/SampleSetting',
                 text: '样衣系统配置',
-                authKey:'SampleMange_SystemMange_SampleMange', 
+                authKey:'SystemMange_SampleMange', 
 
             },
 

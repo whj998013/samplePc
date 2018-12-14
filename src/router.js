@@ -76,20 +76,20 @@ const routers = [
 
           
             {
-                path: '/samplemange/inOutmange',
+                path: '/sample/inOutmange',
                 meta: {
                     title: '入库管理',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/samplemange/inOutmange.vue'], resolve)
+                component: (resolve) => require(['./views/sample/inOutmange.vue'], resolve)
             },
             {
-                path: '/samplemange/LendMange',
+                path: '/sample/LendMange',
                 meta: {
                     title: '借样管理',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/samplemange/LendMange.vue'], resolve)
+                component: (resolve) => require(['./views/sample/LendMange.vue'], resolve)
             },
             {
                 path: '/system/RoleSetting',
