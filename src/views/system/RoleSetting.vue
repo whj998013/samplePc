@@ -187,7 +187,7 @@ export default {
           children: []
         });
       });
-      //链接权限节点
+      //链接权限节点a
       this.permisionList.forEach(p => {
         let re = this.permisionList.find(t => {
           return p.upKey == t.key;
