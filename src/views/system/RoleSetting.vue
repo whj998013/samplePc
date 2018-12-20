@@ -201,6 +201,7 @@ export default {
     getData() {
       this.$bus.BeginLoading();
       this.$util.get("/RoleSetting/GetUserRoleData").then(p => {
+        console.log("urlist:",p);
         this.setData(p);
       });
       this.$bus.EndLoading();

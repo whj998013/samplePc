@@ -24,12 +24,12 @@ export default new Vue({
             return this.currentUser == undefined ? false : true;
         },
         isLimt() {
-            return this.currentUser.isLimt;
+            return this.Auth("Sample_Dd_ViewAllInfo");
         },
     },
     methods: {
         Auth(value) {
-      
+           
             if (value) {
                 let v = this.currentUser.plist.find(p => p == value);
                 if (v != undefined) {

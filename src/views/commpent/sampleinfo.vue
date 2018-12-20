@@ -270,7 +270,7 @@ export default {
         this.filelist.push(f);
       }
     }
-    this.isLimt = this.$bus.isLimt | !this.limtView;
+    this.isLimt = this.$bus.isLimt ;
     this.v = this.value;
   }
 };
