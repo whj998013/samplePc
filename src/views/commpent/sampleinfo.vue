@@ -84,6 +84,7 @@ padding:0 0 0 0;
             <p>成份:{{Material}}</p>
             <p>支数:{{value.Counts}}</p>
             <p>录入人:{{value.User}}</p>
+            <p>部门:{{value.DeptName}}</p>
             <p>日期:{{value.CreateDate}}</p>
           </span>
         </Panel>
@@ -111,6 +112,8 @@ padding:0 0 0 0;
             <p>打样部门:{{value.ProofingCompany}}</p>
             <p>工艺员:{{value.TechnologyPeople}}</p>
             <p>程序员:{{value.ProgamPeople}}</p>
+            <p>织机时间(分钟):{{value.WeaveTime}}</p>
+            <p>套口时间(分钟):{{value.LinkTime}}</p>
             <p>打样日期:{{value.ProofingDate}}</p>
             <p>————大货信息————</p>
             <p>客户:{{value.ClientName}}</p>
