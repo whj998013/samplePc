@@ -18,7 +18,6 @@
 </template>
 <script>
 import sampleInfo from "../commpent/sampleinfo.vue";
-import momnet from "moment";
 export default {
   components: {
     sampleInfo

@@ -4,51 +4,63 @@ let menuObj = [
         subMenuName: 'stockMenu',
         iconType: 'md-shirt',
         subMenuText: '样衣库',
-        needmange:false,
+        authKey: 'Sample',
         //子菜单
-        menuItem: [
-            {
+        menuItem: [{
                 name: '/Sample/findSample/',
                 text: '找样衣',
-                needmange:false,
+                authKey: 'Sample_FindSample',
             },
             {
                 name: '/Sample/mySample/',
-                text: '我的样衣',   
-                needmange:false,             
+                text: '我的样衣',
+                authKey: 'Sample_MySample',
             },
-           
+            {
+                name: '/sample/inOutmange',
+                text: '入库管理',
+                authKey: 'Sample_InOutMange',
+            },
+            {
+                name: '/sample/LendMange',
+                text: '借用管理',
+                authKey: 'Sample_LendMange',
+            },
+
         ]
     },
     //菜单2
     {
         subMenuName: 'mangeMenu',
-        iconType: 'ios-list-box',
-        subMenuText: '样衣库管理',
-        needmange:true,
+        iconType: 'ios-clipboard-outline',
+        subMenuText: '成衣仓库',
+        authKey: 'SampleMange',
         menuItem: [
-            {
-                name: '/samplemange/inOutmange',
-                text: '入库管理', 
-                needmange:true,
-                          
-            },
-            {
-                name: '/samplemange/LendMange',
-                text: '借用管理',
-                needmange:true,
-               
-            },
-            {
-                name: '/samplemange/Setting',
-                text: '系统设置',
-                needmange:true,
-              
-            },
+
         ]
     },
-    
+
+    //菜单2
+    {
+        subMenuName: 'setting',
+        iconType: 'md-construct',
+        subMenuText: '系统设置',
+        authKey: 'SystemMange',
+        menuItem: [{
+                name: '/system/RoleSetting',
+                text: '角色权限配置',
+                authKey: 'SystemMange_RoleUserMange',
+
+            },
+            {
+                name: '/system/SampleSetting',
+                text: '样衣系统配置',
+                authKey:'SystemMange_SampleMange', 
+
+            },
+
+        ]
+    },
+
 ];
-export default menuObj; 
-
-
+export default menuObj;

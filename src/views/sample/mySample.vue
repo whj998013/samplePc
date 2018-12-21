@@ -13,10 +13,10 @@
       </Col>
       <Col>
       <Button @click="handleUpdata" type="info">刷新</Button>
-      <Button type="primary" @click="newSample" span='8'>录入新样衣</Button>
+      <Button type="primary" v-if="$Auth('Sample_MySample_NewSample')" @click="newSample" span='8'>录入新样衣</Button>
       </Col>
     </Row>
-      
+
     <Tabs value="name0">
       <TabPane label="未入库样衣" name="name0">
         <sampleview ref="view1" action="/MySample/GetNotInStorageSample" @needUpData='handleUpdata' haveEdit havePrint haveDelete haveInStorage></sampleview>
@@ -79,9 +79,6 @@ export default {
   },
   mounted: function() {
     this.$bus.$emit("changeMenuItem", ["样衣库", "我的样衣"]);
-    this.$util.get("/Setting/GetSetting").then(result => {
-      this.InStrageAlowChange = result.data.InStrageAlowChange;
-    });
   }
 };
 </script>

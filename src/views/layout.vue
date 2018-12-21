@@ -19,12 +19,12 @@
       <a @click="routeGoto('/')"><img src="../pic/logo.jpg" height="64"></img>
       </a>
       <Menu :active-name="menuActiveName" theme="dark" width="auto" :open-names="openNames" @on-select="routeGoto">
-        <Submenu :name="m.subMenuName" v-for="m in menuItem" :key="m.subMenuName" v-show="!m.needmange||isMange">
+        <Submenu :name="m.subMenuName" v-for="m in menuItem" :key="m.subMenuName" v-if="$Auth(m.authKey)">
           <template slot="title">
             <Icon :type="m.iconType"></Icon>
             {{ m.subMenuText}}
           </template>
-          <MenuItem :name="item.name" v-for="item in m.menuItem" :key="item.name" v-if="!item.needmange||isMange">{{item.text}}</MenuItem>
+          <MenuItem :name="item.name" v-for="item in m.menuItem" :key="item.name" v-if="$Auth(item.authKey)">{{item.text}}</MenuItem>
         </Submenu>
       </Menu>
     </Sider>
@@ -41,9 +41,8 @@
           </Col>
           <Col span="8">
           <div :style="{float:'right',margin: '7px 0'}">
-              
             <Avatar icon="ios-person" :src="currentUser.Avatar" size="large"></Avatar>&nbsp&nbsp
-            <h3 :style="{display:'inline'}">{{currentUser.Name}}</h3>&nbsp&nbsp
+            <h3 :style="{display:'inline'}">{{currentUser.UserName}}</h3>&nbsp&nbsp
           </div>
           </Col>
         </Row>

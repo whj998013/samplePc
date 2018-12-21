@@ -18,23 +18,33 @@ export default new Vue({
         };
     },
     computed: {
+
         isLogin() {
-            console.log("user:",this.currentUser,"islogin:",this.currentUser == undefined ? false : true);
+            console.log("user:", this.currentUser, "islogin:", this.currentUser == undefined ? false : true);
             return this.currentUser == undefined ? false : true;
         },
         isLimt() {
-            return this.currentUser.isLimt;
+            return this.Auth("Sample_Dd_ViewAllInfo");
         },
     },
     methods: {
+        Auth(value) {
+           
+            if (value) {
+                let v = this.currentUser.plist.find(p => p == value);
+                if (v != undefined) {
+                    return true;
+                }
+            }
+            return false;
+        },
         setCookieUser(user) {
             this.currentUser = user;
             cookie.setSessionCookie('sgud', JSON.stringify(user), "/");
         },
-
         getSystemSetting() {
             return new Promise((resolve, reject) => {
-                this.$util.get("/Setting/GetSetting").then(result => {
+                this.$util.get("/SampleSetting/GetSampleSetting").then(result => {
                     this.Setting = result.data;
                     resolve(result.data);
                 }).catch(re => {
@@ -68,4 +78,4 @@ export default new Vue({
         }
     },
 
-}); 
+});

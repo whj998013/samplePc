@@ -1,6 +1,11 @@
 <style scoped>
 
 </style>
+<style>
+ #color .ivu-select-dropdown {
+  max-height: 180px;
+ }
+</style>
 <template>
   <div>
     <Row>
@@ -18,6 +23,13 @@
           </Input>
         </FormItem>
         </Col>
+         <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <FormItem label='部门'>
+          <Input v-model="sample.DeptName" placeholder="输入部门">
+          </Input>
+        </FormItem>
+        </Col>
+
         <Col :xs="24" :sm="12" :md="12" :lg="8">
         <FormItem label='款号' prop="StyleNo">
           <Input v-model="sample.StyleNo" placeholder="输入款号">
@@ -35,7 +47,7 @@
 
         <Col :xs="24" :sm="12" :md="12" :lg="8">
         <FormItem label='颜色' prop="Color">
-          <AutoComplete v-model="sample.Color" :data="colorlist" placeholder="输入颜色"></AutoComplete>
+          <AutoComplete id="color"  v-model="sample.Color" :data="colorlist" placeholder="输入颜色"></AutoComplete>
         </FormItem>
         </Col>
 
@@ -146,7 +158,18 @@
         <Col :xs="24" :sm="12" :md="12" :lg="8">
         <FormItem label='打样日期'>
           <DatePicker style="width:100%" v-model="sample.ProofingDate" type="date" placeholder="选择样衣生产日期"></DatePicker>
+        </FormItem>
+        </Col>
 
+        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <FormItem label='织机时间'>
+          <InputNumber :step=5 style="width:100%" v-model="sample.WeaveTime " :formatter="value=> `${value}分钟`" :parser="value => value.replace('分钟', '')"></InputNumber>
+        </FormItem>
+        </Col>
+
+        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <FormItem label='套口时间'>
+          <InputNumber :step=5 style="width:100%" v-model="sample.LinkTime " :formatter="value=> `${value}分钟`" :parser="value => value.replace('分钟', '')"></InputNumber>
         </FormItem>
         </Col>
       </Row>
@@ -227,6 +250,7 @@ export default {
       sample: {
         StyleId: "",
         StyleNo: "",
+        DeptName:"",
         Color: "",
         Kinds: "",
         Size: "",
@@ -244,6 +268,8 @@ export default {
         TechnologyPeople: "",
         ProgamPeople: "",
         ProofingDate: "",
+        WeaveTime:0,
+        LinkTime:0,
         ClientName: "",
         ProductFactory: "",
         ProductNum: 0,
@@ -361,7 +387,6 @@ export default {
     saveSample() {
       this.validate().then(p => {
         if (p) {
-          // console.log(JSON.stringify(this.sample));
           this.$bus.BeginLoading();
           this.$util
             .post("/sample/SaveSample", this.sample)
@@ -409,7 +434,6 @@ export default {
     Init() {
       //初始化各项插件
       this.$util.get("/sample/GetSelectList").then(result => {
-        //console.log("re",result);
         if (result.data) {
           let data = result.data;
           this.colorlist = data.ColorList;
@@ -421,7 +445,6 @@ export default {
           this.selectTagList = data.TagList;
           this.kindslist = data.KindsList;
         }
-        console.log("mat", this.materialist);
       });
     },
     newStyle() {
