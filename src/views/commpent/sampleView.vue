@@ -105,7 +105,6 @@ export default {
       this.pageobj.UserId = obj.UserId;
       this.pageobj.current=1;
       this.getData();
-      
     },
     reload() {
       this.show = false;

@@ -17,7 +17,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "dingtalk-jsapi": "^2.4.8",
-    "iview": "^3.1.5",
+    "iview": "^3.2.0",
     "js-cookie": "^2.2.0",
     "qrcode2": "^1.2.3",
     "qs": "^6.5.2",
