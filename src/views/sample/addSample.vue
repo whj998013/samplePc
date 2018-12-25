@@ -47,7 +47,7 @@
 
         <Col :xs="24" :sm="12" :md="12" :lg="8">
         <FormItem label='颜色' prop="Color">
-          <AutoComplete id="color"  v-model="sample.Color" :data="colorlist" placeholder="输入颜色"></AutoComplete>
+          <AutoComplete id="color"  v-model="sample.Color" :data="colorlist" placeholder="输入颜色" clearable transfer></AutoComplete>
         </FormItem>
         </Col>
 
