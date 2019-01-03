@@ -1,82 +1,197 @@
 <style scoped>
-
 </style>
 <style>
- #color .ivu-select-dropdown {
+#color .ivu-select-dropdown {
   max-height: 180px;
- }
+}
 </style>
 <template>
   <div>
     <Row>
       <Col>
-      <Button size="large" type="primary" icon="md-checkmark" @click="saveSample">&emsp;保存&emsp;</Button>
-      <Button size="large" type="warning" icon="md-close" @click="goBack">&emsp;取消&emsp;</Button>
+      <Button
+        size="large"
+        type="primary"
+        icon="md-checkmark"
+        @click="saveSample"
+      >&emsp;保存&emsp;</Button>
+      <Button
+        size="large"
+        type="warning"
+        icon="md-close"
+        @click="goBack"
+      >&emsp;取消&emsp;</Button>
       </Col>
     </Row>
-    <Form ref='sample' :model="sample" :label-width="75" label-position="right" :rules="sampleRuleValidate">
+    <Form
+      ref='sample'
+      :model="sample"
+      :label-width="75"
+      label-position="right"
+      :rules="sampleRuleValidate"
+    >
       <Divider>样衣基本信息</Divider>
       <Row type="flex">
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
         <FormItem label='编号'>
-          <Input  v-model="sample.StyleId" readonly>
+          <Input
+            v-model="sample.StyleId"
+            readonly
+          >
           </Input>
         </FormItem>
         </Col>
-         <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
         <FormItem label='部门'>
-          <Input v-model="sample.DeptName" placeholder="输入部门">
+          <Input
+            v-model="sample.DeptName"
+            placeholder="输入部门"
+          >
           </Input>
         </FormItem>
         </Col>
 
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
-        <FormItem label='款号' prop="StyleNo">
-          <Input v-model="sample.StyleNo" placeholder="输入款号">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
+        <FormItem
+          label='款号'
+          prop="StyleNo"
+        >
+          <Input
+            v-model="sample.StyleNo"
+            placeholder="输入款号"
+          >
           </Input>
         </FormItem>
         </Col>
 
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
-        <FormItem label='种类' prop="Kinds">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
+        <FormItem
+          label='种类'
+          prop="Kinds"
+        >
           <Select v-model="sample.Kinds">
-            <Option v-for="item in kindslist" :value="item" :key="item">{{ item }}</Option>
+            <Option
+              v-for="item in kindslist"
+              :value="item"
+              :key="item"
+            >{{ item }}</Option>
           </Select>
         </FormItem>
         </Col>
 
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
-        <FormItem label='颜色' prop="Color">
-          <AutoComplete id="color"  v-model="sample.Color"  :data="colorlist" placeholder="输入颜色" clearable ></AutoComplete>
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
+        <FormItem
+          label='颜色'
+          prop="Color"
+        >
+          <AutoComplete
+            id="color"
+            v-model="sample.Color"
+            :filter-method="filterMethod"
+            :data="colorlist"
+            placeholder="输入颜色"
+            clearable
+          ></AutoComplete>
         </FormItem>
         </Col>
 
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
-        <FormItem label='尺码' prop="Size">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
+        <FormItem
+          label='尺码'
+          prop="Size"
+        >
           <Select v-model="sample.Size">
-            <Option v-for="item in sizelist" :value="item" :key="item">{{ item }}</Option>
+            <Option
+              v-for="item in sizelist"
+              :value="item"
+              :key="item"
+            >{{ item }}</Option>
           </Select>
         </FormItem>
         </Col>
 
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
 
-        <FormItem label='针型' prop="Gauge">
+        <FormItem
+          label='针型'
+          prop="Gauge"
+        >
           <Select v-model="sample.Gauge">
-            <Option v-for="item in gaugelist" :value="item" :key="item">{{ item }}</Option>
+            <Option
+              v-for="item in gaugelist"
+              :value="item"
+              :key="item"
+            >{{ item }}</Option>
           </Select>
         </FormItem>
         </Col>
 
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
-        <FormItem label='克重' prop="Weight">
-          <InputNumber :step=50 style="width:100%" v-model="sample.Weight " :formatter="value=> `${value}克`" :parser="value => value.replace('克', '')"></InputNumber>
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
+        <FormItem
+          label='克重'
+          prop="Weight"
+        >
+          <InputNumber
+            :step=50
+            style="width:100%"
+            v-model="sample.Weight "
+            :formatter="value=> `${value}克`"
+            :parser="value => value.replace('克', '')"
+          ></InputNumber>
         </FormItem>
         </Col>
 
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
         <FormItem label='可否外借'>
-          <Switch v-model="sample.CanLendOut" size="large">
+          <Switch
+            v-model="sample.CanLendOut"
+            size="large"
+          >
             <span slot="open">是</span>
             <span slot="close">否</span>
           </Switch>
@@ -85,36 +200,95 @@
 
       </Row>
       <Divider>价格</Divider>
-      <Col :xs="24" :sm="12" :md="12" :lg="8">
+      <Col
+        :xs="24"
+        :sm="12"
+        :md="12"
+        :lg="8"
+      >
       <FormItem label='成本价'>
-        <InputNumber style="width:100%" v-model="sample.CostPrice " :formatter="value=> `${value}元`" :parser="value => value.replace('元', '')"></InputNumber>
+        <InputNumber
+          style="width:100%"
+          v-model="sample.CostPrice "
+          :formatter="value=> `${value}元`"
+          :parser="value => value.replace('元', '')"
+        ></InputNumber>
       </FormItem>
       </Col>
-      <Col :xs="24" :sm="12" :md="12" :lg="8">
+      <Col
+        :xs="24"
+        :sm="12"
+        :md="12"
+        :lg="8"
+      >
       <FormItem label='出厂价'>
-        <InputNumber style="width:100%" v-model="sample.FactoryPrice " :formatter="value=> `${value}元`" :parser="value => value.replace('元', '')"></InputNumber>
+        <InputNumber
+          style="width:100%"
+          v-model="sample.FactoryPrice "
+          :formatter="value=> `${value}元`"
+          :parser="value => value.replace('元', '')"
+        ></InputNumber>
       </FormItem>
       </Col>
-      <Col :xs="24" :sm="12" :md="12" :lg="8">
+      <Col
+        :xs="24"
+        :sm="12"
+        :md="12"
+        :lg="8"
+      >
       <FormItem label='销售价'>
-        <InputNumber style="width:100%" v-model="sample.SalePrice " :formatter="value=> `${value}元`" :parser="value => value.replace('元', '')"></InputNumber>
+        <InputNumber
+          style="width:100%"
+          v-model="sample.SalePrice "
+          :formatter="value=> `${value}元`"
+          :parser="value => value.replace('元', '')"
+        ></InputNumber>
       </FormItem>
       </Col>
-      <Col :xs="24" :sm="12" :md="12" :lg="8">
+      <Col
+        :xs="24"
+        :sm="12"
+        :md="12"
+        :lg="8"
+      >
       <FormItem label='处理价'>
-        <InputNumber style="width:100%" v-model="sample.DiscountPrice " :formatter="value=> `${value}元`" :parser="value => value.replace('元', '')"></InputNumber>
+        <InputNumber
+          style="width:100%"
+          v-model="sample.DiscountPrice "
+          :formatter="value=> `${value}元`"
+          :parser="value => value.replace('元', '')"
+        ></InputNumber>
       </FormItem>
       </Col>
 
       <Divider>样衣标签</Divider>
-      <sytleTag ref="sytleTag" v-model="sample.StyleTag" :selectTagList="selectTagList"></sytleTag>
+      <sytleTag
+        ref="sytleTag"
+        v-model="sample.StyleTag"
+        :selectTagList="selectTagList"
+      ></sytleTag>
 
       <Divider>原料成份</Divider>
-      <material  ref="material" v-model="sample.Material" :materials="materialist"></material>
+      <material
+        ref="material"
+        v-model="sample.Material"
+        :materials="materialist"
+      ></material>
       <Row>
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
-        <FormItem label='纱线支数' prop="Counts">
-          <Input v-model="sample.Counts" placeholder="输入纱线支数">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
+        <FormItem
+          label='纱线支数'
+          prop="Counts"
+        >
+          <Input
+            v-model="sample.Counts"
+            placeholder="输入纱线支数"
+          >
           </Input>
         </FormItem>
         </Col>
@@ -123,95 +297,228 @@
       <Row>
         <Col>
         <FormItem label='有无现货'>
-          <Switch v-model="sample.HaveStock" size="large">
+          <Switch
+            v-model="sample.HaveStock"
+            size="large"
+          >
             <span slot="open">有</span>
             <span slot="close">无</span>
           </Switch>
         </FormItem>
         </Col>
-        <Col :xs="24" :sm="24" :md="20" :lg="16" v-if="sample.HaveStock">
-        <stock :sizelist="sizelist" v-model="sample.StockData" ref="stock" is-edit></stock>
+        <Col
+          :xs="24"
+          :sm="24"
+          :md="20"
+          :lg="16"
+          v-if="sample.HaveStock"
+        >
+        <stock
+          :sizelist="sizelist"
+          v-model="sample.StockData"
+          ref="stock"
+          is-edit
+        ></stock>
         </Col>
       </Row>
       <br>
       <Divider>打样信息</Divider>
       <Row type="flex">
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
         <FormItem label='打样单位'>
-          <Input v-model="sample.ProofingCompany" placeholder="输入打样单位">
+          <Input
+            v-model="sample.ProofingCompany"
+            placeholder="输入打样单位"
+          >
           </Input>
         </FormItem>
         </Col>
 
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
         <FormItem label='工艺员'>
-          <Input v-model="sample.TechnologyPeople" placeholder="输入工艺员姓名">
+          <Input
+            v-model="sample.TechnologyPeople"
+            placeholder="输入工艺员姓名"
+          >
           </Input>
         </FormItem>
         </Col>
 
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
         <FormItem label='程序员'>
-          <Input v-model="sample.ProgamPeople" placeholder="输入程序员姓名"> </Input>
+          <Input
+            v-model="sample.ProgamPeople"
+            placeholder="输入程序员姓名"
+          > </Input>
         </FormItem>
         </Col>
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
         <FormItem label='打样日期'>
-          <DatePicker style="width:100%" v-model="sample.ProofingDate" type="date" placeholder="选择样衣生产日期"></DatePicker>
+          <DatePicker
+            style="width:100%"
+            v-model="sample.ProofingDate"
+            type="date"
+            placeholder="选择样衣生产日期"
+          ></DatePicker>
         </FormItem>
         </Col>
 
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
         <FormItem label='织机时间'>
-          <InputNumber :step=5 style="width:100%" v-model="sample.WeaveTime " :formatter="value=> `${value}分钟`" :parser="value => value.replace('分钟', '')"></InputNumber>
+          <InputNumber
+            :step=5
+            style="width:100%"
+            v-model="sample.WeaveTime "
+            :formatter="value=> `${value}分钟`"
+            :parser="value => value.replace('分钟', '')"
+          ></InputNumber>
         </FormItem>
         </Col>
 
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
         <FormItem label='套口时间'>
-          <InputNumber :step=5 style="width:100%" v-model="sample.LinkTime " :formatter="value=> `${value}分钟`" :parser="value => value.replace('分钟', '')"></InputNumber>
+          <InputNumber
+            :step=5
+            style="width:100%"
+            v-model="sample.LinkTime "
+            :formatter="value=> `${value}分钟`"
+            :parser="value => value.replace('分钟', '')"
+          ></InputNumber>
         </FormItem>
         </Col>
       </Row>
       <Divider>大货生产信息</Divider>
       <Row>
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
         <FormItem label='客户'>
-          <Input v-model="sample.ClientName" placeholder="输入客户">
+          <Input
+            v-model="sample.ClientName"
+            placeholder="输入客户"
+          >
           </Input>
         </FormItem>
         </Col>
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
         <FormItem label='大货工厂'>
-          <Input v-model="sample.ProductFactory" placeholder="输入大货工厂">
+          <Input
+            v-model="sample.ProductFactory"
+            placeholder="输入大货工厂"
+          >
           </Input>
         </FormItem>
         </Col>
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
         <FormItem label='大货数量'>
-          <InputNumber :step=500 :min="0" v-model="sample.ProductNum" style="width:100%"></InputNumber>
+          <InputNumber
+            :step=500
+            :min="0"
+            v-model="sample.ProductNum"
+            style="width:100%"
+          ></InputNumber>
         </FormItem>
         </Col>
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
         <FormItem label='大货价格'>
-          <InputNumber :step=5 :min="0" v-model="sample.Price" style="width:100%"></InputNumber>
+          <InputNumber
+            :step=5
+            :min="0"
+            v-model="sample.Price"
+            style="width:100%"
+          ></InputNumber>
         </FormItem>
         </Col>
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <Col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+        >
         <FormItem label='出货日期'>
-          <DatePicker style="width:100%" v-model="sample.ProductDate" type="date" placeholder="选择出货日期"></DatePicker>
+          <DatePicker
+            style="width:100%"
+            v-model="sample.ProductDate"
+            type="date"
+            placeholder="选择出货日期"
+          ></DatePicker>
         </FormItem>
         </Col>
       </Row>
       <Divider>上传样衣图片</Divider>
-      <picUp ref='picup' v-model="sample.PicList" :action="baseUrl+'/Sample/UpLoadPic'" :removeAction="baseUrl+'/Sample/RemoveFile'"></picUp>
+      <picUp
+        ref='picup'
+        v-model="sample.PicList"
+        :action="baseUrl+'/Sample/UpLoadPic'"
+        :removeAction="baseUrl+'/Sample/RemoveFile'"
+      ></picUp>
       <Divider>上传工艺单</Divider>
       <Row>
         </Col>
         <Col span="8">
-        <Upload type="drag" :on-remove='fileUploadRemoveFile' :on-preview='fileUploadOpenFile' :with-credentials=true :action="baseUrl+'/Sample/UpLoadFile'" :on-success='fileUploadOUpSuccess' :default-file-list='sample.FileList'>
+        <Upload
+          type="drag"
+          :on-remove='fileUploadRemoveFile'
+          :on-preview='fileUploadOpenFile'
+          :with-credentials=true
+          :action="baseUrl+'/Sample/UpLoadFile'"
+          :on-success='fileUploadOUpSuccess'
+          :default-file-list='sample.FileList'
+        >
           <div style="padding: 20px 0">
-            <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+            <Icon
+              type="ios-cloud-upload"
+              size="52"
+              style="color: #3399ff"
+            ></Icon>
             <p>点击或将文件拖入框内上传</p>
           </div>
         </Upload>
@@ -235,7 +542,6 @@ export default {
     material,
     sytleTag,
     stock
-    
   },
   data: function() {
     return {
@@ -251,7 +557,7 @@ export default {
       sample: {
         StyleId: "",
         StyleNo: "",
-        DeptName:"",
+        DeptName: "",
         Color: "",
         Kinds: "",
         Size: "",
@@ -269,8 +575,8 @@ export default {
         TechnologyPeople: "",
         ProgamPeople: "",
         ProofingDate: "",
-        WeaveTime:0,
-        LinkTime:0,
+        WeaveTime: 0,
+        LinkTime: 0,
         ClientName: "",
         ProductFactory: "",
         ProductNum: 0,
@@ -356,6 +662,9 @@ export default {
     };
   },
   methods: {
+    filterMethod(value, option) {
+      return option.toUpperCase().indexOf(value.toUpperCase()) !== -1;
+    },
     getobj() {
       //  console.log(this.$refs.stock.getData());
       console.log(this.sample.sizeData);
@@ -371,8 +680,7 @@ export default {
           _this.$refs.sample.validate(v => {
             resolve(v);
           });
-        })
-        ,
+        }),
         new Promise((resolve, reject) => {
           _this.$refs.material.validate(v => {
             resolve(v);

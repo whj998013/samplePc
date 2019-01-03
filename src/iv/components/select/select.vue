@@ -608,7 +608,6 @@ export default {
       this.filterQueryChange = false;
     },
     handleKeydown(e) {
-       console.log(e);
        let key="";
       if (e.key != undefined) {
         key=e.key;

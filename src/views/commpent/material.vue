@@ -9,14 +9,14 @@
       <Row v-for="(item, index) in materialsList.items" :key="index" type="flex">
         <Col :xs="7" :sm="7" :md="7" :lg="6">
         <FormItem label='成份名' :prop="'items.' + index + '.materials'" :rules="{required: true, message: '请输入成份', trigger: 'change'}">
-          <AutoComplete id="material" type="text" v-model="item.materials " placeholder="请输入原料名" :data="cnList" @on-change="dataChange(index)" @on-select="onSelect">
+          <AutoComplete id="material" clearable :filter-method="filterMethod"  type="text" v-model="item.materials " placeholder="请输入原料名" :data="cnList" @on-change="dataChange(index)" @on-select="onSelect">
           </AutoComplete>
         </FormItem>
         </Col>
         <Col :xs="7" :sm="7" :md="7" :lg="6">
         <FormItem label='英文名' :prop="'items.' + index + '.materials'" :rules="{required: true, message: '请输入英文成份名', trigger: 'change'}">
-          <AutoComplete type="text" v-model="item.enName " placeholder="请输入原料名">
-          </AutoComplete>
+          <Input type="text" v-model="item.enName " placeholder="请输入原料名" >
+          </Input>
         </FormItem>
         </Col>
         <Col :xs="8" :sm="8" :md="8" :lg="8" >
@@ -76,6 +76,9 @@ export default {
         fuc(valid);
       });
     },
+    filterMethod (value, option) {
+                return option.toUpperCase().indexOf(value.toUpperCase()) !== -1;
+            },
     handleAdd() {
       let p = 100;
       this.materialsList.items.forEach(item => {
