@@ -47,7 +47,7 @@
 
         <Col :xs="24" :sm="12" :md="12" :lg="8">
         <FormItem label='颜色' prop="Color">
-          <AutoComplete id="color"  v-model="sample.Color" :data="colorlist" placeholder="输入颜色" clearable transfer></AutoComplete>
+          <AutoComplete id="color"  v-model="sample.Color"  :data="colorlist" placeholder="输入颜色" clearable ></AutoComplete>
         </FormItem>
         </Col>
 
@@ -235,6 +235,7 @@ export default {
     material,
     sytleTag,
     stock
+    
   },
   data: function() {
     return {
@@ -421,7 +422,7 @@ export default {
     ///上传文件返回
     fileUploadOUpSuccess(response, file, fileList) {
       file.reallyName = response.name;
-      file.url = this.dataUrl + "/uploadfile/" + response.url;
+      file.url = this.dataUrl + "/uploadfile/" + response.name;
       this.sample.FileList = Array.from(fileList, item => {
         return {
           name: item.name,

@@ -46,16 +46,10 @@ util.title = function (title) {
     window.document.title = title;
 };
 util.PrintUrl = env === 'development' ?
-    'http://api.sungingroup.com:8081/sampleinfo/' :
-    env === 'production' ?
-    'http://app.sungingroup.com:8081/sampleinfo/' :
-    'https://debug.url.com';
+    'http://api.sungingroup.com:8081/sampleinfo/' :'http://app.sungingroup.com:8081/sampleinfo/' 
 const ajaxUrl = env === 'development' ?
-    'http://api.sungingroup.com:8082' :
-    env === 'production' ?
-    'http://app.sungingroup.com:8082' :
-    'https://debug.url.com';
-util.dataUrl = ajaxUrl;
+    'http://api.sungingroup.com:8082' :'http://app.sungingroup.com:8082' ;
+util.dataUrl = ajaxUrl+"/src/sample";
 util.baseUrl = ajaxUrl + "/api";
 util.ajax = axios.create({
     baseURL: util.baseUrl,

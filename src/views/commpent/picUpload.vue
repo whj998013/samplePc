@@ -80,7 +80,7 @@ export default {
     },
     //上传成功
     handleSuccess(res, file) {
-      file.url = this.dataUrl+"/pic/minpic/" + res.url;
+      file.url = this.dataUrl+"/pic/minpic/" + res.name;
       file.name = res.name;
         this.$emit("input", this.picList);
     },
