@@ -29,7 +29,7 @@ let menuObj = [
 
         ]
     },
-    //菜单2
+    //成衣仓库
     {
         subMenuName: 'mangeMenu',
         iconType: 'ios-clipboard-outline',
@@ -37,6 +37,28 @@ let menuObj = [
         authKey: 'SampleMange',
         menuItem: [
 
+        ]
+    },
+
+       //打样管理
+       {
+        subMenuName: 'mangeMenu',
+        iconType: 'ios-clipboard-outline',
+        subMenuText: '打样中心',
+        authKey: 'Proof',
+        menuItem: [   
+            {
+                name: '/Proof/MyProof',
+                text: '我的打样',
+                authKey: 'Proof_MyProof',
+
+            },
+            {
+                name: '/Proof/ProofMange',
+                text: '打样管理',
+                authKey:'Proof_ProofMange', 
+
+            },
         ]
     },
 

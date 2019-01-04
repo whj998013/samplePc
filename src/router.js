@@ -92,6 +92,32 @@ const routers = [
                 component: (resolve) => require(['./views/sample/LendMange.vue'], resolve)
             },
             {
+                path: '/Proof/MyProof',
+                meta: {
+                    title: '我的打样',
+                    requireAuth: true,
+                },
+                component: (resolve) => require(['./views/Proof/MyProof.vue'], resolve)
+            },
+            {
+                path: '/Proof/newProof',
+                meta: {
+                    title: '打样申请',
+                    requireAuth: true,
+                },
+                component: (resolve) => require(['./views/Proof/newProof.vue'], resolve)
+            },
+            {
+                path: '/Proof/ProofMange',
+                meta: {
+                    title: '打样管理',
+                    requireAuth: true,
+                },
+                component: (resolve) => require(['./views/Proof/ProofMange.vue'], resolve)
+            },
+            
+
+            {
                 path: '/system/RoleSetting',
                 meta: {
                     title: '系统设置',
