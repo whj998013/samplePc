@@ -3,33 +3,16 @@
 <template>
   <div>
     <div>
-      <Row
-        type="flex"
-        justify="space-between"
-      >
+      <Row type="flex" justify="space-between">
         <Col span='16'>
         </Col>
         <Col>
-        <Button
-          size="large"
-          type="primary"
-          icon="md-checkmark"
-          @click="saveSample"
-        >&emsp;保存&emsp;</Button>
-        <Button
-          size="large"
-          type="warning"
-          icon="md-close"
-          @click="goBack"
-        >&emsp;取消&emsp;</Button>
+        <Button size="large" type="primary" icon="md-checkmark" @click="saveSample">&emsp;保存&emsp;</Button>
+        <Button size="large" type="warning" icon="md-close" @click="goBack">&emsp;取消&emsp;</Button>
         </Col>
       </Row>
 
-      <Form
-        ref='sample'
-        :label-width="75"
-        label-position="right"
-      >
+      <Form ref='sample' :label-width="75" label-position="right">
 
       </Form>
     </div>
