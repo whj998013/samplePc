@@ -17,6 +17,7 @@
     </Row>
 
     <Tabs value="name0">
+      
       <TabPane label="未入库样衣" name="name0">
         <sampleview ref="view1" action="/MySample/GetNotInStorageSample" @needUpData='handleUpdata' haveEdit havePrint haveDelete haveInStorage></sampleview>
       </TabPane>
