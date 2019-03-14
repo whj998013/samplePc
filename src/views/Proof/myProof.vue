@@ -31,7 +31,6 @@ export default {
   },
   methods: {
     newProof() {
-      console.log("test");
       this.$router.push("/Proof/newProof");
     },
     handleUpdata() {

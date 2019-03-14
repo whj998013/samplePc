@@ -151,7 +151,6 @@
                 this.$emit('on-search', query);
             },
             handleChange (val) {
-               
                 if (val === undefined || val === null) return;
                 this.currentValue = val;
                 this.$refs.input.blur();
@@ -167,6 +166,7 @@
                 if (!this.clearable) return;
                 this.currentValue = '';
                 this.$refs.select.reset();
+                this.$emit('on-clear');
             }
         }
     };

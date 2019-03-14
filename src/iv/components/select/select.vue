@@ -21,11 +21,7 @@
       @mouseleave="hasMouseHoverHead = false"
     >
       <slot name="input">
-        <input
-          type="hidden"
-          :name="name"
-          :value="publicValue"
-        >
+        <input type="hidden" :name="name" :value="publicValue">
         <select-head
           :filterable="filterable"
           :multiple="multiple"
@@ -54,10 +50,7 @@
         :transfer="transfer"
         v-transfer-dom
       >
-        <ul
-          v-show="showNotFoundLabel"
-          :class="[prefixCls + '-not-found']"
-        >
+        <ul v-show="showNotFoundLabel" :class="[prefixCls + '-not-found']">
           <li>{{ localeNotFoundText }}</li>
         </ul>
         <ul :class="prefixCls + '-dropdown-list'">
@@ -68,10 +61,7 @@
             :slot-options="slotOptions"
           ></functional-options>
         </ul>
-        <ul
-          v-show="loading"
-          :class="[prefixCls + '-loading']"
-        >{{ localeLoadingText }}</ul>
+        <ul v-show="loading" :class="[prefixCls + '-loading']">{{ localeLoadingText }}</ul>
       </Drop>
     </transition>
   </div>
@@ -258,6 +248,9 @@ export default {
     },
     elementId: {
       type: String
+    },
+    transferClassName: {
+      type: String
     }
   },
   mounted() {
@@ -313,7 +306,8 @@ export default {
       return {
         [prefixCls + "-dropdown-transfer"]: this.transfer,
         [prefixCls + "-multiple"]: this.multiple && this.transfer,
-        ["ivu-auto-complete"]: this.autoComplete
+        ["ivu-auto-complete"]: this.autoComplete,
+        [this.transferClassName]: this.transferClassName
       };
     },
     selectionCls() {
@@ -608,50 +602,56 @@ export default {
       this.filterQueryChange = false;
     },
     handleKeydown(e) {
-       let key="";
+      let key = "";
       if (e.key != undefined) {
-        key=e.key;
-      }else{
-         key=e.code;
+        key = e.key;
+      } else {
+        key = e.code;
       }
 
-        if (key === "Backspace") {
-          return; // so we don't call preventDefault
-        }
-        if (this.visible) {
-          e.preventDefault();
-          if (key === "Tab") {
-            e.stopPropagation();
-          }
+      
+      if (e.key === "Backspace") {
+        return; // so we don't call preventDefault
+      }
 
-          // Esc slide-up
-          if (key === "Escape") {
-            e.stopPropagation();
-            this.hideMenu();
-          }
-          // next
-          if (key === "ArrowUp") {
-            this.navigateOptions(-1);
-          }
-          // prev
-          if (key === "ArrowDown") {
-            this.navigateOptions(1);
-          }
-          // enter
-          if (key === "Enter") {
-            if (this.focusIndex === -1) return this.hideMenu();
-            const optionComponent = this.flatOptions[this.focusIndex];
+      if (this.visible) {
+        e.preventDefault();
+        if (e.key === "Tab") {
+          e.stopPropagation();
+        }
+
+        // Esc slide-up
+        if (e.key === "Escape") {
+          e.stopPropagation();
+          this.hideMenu();
+        }
+        // next
+        if (e.key === "ArrowUp") {
+          this.navigateOptions(-1);
+        }
+        // prev
+        if (e.key === "ArrowDown") {
+          this.navigateOptions(1);
+        }
+        // enter
+        if (e.key === "Enter") {
+          if (this.focusIndex === -1) return this.hideMenu();
+          const optionComponent = this.flatOptions[this.focusIndex];
+
+          // fix a script error when searching
+          if (optionComponent) {
             const option = this.getOptionData(
               optionComponent.componentOptions.propsData.value
             );
             this.onOptionClick(option);
+          } else {
+            this.hideMenu();
           }
-        } else {
-          const keysThatCanOpenSelect = ["ArrowUp", "ArrowDown"];
-          if (keysThatCanOpenSelect.includes(e.key))
-            this.toggleMenu(null, true);
         }
-      
+      } else {
+        const keysThatCanOpenSelect = ["ArrowUp", "ArrowDown"];
+        if (keysThatCanOpenSelect.includes(e.key)) this.toggleMenu(null, true);
+      }
     },
     navigateOptions(direction) {
       const optionsLength = this.flatOptions.length - 1;
@@ -724,7 +724,21 @@ export default {
       }, ANIMATION_TIMEOUT);
     },
     onQueryChange(query) {
-      if (query.length > 0 && query !== this.query) this.visible = true;
+      if (query.length > 0 && query !== this.query) {
+        // in 'AutoComplete', when set an initial value asynchronously,
+        // the 'dropdown list' should be stay hidden.
+        // [issue #5150]
+        if (this.autoComplete) {
+          let isInputFocused =
+            document.hasFocus &&
+            document.hasFocus() &&
+            document.activeElement === this.$el.querySelector("input");
+          this.visible = isInputFocused;
+        } else {
+          this.visible = true;
+        }
+      }
+
       this.query = query;
       this.unchangedQuery = this.visible;
       this.filterQueryChange = true;
@@ -876,28 +890,17 @@ export default {
     },
     slotOptions(options, old) {
       // #4626，当 Options 的 label 更新时，v-model 的值未更新
-      if (
-        this.flatOptions &&
-        this.flatOptions.length &&
-        this.values.length &&
-        !this.multiple
-      ) {
-        this.values = this.values
-          .map(value => {
-            const option = this.flatOptions.find(option => {
-              if (!option.componentOptions) return false;
-              return option.componentOptions.propsData.value === value.value;
-            });
-
-            if (!option) return null;
-
-            const label = getOptionLabel(option);
-            return {
-              value: value.value,
-              label: label
-            };
-          })
-          .filter(Boolean);
+      // remote 下，调用 getInitialValue 有 bug
+      if (!this.remote) {
+        const values = this.getInitialValue();
+        if (
+          this.flatOptions &&
+          this.flatOptions.length &&
+          values.length &&
+          !this.multiple
+        ) {
+          this.values = values.map(this.getOptionData).filter(Boolean);
+        }
       }
 
       // 当 dropdown 在控件上部显示时，如果选项列表的长度由外部动态变更了，

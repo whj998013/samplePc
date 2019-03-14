@@ -7,7 +7,8 @@
 </style>
 <template>
   <div>
-    <Row>
+    <Row type="flex" justify="space-between">
+      <Col span="16"></Col>
       <Col>
       <Button size="large" type="primary" icon="md-checkmark" @click="saveSample">&emsp;保存&emsp;</Button>
       <Button size="large" type="warning" icon="md-close" @click="goBack">&emsp;取消&emsp;</Button>
