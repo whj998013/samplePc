@@ -435,9 +435,9 @@ export default {
 
     Init() {
       //初始化各项插件
-      this.$util.get("/sample/GetSelectList").then(result => {
-        if (result.data) {
-          let data = result.data;
+         this.$bus.getSelectList().then(result=>{
+       if (result) {
+          let data = result;
           this.colorlist = data.ColorList;
           this.sizelist = data.SizeList;
           this.$bus.colorlist = data.ColorList;
@@ -447,6 +447,7 @@ export default {
           this.selectTagList = data.TagList;
           this.kindslist = data.KindsList;
         }
+         
       });
     },
     newStyle() {

@@ -64,7 +64,6 @@ const routers = [
                 },
                 component: (resolve) => require(['./views/sample/addSample.vue'], resolve)
             },
-
             {
                 path: '/sample/editSample/:id',
                 meta: {
@@ -73,8 +72,6 @@ const routers = [
                 },
                 component: (resolve) => require(['./views/sample/addSample.vue'], resolve)
             },
-
-          
             {
                 path: '/sample/inOutmange',
                 meta: {

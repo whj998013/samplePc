@@ -19,7 +19,7 @@ export default {
     
   },
   mounted: function() {
-       this.$bus.$emit('changeMenuItem',['打样管理','我的打样']);
+       this.$bus.$emit('changeMenuItem',['打样中心','打样管理']);
   }
 };
 </script>

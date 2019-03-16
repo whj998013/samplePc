@@ -15,6 +15,7 @@ export default new Vue({
             },
             sizelist: [],
             colorlist: [],
+            selectData: null,
         };
     },
     computed: {
@@ -29,7 +30,7 @@ export default new Vue({
     },
     methods: {
         Auth(value) {
-           
+
             if (value) {
                 let v = this.currentUser.plist.find(p => p == value);
                 if (v != undefined) {
@@ -51,6 +52,20 @@ export default new Vue({
                     reject(re);
                 });
             });
+        },
+        getSelectList() {
+            return new Promise((resolve, reject) => {
+                if (this.selectData == null) {
+                    this.$util.get("/Public/GetSelectList").then(result => {
+                        console.log("getSelectDate");
+                        this.selectData=result.data;
+                        resolve(result.data);
+                    }).catch(re => {
+                        reject(re);
+                    });
+                }else resolve(this.selectData);
+            });
+
         },
         alert(alertstr) {
             this.$Notice.error({
