@@ -16,6 +16,7 @@
     </Row>
     <Tabs value="name0">
       <TabPane label="当前打样" name="name0">
+        <CurrentProof v-model="myProofs"></CurrentProof>
       </TabPane>
       <TabPane label="历史打样" name="name1">
       </TabPane>
@@ -24,10 +25,15 @@
 </template>
 
 <script>
-//import bus from "../bus.js";
+import CurrentProof from "./myProofViews/CurrentProof.vue";
 export default {
+  components: {
+    CurrentProof
+  },
   data: function() {
-    return {};
+    return {
+      myProofs: []
+    };
   },
   methods: {
     newProof() {
@@ -35,10 +41,26 @@ export default {
     },
     handleUpdata() {
       console.log("testupdata");
+    },
+    getData() {
+      return new Promise((resolve, reject) => {
+        this.$util
+          .get("/MyProof/GetMyProofs")
+          .then(result => {
+            resolve(result.data);
+          })
+          .catch(re => {
+            reject(re);
+          });
+      });
     }
   },
   mounted: function() {
     this.$bus.$emit("changeMenuItem", ["打样中心", "我的打样"]);
+    this.getData().then(reData => {
+      console.log("redata:", reData);
+      this.myProofs = reData;
+    });
   }
 };
 </script>

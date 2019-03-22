@@ -50,6 +50,7 @@ util.PrintUrl = env === 'development' ?
 const ajaxUrl = env === 'development' ?
     'http://api.sungingroup.com:8082' :'http://app.sungingroup.com:8082' ;
 util.dataUrl = ajaxUrl+"/src/sample";
+util.proofDataUrl=ajaxUrl;
 util.baseUrl = ajaxUrl + "/api";
 util.ajax = axios.create({
     baseURL: util.baseUrl,
@@ -74,6 +75,7 @@ util.ajax.interceptors.response.use(function (response) {
         console.log("开始重新登录");
         return loginApi.beginLogin().then(re => {
             console.log("重新登录成功");
+            bus.EndLoading();
             return axios(config);
         }).catch(error => {
             //window.location.href = '/login/401';
