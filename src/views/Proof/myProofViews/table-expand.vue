@@ -1,7 +1,7 @@
 <style scoped>
 </style>
 <style>
-#ContentDiv .ivu-table td {
+#ContentDiv .ivu-table-expanded-cell {
   background-color: rgb(255, 255, 255);
 }
 </style>
@@ -9,15 +9,16 @@
   <div>
 
     <div style="margin:10px 0px 30px 0px;">
-      <Steps :current="row.ProofStatus">
-        <Step title="草拟"></Step>
+      <Steps :current="ProofStatusStep" :status="status">
+        <Step :title="step1text"></Step>
         <Step title="审批"></Step>
         <Step title="排单"></Step>
         <Step title="打样"></Step>
+        <Step title="交样"></Step>
         <Step title="完成"></Step>
       </Steps>
     </div>
-    <hr color=#e8eaec SIZE=1>
+    <hr color=#e8eaec size=1>
 
     <Row class="expand-row" style="margin:20px 0px 0px 0px;">
       <Col span="8">
@@ -66,7 +67,7 @@
       <span class="expand-key">打样资料: </span>
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <a :href="proofDataUrl+item.Url">{{item.DisplayName }}</a>
-         <Divider type="vertical" />
+        <Divider type="vertical" />
       </span>
       </Col>
     </Row>
@@ -80,16 +81,25 @@ export default {
   },
   data: function() {
     return {
-      proofDataUrl:this.$util.proofDataUrl,
+      proofDataUrl: this.$util.proofDataUrl,
+      step1text: "草拟",
+      status: "process",
+      ProofStatusStep:0,
     };
   },
   methods: {},
-  mounted: function() {
-    this.$bus.$emit("changeMenuItem", ["样衣管理", "找样衣"]);
-  },
+  mounted: function() {},
   beforeMount: function() {
     var ds = JSON.stringify(this.row.RequiredDate);
     this.row.rdate = ds.substring(1, 11);
+    if (this.row.ProofStatus == 10) {
+      this.ProofStatusStep = 0;
+      this.status = "error";
+      this.step1text = "退回草拟";
+    } else {
+      this.ProofStatusStep = this.row.ProofStatus;
+    }
+   
   }
 };
 </script>

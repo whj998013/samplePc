@@ -3,14 +3,6 @@
 <template>
   <div>
     <div>
-      <Row type="flex" justify="space-between">
-        <Col span="16">
-        </Col>
-        <Col>
-        <Button size="large" type="primary" icon="md-checkmark" @click="saveProof">&emsp;保存&emsp;</Button>
-        <Button size="large" type="warning" icon="md-close" @click="goBack">&emsp;取消&emsp;</Button>
-        </Col>
-      </Row>
       <Divider>打样基本信息</Divider>
       <Form ref="proof" :model="proof" :label-width="75" label-position="right" :rules="proofRuleValidate">
         <Col :xs="24" :sm="12" :md="12" :lg="8">
@@ -69,14 +61,14 @@
           </Select>
         </FormItem>
         </Col>
-       
+
         <Col :xs="24" :sm="12" :md="12" :lg="8">
         <FormItem label='打样数量' prop="ProofNum">
           <InputNumber :step=1 style="width:100%" v-model="proof.ProofNum "></InputNumber>
         </FormItem>
         </Col>
 
-         <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <Col :xs="24" :sm="12" :md="12" :lg="8">
         <FormItem label="交期" prop="FinshDate">
           <DatePicker style="width:100%" v-model="proof.FinshDate" type="date" placeholder="要求样品交期"></DatePicker>
         </FormItem>
@@ -85,14 +77,17 @@
         <Row>
           <Col span="8">
           <FormItem>
-            <Upload type="drag" :on-remove="fileUploadRemoveFile" :on-preview="fileUploadOpenFile" :with-credentials="true" :action="baseUrl + '/NewProof/UpLoadFile'"
-              :on-success="fileUploadOUpSuccess" :default-file-list="proof.FileList" :data="proof">
+            <Upload type="drag" :with-credentials="true" :action="baseUrl + '/NewProof/UpLoadFile'" :on-success="fileUploadOUpSuccess" :data="proof"
+              :show-upload-list=false>
               <div>
                 <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
                 <p>点击或将文件拖入框内上传</p>
               </div>
             </Upload>
           </FormItem>
+          </Col>
+          <Col span="12" offset="1">
+          <Tag closable color="primary" v-for="(f,index) in proof.FileList" :key="index" @on-close="removeFile(f,index)">{{f.DisplayName}}</Tag>
           </Col>
         </Row>
       </Form>
@@ -103,6 +98,15 @@
 <script>
 //import bus from "../bus.js";
 export default {
+  props: {
+    value: {
+      type: Object
+    },
+    editMode: {
+      type: Boolean,
+      default: false
+    }
+  },
   data: function() {
     return {
       baseUrl: this.$util.baseUrl,
@@ -124,7 +128,7 @@ export default {
         Gauge: "",
         FileList: [],
         FinshDate: "",
-        ProofNum:1,
+        ProofNum: 1
       },
       proofRuleValidate: {
         ClentName: [
@@ -148,14 +152,7 @@ export default {
             trigger: "change"
           }
         ],
-        FinshDate: [
-          {
-            required: true,
-            type: "date",
-            message: "请输入客户交期",
-            trigger: "change"
-          }
-        ],  
+
         ProofNum: [
           {
             required: true,
@@ -165,40 +162,37 @@ export default {
             trigger: "change"
           }
         ]
-        
       }
     };
   },
   methods: {
-    getProofNo() {
-      return new Promise((resolve, reject) => {
-        this.$util
-          .get("/NewProof/GetProofNo")
-          .then(result => {
-            resolve(result.data);
-          })
-          .catch(re => {
-            reject(re);
-          });
-      });
-    },
     saveProof() {
-      this.validate().then(p => {
-        if (p) {
-          if (this.proof.FileList.length > 0) {
-            this.$util.post("/NewProof/SaveProof", this.proof).then(result => {
-              console.log(result);
-              this.$Notice.info({
-                title: "打样单保存成功。"
+      return new Promise((resolve, reject) => {
+        this.validate().then(p => {
+          if (p) {
+            if (this.proof.FileList.length > 0) {
+              let action = "";
+              if (this.editMode) {
+                action = "/NewProof/UpdateProof"; //编辑模式
+              } else {
+                action = "/NewProof/SaveProof"; //新增模式
+              }
+              console.log("proof", this.proof);
+              this.$util.post(action, this.proof).then(result => {
+                resolve(result);
+                this.$Notice.info({
+                  title: "打样单保存成功。"
+                });
               });
-              this.$router.back(-1);
-            });
+            } else {
+              this.$Message.info("请上传工艺资料!");
+              reject("error");
+            }
           } else {
-            this.$Message.info("请上传工艺资料!");
+            this.$Message.error("输入有错误，请重新检查!");
+            reject("error");
           }
-        } else {
-          this.$Message.error("输入有错误，请重新检查!");
-        }
+        });
       });
     },
     ///输入验证
@@ -210,24 +204,32 @@ export default {
         });
       });
     },
-    goBack() {
-      this.$router.back(-1);
+
+    exit() {
+      this.$emit("exit", row);
     },
 
-    fileUploadRemoveFile(file) {
-      console.log(file);
-      this.$util.post(this.baseUrl + "/NewProof/RemoveFile", file).then(re => {
-        console.log("re", re);
-      });
+    removeFile(file,index) {
+   
+      if (file.Id == 0) {
+        this.$util
+          .post(this.baseUrl + "/NewProof/RemoveFile", file)
+          .then(re => {
+            console.log("re", re);
+          });
+      };
+      this.proof.FileList.splice(index,1);
+      console.log(this.proof.FileList);
     },
-
-    fileUploadOpenFile() {},
 
     fileUploadOUpSuccess(response, file, fileList) {
-      this.proof.FileList = fileList;
-      file.FullName = response.name;
-      file.Url = response.url;
-      console.log(response, file, fileList);
+      let fobj = {};
+      fobj.Id=0;
+      fobj.FullName = response.name;
+      fobj.Url = response.url;
+      fobj.DisplayName = file.name;
+      this.proof.FileList.push(fobj);
+      console.log(response, file, fileList, this.proof);
     },
 
     Init() {
@@ -237,16 +239,53 @@ export default {
           this.proofTypeList = result.ProofTypeList;
         }
       });
-      this.getProofNo().then(re => {
-        this.proof.ProofOrderId = re.newProofOrderId;
-        this.proof.ProofStyleId = re.newProofStyleId;
-      });
+
       this.proof.UserName = this.$bus.currentUser.UserName;
+    },
+    NewProof(proofNo) {
+      this.resetData();
+      this.proof.ProofOrderId = proofNo.ProofOrderId;
+      this.proof.ProofStyleId = proofNo.ProofStyleId;
+    },
+    resetData() {
+      this.$refs.proof.resetFields();
+      this.proof.ProofOrderId = "";
+      this.proof.ProofStyleId = "";
+      this.proof.UserName = "";
+      this.proof.ClentName = "";
+      this.proof.ProofStyleNo = "";
+      this.proof.ClientNo = "";
+      this.proof.StyleName = "";
+      this.proof.proofType = "";
+      this.proof.Counts = "";
+      this.proof.Material = "";
+      this.proof.Weight = 0;
+      this.proof.Gauge = "";
+      this.proof.ProofNum = 1;
+      this.proof.FileList.length = 0;
+    },
+    BeginEdit(proofobj) {
+      console.log("obj", proofobj);
+      this.resetData();
+      this.proof.ProofOrderId = proofobj.ProofOrderId;
+      this.proof.ProofStyleId = proofobj.ProofStyle.ProofStyleId;
+      this.proof.UserName = proofobj.ProofApplyUserName;
+      this.proof.ClentName = proofobj.ProofStyle.ClentName;
+      this.proof.ProofStyleNo = proofobj.ProofStyle.ProofStyleNo;
+      this.proof.ClientNo = proofobj.ProofStyle.ClientNo;
+      this.proof.StyleName = proofobj.ProofStyle.StyleName;
+      this.proof.proofType = proofobj.ProofStyle.ProofTypeText;
+      this.proof.Counts = proofobj.ProofStyle.Counts;
+      this.proof.Material = proofobj.ProofStyle.Material;
+      this.proof.Weight = proofobj.ProofStyle.Weight;
+      this.proof.Gauge = proofobj.ProofStyle.Gauge;
+      this.proof.FinshDate = proofobj.RequiredDate;
+      this.proof.ProofNum = proofobj.ProofNum;
+      this.proof.FileList = proofobj.ProofStyle.ProofFiles.slice();
+      console.log("proof", this.proof);
     }
   },
-
   mounted: function() {
-    this.$bus.$emit("changeMenuItem", ["打样中心", "新打样单"]);
     this.Init();
   }
 };

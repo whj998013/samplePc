@@ -96,14 +96,7 @@ const routers = [
                 },
                 component: (resolve) => require(['./views/Proof/MyProof.vue'], resolve)
             },
-            {
-                path: '/Proof/newProof',
-                meta: {
-                    title: '打样申请',
-                    requireAuth: true,
-                },
-                component: (resolve) => require(['./views/Proof/newProof.vue'], resolve)
-            },
+           
             {
                 path: '/Proof/ProofMange',
                 meta: {
