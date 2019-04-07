@@ -7,19 +7,6 @@
 </style>
 <template>
   <div>
-
-    <div style="margin:10px 0px 30px 0px;">
-      <Steps :current="ProofStatusStep" :status="status">
-        <Step :title="step1text"></Step>
-        <Step title="审批"></Step>
-        <Step title="排单"></Step>
-        <Step title="打样"></Step>
-        <Step title="交样"></Step>
-        <Step title="完成"></Step>
-      </Steps>
-    </div>
-    <hr color=#e8eaec size=1>
-
     <Row class="expand-row" style="margin:20px 0px 0px 0px;">
       <Col span="8">
       <span class="expand-key">申请员工: </span>
@@ -62,13 +49,12 @@
       <span class="expand-value">{{ row.ProofStyle.Material }}</span>
       </Col>
     </Row>
-     <Row>
+      <Row>
       <Col span="8">
       <span class="expand-key">指定工艺员: </span>
       <span class="expand-value">{{ row.DesignatedGY }}</span>
       </Col>
-     
-        <Col span="8">
+         <Col span="8">
       <span class="expand-key">紧急度: </span>
       <span class="expand-value">{{ row.Urgency }}</span>
       </Col>
@@ -77,8 +63,9 @@
       <span class="expand-value">{{ row.Remark }}</span>
       </Col>
     </Row>
+    
     <Row>
-      <Col span="24">
+      <Col span="8">
       <span class="expand-key">打样资料: </span>
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <a :href="proofDataUrl+item.Url">{{item.DisplayName }}</a>
@@ -86,6 +73,8 @@
       </span>
       </Col>
     </Row>
+    <br>
+    <hr color=#e8eaec size=1>
   </div>
 </template>
 <script>
@@ -96,25 +85,17 @@ export default {
   },
   data: function() {
     return {
-      proofDataUrl: this.$util.proofDataUrl,
-      step1text: "草拟",
-      status: "process",
-      ProofStatusStep:0,
+      proofDataUrl: this.$util.proofDataUrl
     };
   },
   methods: {},
-  mounted: function() {},
+  mounted: function() {
+      console.log(this.row);
+
+  },
   beforeMount: function() {
     var ds = JSON.stringify(this.row.RequiredDate);
     this.row.rdate = ds.substring(1, 11);
-    if (this.row.ProofStatus == 10) {
-      this.ProofStatusStep = 0;
-      this.status = "error";
-      this.step1text = "退回草拟";
-    } else {
-      this.ProofStatusStep = this.row.ProofStatus;
-    }
-   
   }
 };
 </script>

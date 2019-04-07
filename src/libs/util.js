@@ -68,6 +68,7 @@ util.ajax.interceptors.response.use(function (response) {
     if (str.search('timeout') !== -1 || str.search('Network Error') !== -1) { // 超时error捕获
        // window.location.href = '/login/401';
     };
+    console.log("error",error);
     if (error.response.status == 401) {
         bus.BeginLoading();
         cookie.delete('sgud');

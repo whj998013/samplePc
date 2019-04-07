@@ -2,15 +2,22 @@
 .menuid {
   height: 40px;
   border-bottom: 1px solid #dedede;
+
 }
 </style>
+<style>
+ #newProofModel .ivu-modal{
+ top:20px;
+}
+</style>
+
 <template>
   <div>
     <Row type="flex" justify="space-between" class="menuid">
       <Col span='16'>
       </Col>
       <Col>
-      <Button @click="handleUpdata">刷新</Button>
+      <Button @click="handleUpdata">&emsp;&emsp;刷新&emsp;&emsp;</Button>
       <Button @click="newProof" v-if="$Auth('Sample_MySample_NewSample')" type="primary">新的打样申请</Button>
 
       </Col>
@@ -24,7 +31,7 @@
       </TabPane>
     </Tabs>
     <!-- 新的打样申请  -->
-    <Modal v-model="newProofModel" width=80 :title="modelText">
+    <Modal id="newProofModel" v-model="newProofModel" width=80 :title="modelText" >
       <newProof ref="proofedit" :editMode="editMode"></newProof>
       <div slot="footer">
         <Button size="large" @click="cancelProof" >取消</Button>

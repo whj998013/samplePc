@@ -1,9 +1,14 @@
 <style scoped>
 </style>
+<style>
+#client .ivu-select-dropdown {
+  max-height: 180px;
+}
+</style>
 <template>
   <div>
     <div>
-      <Divider>打样基本信息</Divider>
+
       <Form ref="proof" :model="proof" :label-width="75" label-position="right" :rules="proofRuleValidate">
         <Col :xs="24" :sm="12" :md="12" :lg="8">
         <FormItem label="打样单号">
@@ -13,7 +18,8 @@
 
         <Col :xs="24" :sm="12" :md="12" :lg="8">
         <FormItem label="客户" prop="ClentName">
-          <Input v-model="proof.ClentName" placeholder="客户"></Input>
+          <AutoComplete id="client" v-model="proof.ClentName" :data="clients" clearable :filter-method="filterMethod" placeholder="客户"></AutoComplete>
+          <!-- <Input v-model="proof.ClentName" placeholder="客户"></Input> -->
         </FormItem>
         </Col>
         <Col :xs="24" :sm="12" :md="12" :lg="8">
@@ -73,6 +79,33 @@
           <DatePicker style="width:100%" v-model="proof.FinshDate" type="date" placeholder="要求样品交期"></DatePicker>
         </FormItem>
         </Col>
+        <Divider>其它要求</Divider>
+        <Col :xs="24" :sm="24" :md="12" :lg="12">
+        <FormItem label='指定工艺'>
+          <workerSelect v-model="proof.DesignatedGY" action="/ProofWorker/GetWorkerList/1"></workerSelect>
+
+        </FormItem>
+        </Col>
+        <Col v-if="false" :xs="24" :sm="24" :md="12" :lg="12">
+        <!-- <FormItem label='指定程序'>
+          <workerSelect v-model="proof.DesignatedCX" action="/ProofWorker/GetWorkerList/2"></workerSelect>
+        </FormItem> -->
+        </Col>
+        <Col :xs="24" :sm="24" :md="24" :lg="24">
+        <FormItem label='紧急度'>
+          <RadioGroup v-model="proof.Urgency" size="large">
+            <Radio label="闲时"></Radio>
+            <Radio label="一般"></Radio>
+            <Radio label="加急"></Radio>
+          </RadioGroup>
+        </FormItem>
+        </Col>
+        <Col :xs="24" :sm="24" :md="24" :lg="24">
+        <FormItem label='备注'>
+          <Input type="textarea" :rows="2" :step=1 style="width:100%" v-model="proof.Remark"></Input>
+        </FormItem>
+        </Col>
+
         <Divider>上传工艺资料</Divider>
         <Row>
           <Col span="8">
@@ -96,8 +129,11 @@
 </template>
 
 <script>
-//import bus from "../bus.js";
+import workerSelect from "../../commpent/workerSelect.vue";
 export default {
+  components: {
+    workerSelect
+  },
   props: {
     value: {
       type: Object
@@ -113,6 +149,8 @@ export default {
       dataUrl: this.$util.dataUrl,
       gaugelist: [],
       proofTypeList: [],
+      model9: "不指定",
+      clients: ['Next', 'macys', 'Jonathan Paul Ive'],
       proof: {
         ProofOrderId: "",
         ProofStyleId: "",
@@ -128,7 +166,11 @@ export default {
         Gauge: "",
         FileList: [],
         FinshDate: "",
-        ProofNum: 1
+        ProofNum: 1,
+        Urgency: "一般",
+        DesignatedGY: "",
+        DesignatedCX: "",
+        Remark: ""
       },
       proofRuleValidate: {
         ClentName: [
@@ -165,7 +207,11 @@ export default {
       }
     };
   },
+
   methods: {
+    filterMethod(value, option) {
+      return option.toUpperCase().indexOf(value.toUpperCase()) !== -1;
+    },
     saveProof() {
       return new Promise((resolve, reject) => {
         this.validate().then(p => {
@@ -209,22 +255,21 @@ export default {
       this.$emit("exit", row);
     },
 
-    removeFile(file,index) {
-   
+    removeFile(file, index) {
       if (file.Id == 0) {
         this.$util
           .post(this.baseUrl + "/NewProof/RemoveFile", file)
           .then(re => {
             console.log("re", re);
           });
-      };
-      this.proof.FileList.splice(index,1);
+      }
+      this.proof.FileList.splice(index, 1);
       console.log(this.proof.FileList);
     },
 
     fileUploadOUpSuccess(response, file, fileList) {
       let fobj = {};
-      fobj.Id=0;
+      fobj.Id = 0;
       fobj.FullName = response.name;
       fobj.Url = response.url;
       fobj.DisplayName = file.name;
@@ -263,6 +308,10 @@ export default {
       this.proof.Gauge = "";
       this.proof.ProofNum = 1;
       this.proof.FileList.length = 0;
+      this.proof.DesignatedGY = "不指定";
+      this.proof.DesignatedCX = "不指定";
+      this.proof.Remark = "";
+      this.proof.Urgency = "一般";
     },
     BeginEdit(proofobj) {
       console.log("obj", proofobj);
@@ -281,12 +330,26 @@ export default {
       this.proof.Gauge = proofobj.ProofStyle.Gauge;
       this.proof.FinshDate = proofobj.RequiredDate;
       this.proof.ProofNum = proofobj.ProofNum;
+      this.proof.Remark = proofobj.Remark;
+      this.proof.Urgency = proofobj.Urgency;
+      this.proof.DesignatedGY = proofobj.DesignatedGY;
+      this.proof.DesignatedCX = proofobj.DesignatedCX;
       this.proof.FileList = proofobj.ProofStyle.ProofFiles.slice();
       console.log("proof", this.proof);
+    },
+    GetClients(){
+        this.$util.get("/ProofMange/GetClients").then(re=>{
+
+          this.clients=re.data;
+
+        });
+       
     }
   },
   mounted: function() {
     this.Init();
+    this.GetClients();
+
   }
 };
 </script>

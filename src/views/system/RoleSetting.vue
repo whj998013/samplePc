@@ -40,8 +40,8 @@
   overflow: auto;
   padding: 5px 0 0 10px;
 }
-.noedit{
-pointer-events: none;
+.noedit {
+  pointer-events: none;
 }
 </style>
 <style>
@@ -52,51 +52,56 @@ input[disabled] {
 </style>
 
 <template>
+  <Tabs value="name1">
+    <TabPane label="权限角色配置" name="name1">
+      <div id="main" :style="{'height': height+'px'}">
+        <div id="left" class="float">
+          <div id="top" class="brod">
+            <div class="head">
+              <h3>角色</h3>
+              <span><Button type="default" size="small" @click="upUserDataByDd">从钉钉同步用户角色</Button></span>
+            </div>
+            <div class="content">
+              <CellGroup @on-click="roleClick">
+                <Cell v-for="p in urp" :name="p.Role.RoleId" label="单击查看清单" :key="p.Role.RoleId" :selected="p.selected">
+                  <h4>
+                    <Icon size="25" type="ios-contacts" />{{p.Role.RoleName}}</h4>
+                </Cell>
+              </CellGroup>
+            </div>
+          </div>
+          <div id="bottom" class="brod">
+            <div class="head">
+              <h3>{{currentRole.Role.RoleName}}的用户</h3>
+            </div>
+            <div class="content">
+              <CellGroup>
+                <Cell v-for="u in currentRole.UserList" :name="u.DdId" :label="u.RoleName" :key="u.DdId">
+                  <h4>
+                    <Icon size="25" type="ios-contact" />{{u.UserName}}</h4>
+                </Cell>
+              </CellGroup>
+            </div>
+          </div>
+        </div>
+        <div id="right" class="brod float">
+          <div class="head">
+            <h3>{{currentRole.Role.RoleName}}的权限</h3>
+            <span>
+              <Button v-if="!isModify" size="small" type="default" @click="modifyRole">修改</Button>
+              <Button v-if="isModify" size="small" type="default" @click="cancelModify">取消</Button>
+              <Button v-if="isModify" size="small" type="default" @click="savePermision">保存</Button>
+            </span>
+          </div>
+          <div class="content2" v-bind:class="{noedit:!isModify}">
+            <Tree ref="pTree" :data="permisionView" show-checkbox multiple></Tree>
+          </div>
+        </div>
+      </div>
+    </TabPane>
+    <TabPane label="生产人员配置" name="name2"><Button type="default" size="large" @click="syncWorker">同步工艺程序</Button></TabPane>
 
-  <div id="main" :style="{'height': height+'px'}">
-    <div id="left" class="float">
-      <div id="top" class="brod">
-        <div class="head">
-          <h3>角色</h3>
-          <span><Button type="default" size="small" @click="upUserDataByDd">从钉钉同步用户角色</Button></span>
-        </div>
-        <div class="content">
-          <CellGroup @on-click="roleClick">
-            <Cell v-for="p in urp" :name="p.Role.RoleId" label="单击查看清单" :key="p.Role.RoleId" :selected="p.selected">
-              <h4>
-                <Icon size="25" type="ios-contacts" />{{p.Role.RoleName}}</h4>
-            </Cell>
-          </CellGroup>
-        </div>
-      </div>
-      <div id="bottom" class="brod">
-        <div class="head">
-          <h3>{{currentRole.Role.RoleName}}的用户</h3>
-        </div>
-        <div class="content">
-          <CellGroup>
-            <Cell v-for="u in currentRole.UserList" :name="u.DdId" :label="u.RoleName" :key="u.DdId">
-              <h4>
-                <Icon size="25" type="ios-contact" />{{u.UserName}}</h4>
-            </Cell>
-          </CellGroup>
-        </div>
-      </div>
-    </div>
-    <div id="right" class="brod float">
-      <div class="head">
-        <h3>{{currentRole.Role.RoleName}}的权限</h3>
-        <span>
-          <Button v-if="!isModify" size="small" type="default" @click="modifyRole">修改</Button>
-          <Button v-if="isModify" size="small" type="default" @click="cancelModify">取消</Button>
-          <Button v-if="isModify" size="small" type="default" @click="savePermision">保存</Button>
-        </span>
-      </div>
-      <div class="content2" v-bind:class="{noedit:!isModify}">
-        <Tree ref="pTree" :data="permisionView" show-checkbox multiple></Tree>
-      </div>
-    </div>
-  </div>
+  </Tabs>
 
 </template>
 <script>
@@ -128,6 +133,16 @@ export default {
     }
   },
   methods: {
+    syncWorker() {
+      this.$util.get("/Worker/SyncWorker").then(p => {
+        this.$Notice.success({
+          title: "成功",
+          desc: "同步工艺程序成功！",
+          duration: 4
+        });
+       this.$bus.EndLoading();
+      });
+    },
     getIndeterminate(val) {
       let tv = false;
       if (val.children.length > 0) {

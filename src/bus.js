@@ -69,8 +69,8 @@ export default new Vue({
         },
         alert(alertstr) {
             this.$Notice.error({
-                title: "服务器错误",
-                desc: "错误:" + alertstr,
+                title: "错误",
+                desc:  alertstr,
                 duration: 4
             });
         },

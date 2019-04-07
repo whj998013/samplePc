@@ -26,7 +26,6 @@
     </Table>
     <Modal v-model="deleteModal" title="确认删除" @on-ok="deleteProof">
       <p>确认删除此打样单吗？</p>
-
     </Modal>
   </div>
 
@@ -57,17 +56,20 @@ export default {
         {
           title: "状态",
           key: "ProofStatusText",
-          width: 65
+          width: 80,
+          sortable: true
         },
         {
           title: "单号",
           width: 110,
-          slot: "ProofOrderId"
+          slot: "ProofOrderId",
+        
         },
         {
           title: "日期",
           width: 120,
-          slot: "CreateDateStr"
+          slot: "CreateDateStr",
+        
         },
 
         {
@@ -76,15 +78,23 @@ export default {
         },
         {
           title: "类型",
-          slot: "ProofTypeText"
+          slot: "ProofTypeText",
+          
         },
         {
           title: "数量",
-          key: "ProofNum"
+          key: "ProofNum",
+          
+        },
+        {
+          title: "紧急度",
+          key: "Urgency",
+          
         },
         {
           title: "客户",
-          slot: "ClentName"
+          slot: "ClentName",
+         
         },
         {
           title: "操作",
