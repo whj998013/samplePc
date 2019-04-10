@@ -14,32 +14,31 @@
       </Col>
     </Row>
     <Tabs value="name0">
-      <TabPane label="打样中" name="name0">
-        <proofMangeList ref="CurrentProof" action="/ProofMange/GetProofPlanList"></proofMangeList>
+      <TabPane label="当前任务" name="name0">
+
+        <taskList></taskList>
       </TabPane>
-      <TabPane label="已完成打样" name="name2">
+      <TabPane label="历史任务" name="name1">
+
       </TabPane>
     </Tabs>
   </div>
 </template>
 <script>
-import proofMangeList from "./proofMange/proofMangeList.vue";
-//import bus from "../bus.js";
+import taskList from "./MyTask/currentTasks.vue";
 export default {
   inject: ["reload"],
   components: {
-    proofMangeList
+    taskList
   },
   data: function() {
     return {};
   },
   methods: {
-    handleUpdata() {
-      this.$refs.CurrentProof.GetData();
-    }
+
   },
   mounted: function() {
-    this.$bus.$emit("changeMenuItem", ["打样中心", "打样管理"]);
+    this.$bus.$emit("changeMenuItem", ["打样中心", "我的任务"]);
   }
 };
 </script>

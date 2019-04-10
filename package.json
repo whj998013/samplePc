@@ -22,6 +22,7 @@
     "js-cookie": "^2.2.0",
     "qrcode2": "^1.2.3",
     "qs": "^6.5.2",
+    "regenerator": "^0.13.3",
     "vue": "^2.5.17",
     "vue-axios": "^2.1.4",
     "vue-router": "^3.0.1"

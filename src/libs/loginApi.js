@@ -60,8 +60,10 @@ let loginApi = {
     },
 
     ddLogin() {
+        let _this=this;
         return new Promise(function (resolve, reject) {
             ///钉钉登录
+          
             dd.ready(function () {
                 dd.runtime.permission.requestAuthCode({
                     corpId: "ding99dd341fc99a25eb", // 企业id
@@ -72,6 +74,9 @@ let loginApi = {
                             // vue.$Message.success("钉钉登录成功！");
                             resolve(re.data);
                         }).catch(errorInfo => {
+                            console.log("再次钉钉登录")
+                            _this.ddLogin();
+                            
                             reject(errorInfo);
                         });
                     }

@@ -11,7 +11,7 @@
       <!-- 显示时间段:  <DatePicker v-model="dateValue" format="yyyy/MM/dd" type="daterange" placement="bottom-end" placeholder="选择时间段" style="width: 250px"></DatePicker> -->
       </Col>
       <Col>
-      <Button @click="handleUpdata" type="info">刷新</Button>
+       <Button @click="reload">&emsp;&emsp;刷新&emsp;&emsp;</Button>
       <Button type="primary" v-if="$Auth('Sample_MySample_NewSample')" @click="newSample" span='8'>录入新样衣</Button>
       </Col>
     </Row>
@@ -34,6 +34,7 @@
 import sampleview from "../commpent/sampleView.vue";
 
 export default {
+    inject: ["reload"],
   components: {
     sampleview
   },

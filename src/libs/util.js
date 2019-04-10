@@ -69,6 +69,7 @@ util.ajax.interceptors.response.use(function (response) {
        // window.location.href = '/login/401';
     };
     console.log("error",error);
+    if(typeof(error.response.status)=='undefined') return axios(config);
     if (error.response.status == 401) {
         bus.BeginLoading();
         cookie.delete('sgud');

@@ -2,12 +2,11 @@
 .menuid {
   height: 40px;
   border-bottom: 1px solid #dedede;
-
 }
 </style>
 <style>
- #newProofModel .ivu-modal{
- top:20px;
+#newProofModel .ivu-modal {
+  top: 20px;
 }
 </style>
 
@@ -17,7 +16,7 @@
       <Col span='16'>
       </Col>
       <Col>
-      <Button @click="handleUpdata">&emsp;&emsp;刷新&emsp;&emsp;</Button>
+      <Button @click="reload">&emsp;&emsp;刷新&emsp;&emsp;</Button>
       <Button @click="newProof" v-if="$Auth('Sample_MySample_NewSample')" type="primary">新的打样申请</Button>
 
       </Col>
@@ -31,10 +30,10 @@
       </TabPane>
     </Tabs>
     <!-- 新的打样申请  -->
-    <Modal id="newProofModel" v-model="newProofModel" width=80 :title="modelText" >
+    <Modal id="newProofModel" v-model="newProofModel" width=80 :title="modelText">
       <newProof ref="proofedit" :editMode="editMode"></newProof>
       <div slot="footer">
-        <Button size="large" @click="cancelProof" >取消</Button>
+        <Button size="large" @click="cancelProof">取消</Button>
         <Button type="primary" size="large" @click="saveNewProof">保存</Button>
       </div>
     </Modal>
@@ -46,6 +45,7 @@
 import ProofList from "./myProofViews/ProofList.vue";
 import newProof from "./myProofViews/newProof.vue";
 export default {
+  inject: ["reload"],
   components: {
     ProofList,
     newProof
@@ -62,19 +62,17 @@ export default {
       }
     };
   },
-  computed:{
-     modelText(){
-       if(this.editMode) return "打样单编辑";
-       return "新的打样申请";
-    
-     }
+  computed: {
+    modelText() {
+      if (this.editMode) return "打样单编辑";
+      return "新的打样申请";
+    }
   },
   methods: {
     edit(proofObj) {
-      this.editMode=true;
+      this.editMode = true;
       this.$refs.proofedit.BeginEdit(proofObj);
-      this.newProofModel=true;
-     
+      this.newProofModel = true;
     },
     cancelProof() {
       this.newProofModel = false;
@@ -88,8 +86,7 @@ export default {
       });
     },
     newProof() {
-     
-      this.editMode=false;
+      this.editMode = false;
       if (this.proofNo.ProofOrderId == "") {
         this.getProofNo().then(re => {
           this.proofNo.ProofOrderId = re.newProofOrderId;
@@ -97,12 +94,9 @@ export default {
           this.$refs.proofedit.NewProof(this.proofNo);
         });
       } else this.$refs.proofedit.NewProof(this.proofNo);
-       this.newProofModel = true;
+      this.newProofModel = true;
     },
-    handleUpdata() {
-      this.$refs.CurrentProof.GetData();
-      this.$refs.FinshProof.GetData();
-    },
+   
     getProofNo() {
       return new Promise((resolve, reject) => {
         this.$util

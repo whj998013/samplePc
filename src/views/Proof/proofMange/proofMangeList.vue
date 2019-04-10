@@ -39,10 +39,30 @@
     <!-- 排单  -->
     <Modal v-model="paiDanModel" :title="modelText" @on-ok="modalOk">
       <Row>
-        <Col>
-        <p>指定工艺员:{{CurrentRow.DesignatedGY}}</p>
-        <p>工艺员：</p>
+        <Col span="4">
+        <p>业务指定工艺:</p>
+        </Col>
+        <Col span="16">
+        <p>{{CurrentRow.DesignatedGY}}</p>
+        </Col>
+      </Row> 
+       <br>
+      <Row>
+      
+        <Col span="4">
+        <span>选择工艺员：</span>
+        </Col>
+        <Col span="16">
         <workerSelect v-model="gy" :HaveNoSelect="false" action="/ProofWorker/GetWorkerList/1"></workerSelect>
+        </Col>
+      </Row>
+      <br>
+      <Row>
+        <Col span="4">
+        <span>计划日期：</span>
+        </Col>
+        <Col span="16">
+        <DatePicker type="date" v-model="jhrq" placeholder="选择计划日期" style="width: 100%"></DatePicker>
         </Col>
       </Row>
       <br>
@@ -70,7 +90,7 @@ export default {
       gylist: [],
       cxlist: [],
       gy: "",
-      cx: "",
+      jhrq: "",
       columns: [
         {
           type: "expand",
@@ -136,10 +156,8 @@ export default {
     },
     proofPlan(row) {
       this.CurrentRow = row;
-   
-        this.gy = "";
-        this.cx = "";
-     
+
+      this.gy = "";
 
       this.paiDanModel = true;
     },
@@ -147,7 +165,7 @@ export default {
       let _this = this;
       let proofPlanObj = {
         gy: _this.gy,
-     
+        jhrq:_this.jhrq,
         proofId: _this.CurrentRow.ProofOrderId
       };
       this.$util.post("/ProofMange/PoofPlan", proofPlanObj).then(re => {
@@ -173,7 +191,6 @@ export default {
         });
         this.proofList = re;
       });
-      
     }
   },
   mounted: function() {

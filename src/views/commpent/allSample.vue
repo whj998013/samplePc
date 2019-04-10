@@ -24,7 +24,7 @@
       <DatePicker v-model="dateValue" @on-change="handDateChange" format="yyyy/MM/dd" type="daterange" placement="bottom-end" placeholder="选择时间段" style="width: 70%"></DatePicker>
       </Col>
       <Col span='4'>
-      <Button type="primary" @click="beginSeach">刷新</Button>
+       <Button @click="reload">&emsp;&emsp;刷新&emsp;&emsp;</Button>
       </Col>
     </Row>
     <Row type="flex">
@@ -38,6 +38,7 @@
   import sampleview from "../commpent/sampleView.vue";
   import drop from "../commpent/sgDropdown.vue";
   export default {
+      inject: ["reload"],
     components: {
       sampleview,
       drop

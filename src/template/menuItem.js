@@ -54,6 +54,12 @@ let menuObj = [
 
             },
             {
+                name: '/Proof/MyTask',
+                text: '我的任务',
+                authKey: 'Proof_MyTask',
+
+            },
+            {
                 name: '/Proof/ProofMange',
                 text: '打样管理',
                 authKey:'Proof_ProofMange', 

@@ -14,7 +14,7 @@
 </style>
 <template>
   <div class="layout">
-   
+
     <Sider :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
       <a @click="routeGoto('/')"><img src="../pic/logo.jpg" height="64"></img>
       </a>
@@ -48,9 +48,10 @@
         </Row>
         <Card>
           <div id='ContentDiv' :style="{'min-height': minheight+'px'}">
-             <Spin v-if="isLoading" fix size="large"></Spin>
-            <router-view></router-view>
-            <br/> <br> <br></div>
+            <Spin v-if="isLoading" fix size="large"></Spin>
+            <router-view v-if="isRouterAlive"></router-view>
+            <br /> <br> <br>
+          </div>
         </Card>
       </Content>
     </Layout>
@@ -59,16 +60,22 @@
 <script>
 import mItem from "../template/menuItem.js";
 export default {
+  provide() {
+    return {
+      reload: this.reload
+    };
+  },
   data() {
     return {
-      isLoading:false,
+      isRouterAlive: true,
+      isLoading: false,
       minheight: window.innerHeight - 200,
       menuItem: mItem,
       currentUrl: "",
       BreadArr: ["首页"],
       menuActiveName: "",
-      isMange:false,
-      openNames:['stockMenu','mangeMenu'],
+      isMange: false,
+      openNames: ["stockMenu", "mangeMenu"]
     };
   },
   computed: {
@@ -77,18 +84,24 @@ export default {
     }
   },
   mounted() {
-      this.$bus.$on("BeginLoading", () => {
+    this.$bus.$on("BeginLoading", () => {
       this.isLoading = true;
     });
     this.$bus.$on("EndLoading", () => {
       this.isLoading = false;
     });
-     this.$bus.$on("changeMenuItem", msg => {
+    this.$bus.$on("changeMenuItem", msg => {
       this.changemenuItem(msg);
     });
-    if(this.currentUser.Role>=2) this.isMange=true;
+    if (this.currentUser.Role >= 2) this.isMange = true;
   },
   methods: {
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(function() {
+        this.isRouterAlive = true;
+      });
+    },
     //执行路由跳转
     routeGoto: function(url) {
       this.currentUrl = url;

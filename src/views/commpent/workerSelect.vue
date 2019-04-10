@@ -2,6 +2,7 @@
 </style>
 <template>
   <div>
+  
     <Select v-model="sv" style="width:100%" @on-change="handleChange">
       <Option v-if="HaveNoSelect" value="不指定" label="不指定">
         <h3>不指定</h3><br>
@@ -28,20 +29,18 @@
 <script>
 //import bus from "../bus.js";
 export default {
-  props:{
-    value:String,
-    action:String,
-    HaveNoSelect:{
-      type:Boolean,
-      default:true,
+  props: {
+    value: String,
+    action: String,
+    HaveNoSelect: {
+      type: Boolean,
+      default: true
     }
-
   },
   data: function() {
     return {
       sv: "",
-      workers:[],
-
+      workers: []
     };
   },
   computed: {
@@ -56,10 +55,9 @@ export default {
   },
   mounted: function() {
     this.sv = this.value;
-    this.$util.get(this.action).then(re=>{
-      this.workers=re.data;
+    this.$util.get(this.action).then(re => {
+      this.workers = re.data;
     });
-
   },
   watch: {
     value: function() {
