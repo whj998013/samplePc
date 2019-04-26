@@ -52,6 +52,7 @@
                     }
                 }
                 $parent.$emit('on-click', this.name);
+                this.$emit('click');
             }
         }
     };

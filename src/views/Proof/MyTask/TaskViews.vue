@@ -88,21 +88,31 @@
     <div class="demo-drawer-profile">
       <Row>
         <Col span="24">
-        <span class="expand-value" v-for="item in value.ProofStyle.ProofFiles">
+        <span class="expand-value" v-for="item in dyzl">
+          <a :href="proofDataUrl+item.Url" >{{item.DisplayName }}</a>
+          <Divider type="vertical" />
+        </span>
+        </Col>
+      </Row>
+    </div>
+    <Divider />
+    <p :style="pStyle">工艺文件</p>
+    <div class="demo-drawer-profile">
+      <Row>
+        <Col span="24">
+        <span class="expand-value" v-for="item in gy">
           <a :href="proofDataUrl+item.Url">{{item.DisplayName }}</a>
           <Divider type="vertical" />
         </span>
         </Col>
-
       </Row>
-
     </div>
     <Divider />
-    <p :style="pStyle">工艺制版文件</p>
+    <p :style="pStyle">制版文件</p>
     <div class="demo-drawer-profile">
       <Row>
         <Col span="12">
-        程序文件
+        文件
         </Col>
       </Row>
     </div>
@@ -123,6 +133,19 @@ export default {
         marginBottom: "16px"
       }
     };
+  },
+  computed: {
+    dyzl: function() {
+      return this.value.ProofStyle.ProofFiles.filter(item => {
+        return item.FileType == 2;
+      });
+    },
+    gy: function() {
+      return this.value.ProofStyle.ProofFiles.filter(item => {
+        return item.FileType == 3;
+      });
+    },
+    zb: function() {}
   },
   methods: {},
   mounted: function() {}

@@ -65,7 +65,7 @@
     </Row>
     
     <Row>
-      <Col span="8">
+      <Col span="23">
       <span class="expand-key">打样资料: </span>
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <a :href="proofDataUrl+item.Url">{{item.DisplayName }}</a>

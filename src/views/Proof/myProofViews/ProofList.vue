@@ -63,13 +63,15 @@ export default {
           title: "单号",
           width: 110,
           slot: "ProofOrderId",
-        
+          sortable: true,
+          key: "ProofOrderId"
         },
         {
           title: "日期",
           width: 120,
+          sortable: true,
           slot: "CreateDateStr",
-        
+          key: "CreateDateStr"
         },
 
         {
@@ -79,22 +81,20 @@ export default {
         {
           title: "类型",
           slot: "ProofTypeText",
-          
         },
         {
           title: "数量",
-          key: "ProofNum",
-          
+          sortable: true,
+          key: "ProofNum"
         },
         {
           title: "紧急度",
-          key: "Urgency",
-          
+          sortable: true,
+          key: "Urgency"
         },
         {
           title: "客户",
-          slot: "ClentName",
-         
+          slot: "ClentName"
         },
         {
           title: "操作",
@@ -140,7 +140,7 @@ export default {
       this.$bus.EndLoading();
     },
     edit(row) {
-      this.$emit("onEdit",row);
+      this.$emit("onEdit", row);
     },
     deleteProof() {
       let proof = { ProofOrderId: this.CurrentRow.ProofOrderId };

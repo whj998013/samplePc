@@ -25,7 +25,7 @@ let util = {
             return qrcode
         }
     },
-   
+
     //打印插件，传入DOM，通过1、"<div id="qrcode" ref="print">"  2、printContent(this.$refs.print); 
     print2(refDom) {
         let subOutputRankPrint = refDom;
@@ -46,11 +46,11 @@ util.title = function (title) {
     window.document.title = title;
 };
 util.PrintUrl = env === 'development' ?
-    'http://api.sungingroup.com:8081/sampleinfo/' :'http://app.sungingroup.com:8081/sampleinfo/' 
+    'http://api.sungingroup.com:8081/sampleinfo/' : 'http://app.sungingroup.com:8081/sampleinfo/'
 const ajaxUrl = env === 'development' ?
-    'http://api.sungingroup.com:8082' :'http://app.sungingroup.com:8082' ;
-util.dataUrl = ajaxUrl+"/src/sample";
-util.proofDataUrl=ajaxUrl;
+    'http://api.sungingroup.com:8082' : 'http://app.sungingroup.com:8082';
+util.dataUrl = ajaxUrl + "/src/sample";
+util.proofDataUrl = ajaxUrl;
 util.baseUrl = ajaxUrl + "/api";
 util.ajax = axios.create({
     baseURL: util.baseUrl,
@@ -66,10 +66,10 @@ util.ajax.interceptors.response.use(function (response) {
     let config = error.config;
     let str = error + '';
     if (str.search('timeout') !== -1 || str.search('Network Error') !== -1) { // 超时error捕获
-       // window.location.href = '/login/401';
+        window.location.href = '/login/0';
+        console.log("error", error);
     };
-    console.log("error",error);
-    if(typeof(error.response.status)=='undefined') return axios(config);
+
     if (error.response.status == 401) {
         bus.BeginLoading();
         cookie.delete('sgud');
@@ -88,7 +88,7 @@ util.ajax.interceptors.response.use(function (response) {
     } else if (error.response.status == 400) {
         bus.alert(error.response.data.Message);
     };
-     return Promise.reject(error);
+    return Promise.reject(error);
 });
 
 util.post = util.ajax.post;

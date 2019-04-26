@@ -31,7 +31,7 @@
     </Tabs>
     <!-- 新的打样申请  -->
     <Modal id="newProofModel" v-model="newProofModel" width=80 :title="modelText">
-      <newProof ref="proofedit" :editMode="editMode"></newProof>
+      <newProof  ref="proofedit" :editMode="editMode"></newProof>
       <div slot="footer">
         <Button size="large" @click="cancelProof">取消</Button>
         <Button type="primary" size="large" @click="saveNewProof">保存</Button>
@@ -76,6 +76,7 @@ export default {
     },
     cancelProof() {
       this.newProofModel = false;
+      this.$refs.proofedit.resetData();
     },
     saveNewProof() {
       this.$refs.proofedit.saveProof().then(p => {

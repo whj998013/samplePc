@@ -25,7 +25,7 @@
   </div>
 </template>
 <script>
-import taskList from "./MyTask/currentTasks.vue";
+import taskList from "./MyTask/taskList.vue";
 export default {
   inject: ["reload"],
   components: {

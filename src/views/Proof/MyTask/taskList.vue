@@ -2,36 +2,52 @@
 </style>
 <template>
   <div>
-    <Table border :columns="columns" :data="taskList" @on-row-dblclick="rowClick">
+    <Table border :columns="columns" :data="taskList" @on-row-dblclick="showTaskView">
       <template slot-scope="{ row, index }" slot="needData">
         {{JSON.stringify(row.NeedFinshDate ).substring(1, 11)}}
       </template>
       <template slot-scope="{ row, index }" slot="action">
-        <Button type="primary" size="small" style="margin-right: 5px" @click="DoUploadFile(row)">上传资料</Button>
-        <Button type="primary" size="small" style="margin-right: 5px">提交</Button>
+        <Dropdown transfer trigger="click">
+          <a href="javascript:void(0)">
+            操作
+            <Icon type="ios-arrow-down"></Icon>
+          </a>
+          <DropdownMenu slot="list">
+            <DropdownItem>
+              <span @click="showTaskView(row)">详细信息</span>
+            </DropdownItem>
+            <DropdownItem>
+              <p @click="DoUploadFile(row)">上传资料</p>
+            </DropdownItem>
+            <DropdownItem>
+              <p @click="Submit(row)">完成</p>
+            </DropdownItem>
+
+          </DropdownMenu>
+        </Dropdown>
       </template>
       <template slot-scope="{ row, index }" slot="proofNo">
-        <a v-on:click="rowClick(row, index)">{{row.ProofStyleNo}}</a>
+        {{row.ProofStyleNo}}
       </template>
     </Table>
-    <Drawer :closable="false" width="450" v-model="showDrawer">
-      <taskViews v-model="currentProof"></taskViews>
+    <Drawer :closable="false" placement="left" width="450" v-model="showDrawer">
+      <taskViews v-if="showDrawer" v-model="currentProof"></taskViews>
     </Drawer>
     <!-- 工作提交 -->
-    <Modal v-model="showUploadFile" :title="'上传'+currentTask.ProcessName+'资料'" width="600px">
+    <Modal v-model="showUploadFile" :title="'上传'+currentTask.ProcessName+'资料'" width="650px">
       <Row>
-        <Col span="10">
+        <Col span="8">
         <Upload type="drag" :with-credentials="true" :action="baseUrl + '/ProofTask/UpLoadFile'" :on-success="fileUploadOUpSuccess" :data="currentTask"
           :show-upload-list=false>
           <div>
             <Icon type="ios-cloud-upload" size="100" style="color: #3399ff"></Icon>
             <p>点击或将文件拖入框内上传</p>
-            <p>请将文件按不同尺码命名上传</p>
           </div>
         </Upload>
         </Col>
-        <Col span="14" offset="1">
-        <Tag closable color="primary" v-for="(f,index) in task.FileList" :key="index" @on-close="removeFile(f,index)">{{f.DisplayName}}</Tag>
+        <Col span="15" offset="1">
+        <p>如有多尺码机型，请将文件按不同尺码机型命名上传</p>
+        <Tag closable color="primary" v-for="(f,index) in uploadList" :key="index" @on-close="removeFile(f,index)">{{f.DisplayName}}</Tag>
         </Col>
       </Row>
     </Modal>
@@ -40,7 +56,6 @@
 <script>
 import taskViews from "./TaskViews.vue";
 export default {
-  
   components: {
     taskViews
   },
@@ -50,12 +65,12 @@ export default {
       dataUrl: this.$util.dataUrl,
       showUploadFile: false,
       showDrawer: false,
-      task: { FileList: [] },
+      uploadList: [],
       taskList: [],
       currentTask: {
-        TaskId:"",
-        ProofOrderId:"",
-        ProcessName:"",
+        TaskId: "",
+        ProofOrderId: "",
+        ProcessName: ""
       },
       currentProof: {
         ProofStyle: {
@@ -77,7 +92,7 @@ export default {
           sortable: true
         },
         {
-          title: "款号(单击查看祥情)",
+          title: "款号",
           slot: "proofNo",
           key: "ProofStyleNo"
         },
@@ -118,21 +133,47 @@ export default {
           title: "操作",
           slot: "action",
           align: "center",
-          width: 160
+          width: 80
         }
       ]
     };
   },
   methods: {
-    removeFile(f, index) {},
-    fileUploadOUpSuccess() {},
-    DoUploadFile(row) {
+    async Submit(row) {
+      console.log(row);
+      let TaskId = row.Id;
+      let PoofId = row.ProofOrderId;
+      let Process = row.ProcessName;
+      let re = await this.$util.post("/ProofTask/SubmitTask/", {
+        TaskId,
+        PoofId
+      });
+    },
+    async removeFile(f, index) {
+      let fileid = f.Id;
+      let re = await this.$util.get("/ProofTask/DeleteTaskFile/" + fileid);
+      if ((re = "ok")) {
+        this.uploadList.splice(index, 1);
+      }
+    },
+    fileUploadOUpSuccess(f) {
+      this.uploadList.push(f);
+    },
+    async DoUploadFile(row) {
+      let proofId = row.ProofOrderId;
+      let re = await this.$util.get("/ProofTask/GetTasks/" + proofId);
+      console.log("row", re);
       this.currentTask.TaskId = row.Id;
       this.currentTask.ProofOrderId = row.ProofOrderId;
       this.currentTask.ProcessName = row.ProcessName;
+      let filetype = 3;
+      if (row.ProcessName == "制版") filetype = 4;
+      this.uploadList = re.data.ProofStyle.ProofFiles.filter(item => {
+        return item.FileType == filetype;
+      });
       this.showUploadFile = true;
     },
-    async rowClick(row, index) {
+    async showTaskView(row) {
       let proofId = row.ProofOrderId;
       let re = await this.$util.get("/ProofTask/GetTasks/" + proofId);
       this.currentProof = re.data;

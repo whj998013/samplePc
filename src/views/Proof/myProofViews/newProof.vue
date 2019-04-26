@@ -17,17 +17,6 @@
         </Col>
 
         <Col :xs="24" :sm="12" :md="12" :lg="8">
-        <FormItem label="客户" prop="ClentName">
-          <AutoComplete id="client" v-model="proof.ClentName" :data="clients" clearable :filter-method="filterMethod" placeholder="客户"></AutoComplete>
-          <!-- <Input v-model="proof.ClentName" placeholder="客户"></Input> -->
-        </FormItem>
-        </Col>
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
-        <FormItem label="客户款号">
-          <Input v-model="proof.ClientNo" placeholder="客户款号"></Input>
-        </FormItem>
-        </Col>
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
         <FormItem label="款号" prop="ProofStyleNo">
           <Input v-model="proof.ProofStyleNo" placeholder="款号"></Input>
         </FormItem>
@@ -43,6 +32,16 @@
           <Select v-model="proof.proofType">
             <Option v-for="item in proofTypeList" :value="item.TypeName" :key="item.Id">{{ item.TypeName }}</Option>
           </Select>
+        </FormItem>
+        </Col>
+        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <FormItem label="客户" prop="ClentName">
+          <AutoComplete id="client" v-model="proof.ClentName" :data="clients" clearable :filter-method="filterMethod" placeholder="客户"></AutoComplete>
+        </FormItem>
+        </Col>
+        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <FormItem label="客户款号">
+          <Input v-model="proof.ClientNo" placeholder="客户款号"></Input>
         </FormItem>
         </Col>
         <Col :xs="24" :sm="12" :md="12" :lg="8">
@@ -150,7 +149,7 @@ export default {
       gaugelist: [],
       proofTypeList: [],
       model9: "不指定",
-      clients: ['Next', 'macys', 'Jonathan Paul Ive'],
+      clients: ["Next", "macys", "Jonathan Paul Ive"],
       proof: {
         ProofOrderId: "",
         ProofStyleId: "",
@@ -337,19 +336,15 @@ export default {
       this.proof.FileList = proofobj.ProofStyle.ProofFiles.slice();
       console.log("proof", this.proof);
     },
-    GetClients(){
-        this.$util.get("/ProofMange/GetClients").then(re=>{
-
-          this.clients=re.data;
-
-        });
-       
+    GetClients() {
+      this.$util.get("/ProofMange/GetClients").then(re => {
+        this.clients = re.data;
+      });
     }
   },
   mounted: function() {
     this.Init();
     this.GetClients();
-
   }
 };
 </script>

@@ -23,6 +23,13 @@ export default {
 
   mounted() {
     let status = this.$route.params.status;
+    if (status == 0) {
+      this.$Notice.error({
+        title: "连接超时",
+        desc: "连接超时或服务器错误，请联系网络管理员。",
+        duration: 5
+      });
+    }
     if (status == 401 && dd.other) {
       this.$Notice.error({
         title: "连接超时",
@@ -55,7 +62,7 @@ export default {
   methods: {
     loginFinsh(user) {
       loginApi.loginFinsh(user);
-     ///返回跳转页面
+      ///返回跳转页面
       let redirect = this.$route.query.redirect;
       console.log("redurl:", redirect);
       if (redirect) {
@@ -63,7 +70,6 @@ export default {
       } else {
         this.$router.push("/");
       }
-     
     },
 
     pcLogin(data) {
