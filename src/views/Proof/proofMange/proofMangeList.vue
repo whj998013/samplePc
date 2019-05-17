@@ -33,43 +33,14 @@
         {{ row.ProofStyle.ProofTypeText }}
       </template>
       <template slot-scope="{ row, index }" slot="action">
-        <Button type="primary" size="small" style="margin-right: 5px" @click="proofPlan(row)">{{buttonText(row)}}</Button>
+        <Button type="primary" size="small" style="margin-right: 5px" @click="DoProofPlan(row)">{{buttonText(row)}}</Button>
       </template>
     </Table>
-    <!-- 排单  -->
-    <Modal v-model="paiDanModel" :title="modelText" @on-ok="modalOk">
-      <Row>
-        <Col span="4">
-        <p>业务指定工艺:</p>
-        </Col>
-        <Col span="16">
-        <p>{{CurrentRow.DesignatedGY}}</p>
-        </Col>
-      </Row> 
-       <br>
-      <Row>
-      
-        <Col span="4">
-        <span>选择工艺员：</span>
-        </Col>
-        <Col span="16">
-        <workerSelect v-model="gy" :HaveNoSelect="false" action="/ProofWorker/GetWorkerList/1"></workerSelect>
-        </Col>
-      </Row>
-      <br>
-      <Row>
-        <Col span="4">
-        <span>计划日期：</span>
-        </Col>
-        <Col span="16">
-        <DatePicker type="date" v-model="jhrq" placeholder="选择计划日期" style="width: 100%"></DatePicker>
-        </Col>
-      </Row>
-      <br>
-    </Modal>
+    <proofPlan ref='proofPlan'></proofPlan>
   </div>
 </template>
 <script>
+import proofPlan from "./proofPlan.vue";
 import expandRow from "./mange-table-expand.vue";
 import workerSelect from "../../commpent/workerSelect.vue";
 export default {
@@ -77,16 +48,17 @@ export default {
     action: String
   },
   components: {
-    workerSelect
+    workerSelect,
+    proofPlan
   },
   data: function() {
     return {
-      paiDanModel: false,
+      planId: "",
       CurrentRow: {
         DesignatedCX: "",
         DesignatedGY: ""
       },
-      modelText: "打样排单",
+     
       gylist: [],
       cxlist: [],
       gy: "",
@@ -154,28 +126,11 @@ export default {
       if (row.ProofStatusText == "排单") return "排单";
       return "重新排单";
     },
-    proofPlan(row) {
+    DoProofPlan(row) {
       this.CurrentRow = row;
-
-      this.gy = "";
-
-      this.paiDanModel = true;
+      this.$refs.proofPlan.Show(row.ProofOrderId);
     },
-    modalOk() {
-      let _this = this;
-      let proofPlanObj = {
-        gy: _this.gy,
-        jhrq:_this.jhrq,
-        proofId: _this.CurrentRow.ProofOrderId
-      };
-      this.$util.post("/ProofMange/PoofPlan", proofPlanObj).then(re => {
-        this.GetData();
-        this.$Notice.success({
-          title: "成功",
-          desc: "已排单成功，请通知相关接收打样任务。"
-        });
-      });
-    },
+
     GetData() {
       this.$util.get(this.action).then(result => {
         let re = result.data;
@@ -186,7 +141,6 @@ export default {
           } else if (row.ProofStatusText == "打样中") {
             color = "info";
           }
-
           row.cellClassName = { ProofStatusText: color };
         });
         this.proofList = re;

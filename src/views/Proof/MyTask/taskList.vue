@@ -20,7 +20,7 @@
               <p @click="DoUploadFile(row)">上传资料</p>
             </DropdownItem>
             <DropdownItem>
-              <p @click="Submit(row)">完成</p>
+              <p @click="Submit(row)">完成任务</p>
             </DropdownItem>
 
           </DropdownMenu>
@@ -140,14 +140,16 @@ export default {
   },
   methods: {
     async Submit(row) {
-      console.log(row);
       let TaskId = row.Id;
       let PoofId = row.ProofOrderId;
       let Process = row.ProcessName;
+      console.log("row",row);
       let re = await this.$util.post("/ProofTask/SubmitTask/", {
         TaskId,
         PoofId
       });
+      console.log(re);      
+
     },
     async removeFile(f, index) {
       let fileid = f.Id;

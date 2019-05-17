@@ -8,6 +8,25 @@ import loginApi from './loginApi.js';
 
 axios.defaults.withCredentials = true;
 let util = {
+    getGmtDate(dstr) {
+        let dt;
+        // if (dstr instanceof Date) {
+        //     dt = dstr;
+        // } else {
+        //     dt = new Date(dstr);
+        // };
+        dt = dstr instanceof Date ? dstr : new Date(dstr);
+        let y = dt.getFullYear();
+        let m = dt.getMonth() + 1;
+        let d = dt.getDate();
+        let ms = m > 9 ? m : ('0' + m);
+        let ds = d > 9 ? d : ('0' + d);
+        let str = y + '-' + ms + '-' + ds;
+        return str;
+    },
+    getID(length) {
+        return Number(Math.random().toString().substr(3, length) + Date.now()).toString(36);
+    },
 
     // 二维码生成方法
     qrcode(id, text, width, callBack) {
@@ -103,5 +122,6 @@ util.removeByValue = (arr, val) => {
         }
     }
 }
+
 
 export default util;

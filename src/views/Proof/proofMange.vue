@@ -6,6 +6,12 @@
 </style>
 <template>
   <div>
+    <!-- <Row>
+
+      <Input v-model="testValue" placeholder="输入部门"></Input>
+      <Button size="large" type="warning" icon="md-close" @click="test">&emsp;取消&emsp;</Button>
+    </Row> -->
+
     <Row type="flex" justify="space-between" class="menuid">
       <Col span='16'>
       </Col>
@@ -30,15 +36,20 @@ export default {
   components: {
     proofMangeList
   },
-  data: function() {
-    return {};
+  data: function () {
+    return {
+      testValue: "aa",
+    };
   },
   methods: {
+    test() {
+      this.testValue = this.$util.getID(1);
+    },
     handleUpdata() {
       this.$refs.CurrentProof.GetData();
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.$bus.$emit("changeMenuItem", ["打样中心", "打样管理"]);
   }
 };

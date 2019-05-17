@@ -16,7 +16,7 @@
           </Col>
           <Col span="16">
           <div style="float:right;">
-            <p>打样中:{{item.InCompleteNum}}款</p>
+            <p>待完成:{{item.InCompleteNum}}款</p>
             <p>7天完成:{{item.CompleteNum7Day}}款</p>
             <p>综合评分:{{item.Point}}</p>
           </div>
@@ -51,13 +51,21 @@ export default {
   methods: {
     handleChange(val) {
       this.$emit("input", val);
+    },
+    GetWorker(act){
+      this.$util.get(act).then(re => {
+      this.workers = re.data;
+     
+    });
     }
   },
   mounted: function() {
     this.sv = this.value;
-    this.$util.get(this.action).then(re => {
-      this.workers = re.data;
-    });
+    // debugger;
+    if(this.action!=undefined){
+      this.GetWorker(this.action);
+    }
+    
   },
   watch: {
     value: function() {

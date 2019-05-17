@@ -15,7 +15,6 @@
     </Row>
     <Tabs value="name0">
       <TabPane label="当前任务" name="name0">
-
         <taskList></taskList>
       </TabPane>
       <TabPane label="历史任务" name="name1">
