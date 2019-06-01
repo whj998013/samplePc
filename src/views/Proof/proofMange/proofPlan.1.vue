@@ -13,7 +13,7 @@
 </style>
 <template>
   <div>
-    <Modal v-model="paiDanModel" :title="modelText"  width="700px" :mask-closable=false class-name="vertical-center-modal">
+    <Modal v-model="paiDanModel" :title="modelText" @on-ok="modalOk" width="700px" :mask-closable=false class-name="vertical-center-modal">
 
       <row>
         <Col span="22">
@@ -69,8 +69,8 @@
             <DatePicker v-if="currentTask.IsBeginDate" v-model="currentTask.BeginDate" type="date" placeholder="选择任务开始日期"></DatePicker>
 
             <!-- 任务选择 -->
-            <Select v-model="currentTask.UpTaskNo" v-if="!currentTask.IsBeginDate" style="width:200px">
-              <Option v-for="(item,i) in taskList" :key="i" :value="item.TaskNo" :label="item.WorkerName +'|' +item.ProcessName" v-if="item.TaskNo!=currentTask.TaskNo">
+            <Select v-model="currentTask.upTId" v-if="!currentTask.IsBeginDate" style="width:200px" @on-change="upTaskChange">
+              <Option v-for="(item,i) in taskList" :key="i" :value="item.tId" :label="item.WorkerName +'|' +item.ProcessName" v-if="item.tId!=currentTask.tId">
                 <span>{{item.WorkerName}}</span>
                 <span style="float:right;color:#ccc">{{item.ProcessName}}</span>
               </Option>
@@ -97,14 +97,15 @@ export default {
   components: {
     workerSelect
   },
+
   data: function () {
     return {
       taskRG: "选择任务开始时间",
       currentTask: {
         Id: 0,
         UpId: 0,
-        TaskNo: "",
-        UpTaskNo: "无",
+        tId: "",
+        upTId: "无",
         ProcessId: 1,
         ProcessName: "工艺",
         WorkerName: "",
@@ -163,18 +164,19 @@ export default {
   computed: {
   },
   methods: {
-  
+    upTaskChange(v) {
+      console.log(v);
+    },
     radioChange(v) {
       if (v == "选择任务开始时间") {
+        this.currentTask.upTId = "";
         this.currentTask.IsBeginDate = true;
       } else {
+        this.currentTask.BeginDate = "";
         this.currentTask.IsBeginDate = false;
       }
     },
-    //打开任务编辑
     EditTask(row) {
-      console.log(row);
-     // debugger;
       this.currentTask.ProofOrderId = this.ProofOrderId;
       this.currentTask.ProcessId = row.ProcessId;
       this.currentTask.Id = row.Id;
@@ -182,16 +184,15 @@ export default {
       this.currentTask.NeedFinshDate = row.NeedFinshDate;
       this.currentTask.ProcessName = row.ProcessName;
       this.currentTask.status = row.status;
-      this.currentTask.TaskNo = row.TaskNo;
-      this.currentTask.UpTaskNo = row.UpTaskNo;
-      this.currentTask.BeginDate=row.BeginDate;
+      this.currentTask.tId = row.tId;
+      this.currentTask.upTId = row.upTId;
       this.taskEditView = true;
-      this.currentTask.IsBeginDate=row.UpTaskNo==null||row.UpTaskNo=="";
-      this.taskRG=row.UpTaskNo==null||row.UpTaskNo==""?"选择任务开始时间":"上级任务结束时开始";
+      //debugger;
     },
-
-    //确认任务修改
     doTaskEditOk() {
+
+      console.log("date", this.currentTask.NeedFinshDate);
+      console.log(this.currentTask.NeedFinshDate instanceof Date);
 
       if (
         this.currentTask.WorkerName == "" ||
@@ -210,29 +211,25 @@ export default {
             ProcessId: this.currentTask.ProcessId,
             ProcessName: this.currentTask.ProcessName,
             NeedFinshDate: this.$util.getGmtDate(this.currentTask.NeedFinshDate),
-            BeginDate: this.currentTask.IsBeginDate ? this.$util.getGmtDate(this.currentTask.BeginDate) : "",
             status: "add",
-            TaskNo: this.currentTask.TaskNo,
-            UpTaskNo: this.currentTask.IsBeginDate ? "" : this.currentTask.UpTaskNo,
+            tId: this.currentTask.tId,
           });
         } else {
           //编辑模式
           let cf = this.taskList.find(p => {
-            return p.TaskNo == this.currentTask.TaskNo;
+            return p.tId == this.currentTask.tId;
           });
           cf.WorkerName = this.currentTask.WorkerName;
           cf.ProcessId = this.currentTask.ProcessId;
           cf.ProcessName = this.currentTask.ProcessName;
-          cf.UpTaskNo = this.currentTask.IsBeginDate ? "" : this.currentTask.UpTaskNo;
-          cf.BeginDate = this.currentTask.IsBeginDate ? this.$util.getGmtDate(this.currentTask.BeginDate) : "";
           cf.NeedFinshDate = this.$util.getGmtDate(this.currentTask.NeedFinshDate);
           if (cf.status != "add") cf.status = "edit";
+
         }
         this.taskEditView = false;
       }
 
     },
-    //取得工序表
     processChange(val) {
       this.$refs.wSelect.GetWorker("/ProofWorker/GetWorkerList/" + val);
       let pcs = this.processList.find(function (p) {
@@ -241,7 +238,6 @@ export default {
       this.currentTask.ProcessName = pcs.ProcessName;
       this.currentTask.WorkerName = "";
     },
-    //保存修改后任务表
     SaveProofTask() {
       //保存信息到服务器
       let pList = [];
@@ -269,14 +265,12 @@ export default {
       });
 
     },
-    //删除任务
     DeleteTask(row, index) {
       this.proof.ProofTasks.forEach(p => {
         if (p.Id == row.Id) p.status = "deleted";
       });
       this.taskList.splice(index, 1);
     },
-    //增加新任务
     addNewTask() {
       this.taskEditView = true;
       this.currentTask.ProofOrderId = this.ProofOrderId;
@@ -285,19 +279,17 @@ export default {
       this.currentTask.WorkerName = "";
       this.currentTask.NeedFinshDate = "";
       this.currentTask.status = "new";
-      this.currentTask.TaskNo = this.$util.getID(1);
-      this.currentTask.UpTaskNo = "";
+      this.currentTask.tId = this.$util.getID(1);
+      this.currentTask.upTId = "";
     },
-    //显示打样单信息
     Show(ProofOrderId) {
       this.GetTasks(ProofOrderId);
       this.paiDanModel = true;
     },
-   //取得打样单任务
+
     async GetTasks(ProofOrderId) {
       this.ProofOrderId = ProofOrderId;
       let re = await this.$util.get("/ProofTask/GetTasks/" + this.ProofOrderId);
-      //debugger;
       this.proof = re.data;
       this.taskList = [];
       this.proof.ProofTasks.map(o => {
@@ -311,28 +303,28 @@ export default {
           FinshDate: o.FinshDate != null ? JSON.stringify(o.FinshDate).substring(1, 11) : "",
           NeedFinshDate: o.NeedFinshDate != null ? JSON.stringify(o.NeedFinshDate).substring(1, 11) : "",
           status: "normal",
-          TaskNo: o.TaskNo,
-          UpTaskNo: o.UpTaskNo,
+          tId: o.Id,
+          upTId: o.UpId,
         });
       });
       console.log("tlist", this.taskList);
     },
 
-    // modalOk() {
-    //   let _this = this;
-    //   let proofPlanObj = {
-    //     gy: _this.gy,
-    //     jhrq: _this.jhrq,
-    //     proofId: _this.CurrentRow.ProofOrderId
-    //   };
-    //   this.$util.post("/ProofMange/PoofPlan", proofPlanObj).then(re => {
-    //     this.GetData();
-    //     this.$Notice.success({
-    //       title: "成功",
-    //       desc: "已排单成功，请通知相关接收打样任务。"
-    //     });
-    //   });
-    // }
+    modalOk() {
+      let _this = this;
+      let proofPlanObj = {
+        gy: _this.gy,
+        jhrq: _this.jhrq,
+        proofId: _this.CurrentRow.ProofOrderId
+      };
+      this.$util.post("/ProofMange/PoofPlan", proofPlanObj).then(re => {
+        this.GetData();
+        this.$Notice.success({
+          title: "成功",
+          desc: "已排单成功，请通知相关接收打样任务。"
+        });
+      });
+    }
   },
   mounted: function () {
     this.$util.get("/ProofWorker/GetProcessList").then(re => {

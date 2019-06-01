@@ -14,8 +14,8 @@
       </Col>
     </Row>
     <Tabs value="name0">
-      <TabPane label="当前任务" name="name0">
-        <taskList></taskList>
+      <TabPane :label="label1" name="name0">
+        <taskList @TaskCount="setCount"></taskList>
       </TabPane>
       <TabPane label="历史任务" name="name1">
 
@@ -30,13 +30,28 @@ export default {
   components: {
     taskList
   },
-  data: function() {
-    return {};
+  data: function () {
+    return {
+      count: 0,
+      label1: (h) => {
+        return h('div', [
+          h('span', '当前任务'),
+          h('Badge', {
+            props: {
+              count: this.count
+            }
+          })
+        ])
+      }
+
+    };
   },
   methods: {
-
+    setCount(v) {
+      this.count = v;
+    }
   },
-  mounted: function() {
+  mounted: function () {
     this.$bus.$emit("changeMenuItem", ["打样中心", "我的任务"]);
   }
 };

@@ -24,17 +24,21 @@
         <proofMangeList ref="CurrentProof" action="/ProofMange/GetProofPlanList"></proofMangeList>
       </TabPane>
       <TabPane label="已完成打样" name="name2">
+        <finshProof></finshProof>
       </TabPane>
     </Tabs>
   </div>
 </template>
 <script>
 import proofMangeList from "./proofMange/proofMangeList.vue";
+import finshProof from "./proofMange/finshProof.vue";
+
 //import bus from "../bus.js";
 export default {
   inject: ["reload"],
   components: {
-    proofMangeList
+    proofMangeList,
+    finshProof
   },
   data: function () {
     return {

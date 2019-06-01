@@ -3,7 +3,7 @@
 <template>
   <div>
   
-    <Select v-model="sv" style="width:100%" @on-change="handleChange">
+    <Select v-model="sv" style="width:100%" @on-change="handleChange" :disabled="disabled">
       <Option v-if="HaveNoSelect" value="不指定" label="不指定">
         <h3>不指定</h3><br>
         <hr color=#e8eaec size=1>
@@ -18,7 +18,7 @@
           <div style="float:right;">
             <p>待完成:{{item.InCompleteNum}}款</p>
             <p>7天完成:{{item.CompleteNum7Day}}款</p>
-            <p>综合评分:{{item.Point}}</p>
+            <p v-if="!NoScore">综合评分:{{item.Point}}</p>
           </div>
           </Col>
         </Row>
@@ -32,9 +32,17 @@ export default {
   props: {
     value: String,
     action: String,
+    disabled:{
+      type: Boolean,
+      default: false
+    },
     HaveNoSelect: {
       type: Boolean,
       default: true
+    },
+     NoScore: {
+      type: Boolean,
+      default: false
     }
   },
   data: function() {
