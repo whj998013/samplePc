@@ -20,13 +20,16 @@
       <Col span="8"> Relut 2000<Input v-model="Relut2K"></Input>
       </Col>
     </Row>
-    <Button type="primary" icon="ios-add" @click="js"></Button>
-
+    <Button type="primary" icon="ios-add" @click="js">计算色差</Button>
+    <Button type="primary" icon="ios-add" @click="lr">生成RGB</Button>
+    <Tag :color="tc">default</Tag>
   </div>
 </template>
 <script>
 //import bus from "../bus.js";
 import color from "../../../libs/ColorHelp.js";
+//import LabToRGB from "../../../libs/LabToRGB.js";
+
 export default {
   data: function () {
     return {
@@ -38,12 +41,18 @@ export default {
       B2: 0,
       Relut97: 0,
       Relut2K: 0,
+      tc:'#4E72B8'
     };
   },
   methods: {
     js: function () {
       this.Relut97 = color.Delta_Eab(this.L1, this.A1, this.B1, this.L2, this.A2, this.B2);
       this.Relut2K = color.Delta_E00(this.L1, this.A1, this.B1, this.L2, this.A2, this.B2);
+    },
+    lr: function () {
+     
+     
+
     }
 
   },

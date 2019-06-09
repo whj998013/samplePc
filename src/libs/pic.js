@@ -32,4 +32,6 @@ function ImgToBase64(file, maxLen, callBack) {
         callBack(base64);
     };
     reader.readAsDataURL(file);
+
+    
 }

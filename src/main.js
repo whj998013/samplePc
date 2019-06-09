@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import iView from './iv';
+import iView from 'iview';
 import VueRouter from 'vue-router';
 import Routers from './router';
 import bus from "./bus.js";
