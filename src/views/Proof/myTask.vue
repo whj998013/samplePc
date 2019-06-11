@@ -15,10 +15,10 @@
     </Row>
     <Tabs value="name0">
       <TabPane :label="label1" name="name0">
-        <taskList @TaskCount="setCount"></taskList>
+        <taskList @TaskCount="setCount" action="/ProofTask/GetMyTasks"></taskList>
       </TabPane>
       <TabPane label="历史任务" name="name1">
-
+        <taskList action="/ProofTask/GetMyFinshTasks"></taskList>
       </TabPane>
     </Tabs>
   </div>

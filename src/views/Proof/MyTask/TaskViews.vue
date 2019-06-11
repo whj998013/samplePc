@@ -112,7 +112,10 @@
     <div class="demo-drawer-profile">
       <Row>
         <Col span="12">
-        文件
+        <span class="expand-value" v-for="item in zb">
+          <a :href="proofDataUrl+item.Url">{{item.DisplayName }}</a>
+          <Divider type="vertical" />
+        </span>
         </Col>
       </Row>
     </div>
@@ -145,7 +148,12 @@ export default {
         return item.FileType == 3;
       });
     },
-    zb: function() {}
+    zb: function() {
+
+       return this.value.ProofStyle.ProofFiles.filter(item => {
+        return item.FileType == 4;
+      });
+    }
   },
   methods: {},
   mounted: function() {}

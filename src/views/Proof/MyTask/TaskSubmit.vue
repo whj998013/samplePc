@@ -3,7 +3,7 @@
 <template>
   <div>
     <!-- 工作提交 -->
-    <Modal v-model="showSumitBox" :title="'提交任务,工序：'+currentRow.nextProcessName" width="650px">
+    <Modal v-model="showSumitBox" :title="'提交任务,工序：'+currentRow.ProcessName" width="650px">
       <div slot="footer">
         <Button type="error" size="large" @click="showSumitBox=false">取消</Button>
         <Button type="primary" size="large" @click="submit">提交</Button>
@@ -89,6 +89,7 @@ export default {
         nextProcessId: -1,
         nextWorkerName: "",
         nextProcessName: "",
+        nextTaskNO: "",
       },
       upLoadData: {},
     };
@@ -101,37 +102,38 @@ export default {
         this.$Message.error("请上传" + this.currentRow.ProcessName + "文件");
         haveError = true;
       };
+
       if (!this.NextTask.isHave && this.currentTask.nextProcessId < 0) {
         this.$Message.error("请选择下级任务。");
         haveError = true;
 
       };
+
       if (this.currentTask.nextWorkerName == "" && this.currentTask.nextProcessId > 0) {
         this.$Message.error("请选择任务员工。");
         haveError = true;
       };
       if (!haveError) {
         console.log(this.currentTask);
+        this.currentTask.nextTaskNO = this.$util.getID(8);
         let re = await this.$util.post("/ProofTask/SubmitTask/", this.currentTask);
-
-        this.$Message.error("任务完成");
+        
+        this.$Message.info("任务完成");
         this.showSumitBox = false;
       };
 
     },
     async Show(row) {
       console.log("row", row);
-      this.currentTask.nextProcessId = -1;
       this.havenextWorkerName = true;
       let proofId = row.ProofOrderId;
-
       let re = await this.$util.get("/ProofTask/GetTasks/" + proofId);
       this.upLoadData.TaskId = row.Id;
       this.upLoadData.ProofOrderId = row.ProofOrderId;
       this.upLoadData.ProcessName = row.ProcessName;
       this.currentRow = row;
       this.currentTask.nextTaskId = 0;
-      this.currentTask.nextProcessId = 0;
+      // this.currentTask.nextProcessId = 0;
       this.currentTask.nextWorkerName = "";
       this.currentTask.nextProcessName = "";
       this.currentTask.proofId = row.ProofOrderId;
@@ -169,9 +171,13 @@ export default {
         this.NextTask.process = re.data[0].Process.ProcessName;
         this.NextTask.name = re.data[0].UserName;
         this.currentTask.nextTaskId = re.data[0].Id;
+        this.currentTask.nextProcessId = 0;
         console.log("currentTask", this.currentTask);
       }
-      else this.NextTask.isHave = false;
+      else {
+        this.NextTask.isHave = false;
+        this.currentTask.nextProcessId = -1;
+      }
 
     },
 

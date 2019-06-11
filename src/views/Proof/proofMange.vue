@@ -24,7 +24,7 @@
         <proofMangeList ref="CurrentProof" action="/ProofMange/GetProofPlanList"></proofMangeList>
       </TabPane>
       <TabPane label="已完成打样" name="name2">
-        <finshProof></finshProof>
+        <proofMangeList ref="CurrentProof" action="/ProofMange/GetFinshPlanList"></proofMangeList>
       </TabPane>
     </Tabs>
   </div>

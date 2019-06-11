@@ -16,7 +16,7 @@
 </style>
 <template>
   <div>
-    <Table border :columns="columns" :data="proofList">
+    <Table border  :columns="columns" :data="proofList">
       <template slot-scope="{ row }" slot="ProofOrderId">
         <strong>{{ row.ProofOrderId }}</strong>
       </template>
@@ -34,6 +34,7 @@
       </template>
       <template slot-scope="{ row, index }" slot="action">
         <Button type="primary" size="small" style="margin-right: 5px" @click="DoProofPlan(row)">{{buttonText(row)}}</Button>
+        <Button v-if="row.ProofStatusText=='打样中'" type="info" size="small" style="margin-right: 5px" @click="FinshProof(row)">交样</Button>
       </template>
     </Table>
     <proofPlan ref='proofPlan'></proofPlan>
@@ -115,7 +116,8 @@ export default {
         {
           title: "操作",
           slot: "action",
-          align: "center"
+          align: "center",
+           width: 160,
         }
       ],
       proofList: []
@@ -130,7 +132,10 @@ export default {
       this.CurrentRow = row;
       this.$refs.proofPlan.Show(row.ProofOrderId);
     },
-
+   async FinshProof(row){
+       console.log("交样",row);
+       let re=await this.$util.get("/ProofMange/FinshProof/"+row.ProofOrderId);
+    },
     GetData() {
       this.$util.get(this.action).then(result => {
         let re = result.data;

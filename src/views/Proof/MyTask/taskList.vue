@@ -9,9 +9,12 @@
       <template slot-scope="{ row, index }" slot="beginDate">
         {{JSON.stringify(row.BeginDate ).substring(1, 11)}}
       </template>
+      <template slot-scope="{ row, index }" slot="finshDate">
+        {{row.FinshDate==null?"":JSON.stringify(row.FinshDate ).substring(1, 11)}}
+      </template>
       <template slot-scope="{ row, index }" slot="action">
-        <Button @click="showTaskView(row)"  type="info" size="small">查看</Button>
-        <Button @click="Submit(row)" type="primary"  size="small">提交</Button>
+        <Button @click="showTaskView(row)" type="info" size="small">查看</Button>
+        <Button v-if="row.FinshDate==null" @click="Submit(row)" type="primary" size="small">提交</Button>
       </template>
       <template slot-scope="{ row, index }" slot="proofNo">
         {{row.ProofStyleNo}}
@@ -28,6 +31,9 @@
 import taskViews from "./TaskViews.vue";
 import taskSubmit from "./TaskSubmit.vue";
 export default {
+  props: {
+    action: String
+  },
   components: {
     taskViews,
     taskSubmit
@@ -80,6 +86,13 @@ export default {
           key: "BeginDate",
           sortable: true
         },
+        {
+          title: "完成日期",
+          width: 120,
+          slot: "finshDate",
+          key: "FinshDate",
+          sortable: true
+        },
 
         {
           title: "打样类型",
@@ -124,7 +137,7 @@ export default {
       this.showDrawer = true;
     },
     async getData() {
-      let re = await this.$util.get("/ProofTask/GetMyTasks");
+      let re = await this.$util.get(this.action);
       this.taskList = re.data;
       this.$emit("TaskCount", this.taskList.length)
     }
