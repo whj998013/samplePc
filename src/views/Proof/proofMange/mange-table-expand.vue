@@ -1,8 +1,12 @@
 <style scoped>
-</style>
-<style>
-#ContentDiv .ivu-table-expanded-cell {
-  background-color: rgb(255, 255, 255);
+img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+}
+
+.maxHeight {
+  max-height: 100px;
 }
 </style>
 <template>
@@ -90,16 +94,20 @@
           <Divider type="vertical" />
         </span>
       </span>
+
       </Col>
+      <Col span="24"> <span class="expand-key">样衣图片: </span> </Col>
+      <Col span="24">
+      <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
+        <span v-if="item.FileType==0">
+          <img class="maxHeight" :src="proofDataUrl+item.Url"></img>
+          <Divider type="vertical" />
+        </span>
+      </span>
+      </Col>
+
     </Row>
-    <br/>
-    <Row>
-      <Col span="22">
-      <span class="expand-key">生产记录: </span>
-      <Table size="small" :columns="columns1" :data="taskList">
-        <template slot-scope="{ row, index }" slot="finshDate">
-          {{row.FinshDate==null?"":JSON.stringify(row.FinshDate ).substring(1, 11)+" "+JSON.stringify(row.FinshDate ).substring(12, 20)}}
-        </template>
+    <br /> 
         <template slot-scope="{ row, index }" slot="beginDate">
           {{row.BeginDate==null?"":JSON.stringify(row.BeginDate ).substring(1, 11)+" "+JSON.stringify(row.BeginDate ).substring(12, 20)}}
         </template>
@@ -155,8 +163,8 @@ export default {
     }
   },
   mounted: function () {
-    
-     console.log("ProofRow", this.row);
+
+    console.log("ProofRow", this.row);
     this.getProofRecord(this.row.ProofOrderId);
 
   },

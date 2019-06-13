@@ -1,4 +1,13 @@
 <style scoped>
+img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+}
+
+.maxHeight {
+  max-height: 100px;
+}
 </style>
 <style>
 #ContentDiv .ivu-table-expanded-cell {
@@ -102,6 +111,15 @@
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <span v-if="item.FileType==4">
           <a :href="proofDataUrl+item.Url">{{item.DisplayName }}</a>
+          <Divider type="vertical" />
+        </span>
+      </span>
+      </Col>
+      <Col span="24"> <span class="expand-key">样衣图片: </span> </Col>
+      <Col span="24">
+      <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
+        <span v-if="item.FileType==0">
+          <img class="maxHeight" :src="proofDataUrl+item.Url"></img>
           <Divider type="vertical" />
         </span>
       </span>

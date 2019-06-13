@@ -16,7 +16,7 @@
 </style>
 <template>
   <div>
-    <Table border  :columns="columns" :data="proofList">
+    <Table border :columns="columns" :data="proofList">
       <template slot-scope="{ row }" slot="ProofOrderId">
         <strong>{{ row.ProofOrderId }}</strong>
       </template>
@@ -52,14 +52,14 @@ export default {
     workerSelect,
     proofPlan
   },
-  data: function() {
+  data: function () {
     return {
       planId: "",
       CurrentRow: {
         DesignatedCX: "",
         DesignatedGY: ""
       },
-     
+
       gylist: [],
       cxlist: [],
       gy: "",
@@ -117,7 +117,7 @@ export default {
           title: "操作",
           slot: "action",
           align: "center",
-           width: 160,
+          width: 160,
         }
       ],
       proofList: []
@@ -132,9 +132,14 @@ export default {
       this.CurrentRow = row;
       this.$refs.proofPlan.Show(row.ProofOrderId);
     },
-   async FinshProof(row){
-       console.log("交样",row);
-       let re=await this.$util.get("/ProofMange/FinshProof/"+row.ProofOrderId);
+    async FinshProof(row) {
+      console.log("交样", row);
+      let re = await this.$util.get("/ProofMange/FinshProof/" + row.ProofOrderId);
+      this.$Notice.success({
+        title: '成功',
+        desc: '已发出交样审批，请在钉钉查看审批并拍照上传照片。 '
+      });
+
     },
     GetData() {
       this.$util.get(this.action).then(result => {
@@ -152,7 +157,7 @@ export default {
       });
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.GetData();
   }
 };

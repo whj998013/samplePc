@@ -3,7 +3,6 @@ img {
   width: auto;
   height: auto;
   max-width: 100%;
-  
 }
 p {
   word-wrap: break-word;
@@ -13,19 +12,19 @@ p {
 .sample {
   padding: 10px 0px 10px 0px;
 }
-.maxHeight{
-   max-height:100px;
+.maxHeight {
+  max-height: 100px;
 }
-.modelwh{
+.modelwh {
   max-width: 800px;
   max-height: 800px;
 }
 </style>
 <style>
-#xh .ivu-collapse-content,{
-padding:0 0 0 0;
+#xh .ivu-collapse-content {
+  padding: 0 0 0 0;
 }
-#aid .ivu-card-body{
+#aid .ivu-card-body {
   padding: 10px 10px;
 }
 </style>
@@ -55,7 +54,7 @@ padding:0 0 0 0;
       </Dropdown>
       <Row>
         <Col span="9">
-        <div >
+        <div>
           <a><img class="maxHeight" :src="dataUrl+'/pic/minpic/'+picstr" @click="handleView(picstr)"></img>
           </a>
         </div>
@@ -97,7 +96,7 @@ padding:0 0 0 0;
             <p v-if="isLimt">处理价:{{value.DiscountPrice}}元</p>
           </span>
         </Panel>
-        <Panel name="现货信息" v-if="value.HaveStock"  id="xh">
+        <Panel name="现货信息" v-if="value.HaveStock" id="xh">
           现货信息
           <span slot="content">
             <stock v-model="value.StockData" ref="stock"></stock>
@@ -151,8 +150,8 @@ padding:0 0 0 0;
       <Row>
       </Row>
     </Card>
-    <Modal title="图片查看" v-model="modalVisible"  footer-hide>
-      <img  :src="dataUrl+'/pic/' + imgName " v-if="modalVisible" >
+    <Modal title="图片查看" v-model="modalVisible" footer-hide>
+      <img :src="dataUrl+'/pic/' + imgName " v-if="modalVisible">
     </Modal>
   </div>
 </template>
@@ -220,10 +219,10 @@ export default {
     }
   },
 
-  data: function() {
+  data: function () {
     return {
       checked: this.value.checked,
-      dataUrl:this.$util.dataUrl,
+      dataUrl: this.$util.dataUrl,
       modalVisible: false,
       imgName: "",
       picstr: "",
@@ -231,12 +230,12 @@ export default {
       piclist: [],
       Material: "",
       isLimt: false,
-      
+
     };
   },
   computed: {
-    isHaveFile(){
-     return this.filelist.length>0?true:false;
+    isHaveFile() {
+      return this.filelist.length > 0 ? true : false;
     },
     canlendout() {
       if (this.value.CanLendOut) return "是";
@@ -273,7 +272,7 @@ export default {
         this.filelist.push(f);
       }
     }
-    this.isLimt = this.$bus.isLimt ;
+    this.isLimt = this.$bus.isLimt;
     this.v = this.value;
   }
 };
