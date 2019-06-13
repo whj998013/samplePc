@@ -107,12 +107,26 @@ img {
       </Col>
 
     </Row>
-    <br /> 
+    <Row>
+      <Col span="22">
+      <span class="expand-key">生产记录: </span>
+      <Table size="small" :columns="columns1" :data="taskList">
+        <template slot-scope="{ row, index }" slot="finshDate">
+          {{row.FinshDate==null?"":JSON.stringify(row.FinshDate ).substring(1, 11)+" "+JSON.stringify(row.FinshDate ).substring(12, 20)}}
+        </template>
         <template slot-scope="{ row, index }" slot="beginDate">
           {{row.BeginDate==null?"":JSON.stringify(row.BeginDate ).substring(1, 11)+" "+JSON.stringify(row.BeginDate ).substring(12, 20)}}
         </template>
       </Table>
       </Col>
+    </Row>
+
+    <br />
+    <template slot-scope="{ row, index }" slot="beginDate">
+      {{row.BeginDate==null?"":JSON.stringify(row.BeginDate ).substring(1, 11)+" "+JSON.stringify(row.BeginDate ).substring(12, 20)}}
+    </template>
+    </Table>
+    </Col>
     </Row>
     <br>
     <hr color=#e8eaec size=1>
