@@ -45,6 +45,7 @@ import proofPlan from "./proofPlan.vue";
 import expandRow from "./mange-table-expand.vue";
 import workerSelect from "../../commpent/workerSelect.vue";
 export default {
+  inject: ["reload"],
   props: {
     action: String
   },
@@ -134,12 +135,14 @@ export default {
     },
     async FinshProof(row) {
       console.log("交样", row);
+      this.$bus.BeginLoading();
       let re = await this.$util.get("/ProofMange/FinshProof/" + row.ProofOrderId);
       this.$Notice.success({
         title: '成功',
         desc: '已发出交样审批，请在钉钉查看审批并拍照上传照片。 '
       });
-
+      this.reload();
+      this.$bus.EndLoading();
     },
     GetData() {
       this.$util.get(this.action).then(result => {
