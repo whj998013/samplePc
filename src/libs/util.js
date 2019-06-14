@@ -8,7 +8,7 @@ import loginApi from './loginApi.js';
 
 axios.defaults.withCredentials = true;
 let util = {
-    dataFormat:function (fmt) { //author: meizz   
+    dataFormat: function (fmt) { //author: meizz   
         var o = {
             "M+": this.getMonth() + 1,                 //月份   
             "d+": this.getDate(),                    //日   
@@ -85,8 +85,12 @@ util.PrintUrl = env === 'development' ?
     'http://api.sungingroup.com:8081/sampleinfo/' : 'http://app.sungingroup.com:8081/sampleinfo/'
 const ajaxUrl = env === 'development' ?
     'http://api.sungingroup.com:8082' : 'http://app.sungingroup.com:8082';
-util.dataUrl = ajaxUrl + "/src/sample";
-util.proofDataUrl = ajaxUrl;
+
+const dataBaseUrl = env === 'development' ?
+    '/file' : '/file';
+
+util.dataUrl = dataBaseUrl + "/src/sample";
+util.proofDataUrl = dataBaseUrl;
 util.baseUrl = ajaxUrl + "/api";
 util.ajax = axios.create({
     baseURL: util.baseUrl,
