@@ -72,7 +72,7 @@ img {
       <span class="expand-key">打样资料: </span>
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <span v-if="item.FileType==2">
-          <a :href="proofDataUrl+item.Url">{{item.DisplayName }}</a>
+          <a :href="proofDataUrl+item.Url" download>{{item.DisplayName }}</a>
           <Divider type="vertical" />
         </span>
       </span>
@@ -81,7 +81,7 @@ img {
       <span class="expand-key">工艺文件: </span>
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <span v-if="item.FileType==3">
-          <a :href="proofDataUrl+item.Url">{{item.DisplayName }}</a>
+          <a :href="proofDataUrl+item.Url" download>{{item.DisplayName }}</a>
           <Divider type="vertical" />
         </span>
       </span>
@@ -90,7 +90,7 @@ img {
       <span class="expand-key">制版文件: </span>
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <span v-if="item.FileType==4">
-          <a :href="proofDataUrl+item.Url">{{item.DisplayName }}</a>
+          <a :href="proofDataUrl+item.Url" download>{{item.DisplayName }}</a>
           <Divider type="vertical" />
         </span>
       </span>
@@ -100,7 +100,7 @@ img {
       <Col span="24">
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <span v-if="item.FileType==0">
-          <img class="maxHeight" :src="proofDataUrl+item.Url"></img>
+          <a :href="proofDataUrl+item.Url" download><img class="maxHeight" :src="proofDataUrl+item.Url"></img></a>
           <Divider type="vertical" />
         </span>
       </span>

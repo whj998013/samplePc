@@ -66,12 +66,9 @@ let util = {
     print2(refDom) {
         let subOutputRankPrint = refDom;
         let newContent = subOutputRankPrint.innerHTML;
-        //let oldContent = document.body.innerHTML;
         document.body.innerHTML = newContent;
         window.print();
         window.close();
-        // window.location.reload();
-        // document.body.innerHTML = oldContent;
         return false;
     },
 
@@ -81,17 +78,31 @@ util.title = function (title) {
     title = title ? title + ' - 样衣管理' : '样衣管理系统';
     window.document.title = title;
 };
-util.PrintUrl = env === 'development' ?
-    'http://api.sungingroup.com:8081/sampleinfo/' : 'http://app.sungingroup.com:8081/sampleinfo/'
-const ajaxUrl = env === 'development' ?
-    'http://api.sungingroup.com:8082' : 'http://app.sungingroup.com:8082';
+// util.PrintUrl = env === 'development' ?
+//     'http://api.sungingroup.com:8081/sampleinfo/' : 'http://app.sungingroup.com:8081/sampleinfo/'
+// const ajaxUrl = env === 'development' ?
+//     'http://api.sungingroup.com:8082' : 'http://app.sungingroup.com:8082';
+//let isDevelopment= env === 'development';
 
-const dataBaseUrl = env === 'development' ?
-    '/file' : '/file';
+//debugger;
+
+let protocol = document.location.protocol;
+let port = document.location.port;
+let hostName = document.location.hostname;
+//let fullhost = protocol + "//" + hostName;
+
+util.PrintUrl = 'http:' + "//" + hostName + ":8081" + "/sampleinfo/";
+let ajaxUrl = protocol==="http:"?  "http://" + hostName + ":8082":"https://" + hostName + ":8182";
+let dataBaseUrl = env === 'development' ?'/file' : '/file';
+
+
 
 util.dataUrl = dataBaseUrl + "/src/sample";
 util.proofDataUrl = dataBaseUrl;
 util.baseUrl = ajaxUrl + "/api";
+//util.baseUrl = "/api";
+//debugger;
+
 util.ajax = axios.create({
     baseURL: util.baseUrl,
     timeout: 15000,
@@ -118,7 +129,7 @@ util.ajax.interceptors.response.use(function (response) {
         return loginApi.beginLogin().then(re => {
             console.log("重新登录成功");
             bus.EndLoading();
-            return axios(config);
+           return axios(config);
         }).catch(error => {
             //window.location.href = '/login/401';
         });
