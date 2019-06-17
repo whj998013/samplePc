@@ -53,24 +53,29 @@ export default {
         {
           title: "工序",
           width: 65,
-          key: "ProcessName"
+          key: "ProcessName",
+          fixed: 'left'
         },
         {
           title: "编号",
           key: "ProofOrderId",
           width: 115,
-          sortable: true
+          sortable: true,
+          fixed: 'left'
         },
         {
           title: "款号",
           slot: "proofNo",
-          key: "ProofStyleNo"
+          key: "ProofStyleNo",
+          width: 120,
+          fixed: 'left'
         },
         {
           title: "业务员",
           key: "UserName",
           width: 95,
           sortable: true
+          
         },
         {
           title: "交期",
@@ -117,7 +122,8 @@ export default {
           title: "操作",
           slot: "action",
           align: "center",
-          width: 130
+          width: 130,
+
         }
       ],
 
