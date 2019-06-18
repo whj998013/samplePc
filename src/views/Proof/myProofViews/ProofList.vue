@@ -37,7 +37,7 @@ export default {
   props: {
     action: String
   },
-  data: function() {
+  data: function () {
     return {
       CurrentRow: null,
       deleteModal: false,
@@ -45,6 +45,7 @@ export default {
         {
           type: "expand",
           width: 40,
+          
           render: (h, params) => {
             return h(expandRow, {
               props: {
@@ -68,7 +69,7 @@ export default {
         },
         {
           title: "日期",
-          width: 120,
+          minWidth: 120,
           sortable: true,
           slot: "CreateDateStr",
           key: "CreateDateStr"
@@ -76,31 +77,41 @@ export default {
 
         {
           title: "款号",
-          slot: "ProofStyleNo"
+          slot: "ProofStyleNo",
+          minWidth: 110,
         },
         {
           title: "类型",
           slot: "ProofTypeText",
+          minWidth: 110,
+
         },
         {
           title: "数量",
           sortable: true,
-          key: "ProofNum"
+          key: "ProofNum",
+          minWidth: 110,
+
         },
         {
           title: "紧急度",
           sortable: true,
-          key: "Urgency"
+          key: "Urgency",
+          minWidth: 110,
+
         },
         {
           title: "客户",
-          slot: "ClentName"
+          slot: "ClentName",
+          minWidth: 110,
+
         },
         {
           title: "操作",
           slot: "action",
-          width: 200,
-          align: "center"
+          minWidth: 170,
+          align: "center",
+         
         }
       ],
       proofList: []
@@ -165,7 +176,7 @@ export default {
       this.deleteModal = true;
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.GetData();
   }
 };

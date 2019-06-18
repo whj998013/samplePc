@@ -67,33 +67,32 @@ export default {
           title: "款号",
           slot: "proofNo",
           key: "ProofStyleNo",
-          width: 120,
-          fixed: 'left'
+          minWidth: 120,
         },
         {
           title: "业务员",
           key: "UserName",
-          width: 95,
+          minWidth: 95,
           sortable: true
           
         },
         {
           title: "交期",
-          width: 120,
+          minWidth: 120,
           slot: "needData",
           key: "NeedFinshDate",
           sortable: true
         },
         {
           title: "开始日期",
-          width: 120,
+          minWidth: 120,
           slot: "beginDate",
           key: "BeginDate",
           sortable: true
         },
         {
           title: "完成日期",
-          width: 120,
+          minWidth: 120,
           slot: "finshDate",
           key: "FinshDate",
           sortable: true
@@ -102,19 +101,19 @@ export default {
         {
           title: "打样类型",
           key: "TypeName",
-          width: 110,
+          minWidth: 110,
           sortable: true
         },
         {
           title: "数量",
           key: "ProofNum",
-          width: 65
+          minWidth: 65
         },
 
         {
           title: "紧急度",
           key: "Urgency",
-          width: 99,
+          minWidth: 99,
           sortable: true
         },
 
@@ -122,7 +121,8 @@ export default {
           title: "操作",
           slot: "action",
           align: "center",
-          width: 130,
+          minWidth: 130,
+           fixed: 'right'
 
         }
       ],

@@ -80,45 +80,52 @@ export default {
         {
           title: "状态",
           key: "ProofStatusText",
-          width: 75
+          width: 75,
         },
         {
           title: "单号",
           width: 110,
-          slot: "ProofOrderId"
+          slot: "ProofOrderId",
         },
         {
           title: "交样日期",
-          width: 120,
+          minWidth: 120,
           slot: "FinshDateStr"
         },
 
         {
           title: "款号",
-          slot: "ProofStyleNo"
+          slot: "ProofStyleNo",
+          minWidth: 110,
+
         },
         {
           title: "类型",
-          slot: "ProofTypeText"
+          slot: "ProofTypeText",
+          minWidth: 110,
+
         },
         {
           title: "数量",
-          key: "ProofNum"
+          key: "ProofNum",
+          minWidth: 110,
         },
 
         {
           title: "紧急度",
-          key: "Urgency"
+          key: "Urgency",
+          minWidth: 110,
         },
         {
           title: "客户",
-          slot: "ClentName"
+          slot: "ClentName",
+          minWidth: 110,
         },
         {
           title: "操作",
           slot: "action",
           align: "center",
-          width: 160,
+          minWidth: 160,
         }
       ],
       proofList: []
