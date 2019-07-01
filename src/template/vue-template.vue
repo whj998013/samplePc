@@ -1,22 +1,28 @@
 <style scoped>
 </style>
 <template>
-  <div>      
-  </div>                       
+  <div>
+  </div>
 </template>
 <script>
 //import bus from "../bus.js";
-export default {  
-  data: function() {
+//import newProof from "./myProofViews/newProof.vue";
+export default {
+  inject: ["reload"],
+  components: {
+
+
+  },
+  data: function () {
     return {
- 
+
     };
   },
   methods: {
-    
+
   },
-  mounted: function() {
-       this.$bus.$emit('changeMenuItem',['样衣管理','找样衣']);
+  mounted: function () {
+    this.$bus.$emit('changeMenuItem', ['样衣管理', '找样衣']);
   }
 };
 </script>

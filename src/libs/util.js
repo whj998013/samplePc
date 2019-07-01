@@ -92,8 +92,8 @@ let hostName = document.location.hostname;
 //let fullhost = protocol + "//" + hostName;
 
 util.PrintUrl = 'http:' + "//" + hostName + ":8081" + "/sampleinfo/";
-let ajaxUrl = protocol==="http:"?  "http://" + hostName + ":8082":"https://" + hostName + ":8182";
-let dataBaseUrl = env === 'development' ?'/file' : '/file';
+let ajaxUrl = protocol === "http:" ? "http://" + hostName + ":8082" : "https://" + hostName + ":8182";
+let dataBaseUrl = env === 'development' ? '/file' : '/file';
 
 
 
@@ -112,34 +112,39 @@ util.ajax.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
     //对返回的错误进行一些处理
-    bus.EndLoading();
-    console.log('ajax出错:', error, "config:", error.config);
-    let config = error.config;
-    let str = error + '';
-    if (str.search('timeout') !== -1 || str.search('Network Error') !== -1) { // 超时error捕获
-        window.location.href = '/login/0';
-        console.log("error", error);
-    };
+    console.log("axios Error", error);
+    if (true) {
 
-    if (error.response.status == 401) {
-        bus.BeginLoading();
-        cookie.delete('sgud');
-        //登录失效，开始后台重新登录
-        console.log("开始重新登录");
-        return loginApi.beginLogin().then(re => {
-            console.log("重新登录成功");
-            bus.EndLoading();
-           return axios(config);
-        }).catch(error => {
-            //window.location.href = '/login/401';
-        });
+        bus.EndLoading();
+        console.log('ajax出错:', error, "config:", error.config);
+        let config = error.config;
+        let str = error + '';
+        if (str.search('timeout') !== -1 || str.search('Network Error') !== -1) { // 超时error捕获
+            window.location.href = '/login/0';
+            console.log("error", error);
+            return;
+        };
 
-    } else if (error.response.status == 404) {
-        console.log("服务器没有找到相应数据：", error.response);
-    } else if (error.response.status == 400) {
-        bus.alert(error.response.data.Message);
-    };
-    return Promise.reject(error);
+        if (error.response.status == 401) {
+            bus.BeginLoading();
+            cookie.delete('sgud');
+            //登录失效，开始后台重新登录
+            console.log("开始重新登录");
+            return loginApi.beginLogin().then(re => {
+                console.log("重新登录成功");
+                bus.EndLoading();
+                return axios(config);
+            }).catch(error => {
+                //window.location.href = '/login/401';
+            });
+
+        } else if (error.response.status == 404) {
+            console.log("服务器没有找到相应数据：", error.response);
+        } else if (error.response.status == 400) {
+            bus.alert(error.response.data.Message);
+        };
+        return Promise.reject(error);
+    }
 });
 
 util.post = util.ajax.post;

@@ -75,7 +75,7 @@ export default {
       BreadArr: ["首页"],
       menuActiveName: "",
       isMange: false,
-      openNames: ["stockMenu", "mangeMenu"]
+      openNames: ["stockMenu", "YarnMenu","ProofMenu"]
     };
   },
   computed: {
