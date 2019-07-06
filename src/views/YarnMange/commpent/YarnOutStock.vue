@@ -26,6 +26,7 @@
 export default {
   props: {
     action: String,
+    dept: Array,
   },
   data: function () {
     return {
@@ -93,7 +94,7 @@ export default {
           minWidth: 100
 
         },
-         {
+        {
           title: "查询码",
           key: "BarCode",
           minWidth: 80
@@ -108,13 +109,13 @@ export default {
           title: "用纱部门",
           key: "OutDName",
           minWidth: 100
-        },{
+        }, {
           title: "用纱时间",
           key: "CreateTime",
           sortable: true,
           minWidth: 180,
           slot: "date",
-       
+
         },
         {
           title: "入库人",
@@ -128,12 +129,17 @@ export default {
           sortable: true,
           minWidth: 110
         },
-         
+
 
       ]
     };
   },
   methods: {
+    reload() {
+      console.log("reloadOutdept", this.dept)
+      this.page.pageId = 1;
+      this.GetData();
+    },
     pageChange(pageid) {
       this.page.pageId = pageid;
       this.GetData();
@@ -142,14 +148,16 @@ export default {
       this.page.pageSize = pageSize;
       this.GetData();
     },
-
     async GetData() {
+      this.$bus.BeginLoading();
+      this.page.deptIdList = this.dept;
       let re = await this.$util.post(this.action, this.page);
       console.log(re);
       this.page.pageId = re.data.SeachObj.PageId;
       this.page.pageSize = re.data.SeachObj.PageSize;
       this.page.total = re.data.SeachObj.Total;
       if (re.data.SeachObj.Total > 0) this.tableData = re.data.Result;
+      this.$bus.EndLoading();
     }
   },
   mounted: function () {

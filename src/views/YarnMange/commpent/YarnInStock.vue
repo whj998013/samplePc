@@ -12,7 +12,7 @@
         </template>
         <template slot-scope="{ row }" slot="inStorNum">
           <a class="link" @click="showOutStock(row)" v-if="row.Num!=row.InStorNum">
-            <Badge status="processing" ></Badge>{{ row.InStorNum==null?0:row.InStorNum.toFixed(2) }}
+            <Badge status="processing"></Badge>{{ row.InStorNum==null?0:row.InStorNum.toFixed(2) }}
           </a>
 
           <p v-if="row.Num==row.InStorNum">
@@ -29,14 +29,20 @@
     <Row>
       <Page show-total show-sizer placement='top' :current="page.pageId" :total='page.total' :page-size='page.pageSize' @on-change='pageChange' @on-page-size-change='pageSizeChange' />
     </Row>
+    <YarnOutModel ref="yom"></YarnOutModel>
   </div>
 </template>
 <script>
-//import bus from "../bus.js";
+import YarnOutModel from "./YarnOutModel.vue";
 
 export default {
+
+  components: {
+    YarnOutModel
+  },
   props: {
     action: String,
+    dept: Array,
   },
   data: function () {
     return {
@@ -151,7 +157,13 @@ export default {
     };
   },
   methods: {
+    reload(){
+       console.log("reloaddept",this.dept)
+       this.page.pageId=1;
+       this.GetData();
+    },
     showOutStock(row) {
+      this.$refs.yom.Show(row.BatchNum);
       console.log("test", row);
     },
     pageChange(pageid) {
@@ -164,15 +176,19 @@ export default {
     },
 
     async GetData() {
+      this.$bus.BeginLoading();
+      this.page.deptIdList=this.dept;
       let re = await this.$util.post(this.action, this.page);
       console.log(re);
       this.page.pageId = re.data.SeachObj.PageId;
       this.page.pageSize = re.data.SeachObj.PageSize;
       this.page.total = re.data.SeachObj.Total;
-      if (re.data.SeachObj.Total > 0) {
+      if (re.data.SeachObj.Total >= 0) {
         this.tableData = re.data.Result;
 
       }
+      this.$bus.EndLoading();
+
     }
   },
   mounted: function () {

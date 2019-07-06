@@ -105,7 +105,7 @@ util.baseUrl = ajaxUrl + "/api";
 
 util.ajax = axios.create({
     baseURL: util.baseUrl,
-    timeout: 15000,
+    timeout: 60000,
 });
 util.ajax.interceptors.response.use(function (response) {
     //对返回的数据进行一些处理  

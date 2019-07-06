@@ -29,6 +29,7 @@
           <Input v-model="lab.b" type="number">
           <span slot="prepend">LAB_B</span>
           </Input><br>
+
           <Button type="primary" @click="LabSeach">LAB色差查找</Button>
           </Col>
           <Col span='8' offset='1'>
@@ -47,14 +48,17 @@
     <br>
     <LocalStockView v-model="YarnList" :page="pageObj" @pageChange="pageChange" :showPage="showPage"></LocalStockView>
   </div>
-</template>
+</template>  
 <script>
 //import bus from "../bus.js";
 import LocalStockView from "./commpent/LocalStockView.vue";
+import ColorHelp from "../../libs/ColorHelp";
+
+
 export default {
-  inject: ["reload"],
+    inject: ["reload"],
   components: {
-    LocalStockView,
+    LocalStockView
   },
   data: function () {
     return {
@@ -72,6 +76,7 @@ export default {
         a: 0,
         b: 0,
       },
+
       YarnList: []
     };
   },
@@ -125,12 +130,10 @@ export default {
       this.$bus.EndLoading();
     },
     async RgbColorSelect(val) {
-      this.$bus.BeginLoading();
-      let re = await this.$util.post("/public/ConvertRgbToLab", { rgb: val });
-      this.lab.l = re.data.l;
-      this.lab.a = re.data.a;
-      this.lab.b = re.data.b;
-      this.$bus.EndLoading();
+      var r = ColorHelp.rgbToLab(val);
+      this.lab.l = r[0].toFixed(2);
+      this.lab.a = r[1].toFixed(2);
+      this.lab.b = r[2].toFixed(2);
     }
   },
   mounted: function () {

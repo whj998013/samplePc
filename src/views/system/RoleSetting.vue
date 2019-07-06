@@ -7,10 +7,20 @@
   margin: 0px 0px 0px 2px;
   height: 100%;
 }
+#right2 {
+  width: 30%;
+  margin: 0px 0px 0px 2px;
+  height: 100%;
+}
 #bottom,
 #top {
   width: 100%;
   height: 50%;
+}
+.leftbroder {
+  border-left-width: 1px;
+  border-left-style: solid;
+  border-left-color: #dcdee2;
 }
 .head {
   height: 35px;
@@ -39,9 +49,12 @@
   height: 94%;
   overflow: auto;
   padding: 5px 0 0 10px;
+  width: 50%;
+  float: left;
 }
 .noedit {
   pointer-events: none;
+  background-color: #c9c9c9;
 }
 </style>
 <style>
@@ -96,6 +109,19 @@ input[disabled] {
           <div class="content2" v-bind:class="{noedit:!isModify}">
             <Tree ref="pTree" :data="permisionView" show-checkbox multiple></Tree>
           </div>
+          <div class="content2 leftbroder" v-bind:class="{noedit:!isModify}">
+            <br>
+            <p>查看范围</p>
+            <Select v-model="currentRole.Role.PV" style="width:200px">
+              <Option v-for="item in permisionRange" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            </Select>
+            <br>
+            <br>
+            <p>管理范围</p>
+            <Select v-model="currentRole.Role.PM" style="width:200px">
+              <Option v-for="item in permisionRange" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            </Select>
+          </div>
         </div>
       </div>
     </TabPane>
@@ -106,18 +132,34 @@ input[disabled] {
 </template>
 <script>
 export default {
-  data: function() {
+  data: function () {
     return {
+      permisionRange: [
+        {
+          value: 0,
+          label: "仅个人"
+        }, {
+          value: 1,
+          label: "当前部门"
+        }, {
+          value: 2,
+          label: "当前及下级部门"
+        }, {
+          value: 3,
+          label: "全部"
+        },
+      ],
       height: window.innerHeight - 235,
       currentRole: { Role: { RoleName: "" } },
       urp: [],
       isModify: false,
       permisionList: [],
-      permisionView: []
+      permisionView: [],
+
     };
   },
   watch: {
-    currentRole: function(val, oldVal) {
+    currentRole: function (val, oldVal) {
       this.permisionList.forEach(p => {
         p.checked = false;
         if (p.children.length == 0) {
@@ -140,7 +182,7 @@ export default {
           desc: "同步工艺程序成功！",
           duration: 4
         });
-       this.$bus.EndLoading();
+        this.$bus.EndLoading();
       });
     },
     getIndeterminate(val) {
@@ -177,6 +219,7 @@ export default {
       });
     },
     setData(obj) {
+      console.log("obj",obj);
       this.urp = obj.data.urp;
       this.urp.forEach(u => {
         u.selected = false;
@@ -216,6 +259,7 @@ export default {
     getData() {
       this.$bus.BeginLoading();
       this.$util.get("/RoleSetting/GetUserRoleData").then(p => {
+
         this.setData(p);
       });
       this.$bus.EndLoading();
@@ -225,13 +269,13 @@ export default {
       this.isModify = false;
       let re = this.$refs.pTree.getCheckedAndIndeterminateNodes();
       let plist = re.map(p => p.key);
-      let obj = { RoleId: this.currentRole.Role.RoleId, PermissionKey: plist };
+      let obj = { Role: this.currentRole.Role, PermissionKey: plist};
       this.$util.post("/RoleSetting/SaveRoleData", obj).then(p => {
         this.getData();
       });
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.$bus.$emit("changeMenuItem", ["系统设置", "角色权限配置"]);
     this.getData();
   }
