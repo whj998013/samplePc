@@ -129,16 +129,13 @@ export default {
           sortable: true,
           minWidth: 110
         },
-
-
       ]
     };
   },
   methods: {
-    reload() {
-      console.log("reloadOutdept", this.dept)
+    reload(v) {
       this.page.pageId = 1;
-      this.GetData();
+      this.GetData(v);
     },
     pageChange(pageid) {
       this.page.pageId = pageid;
@@ -148,15 +145,16 @@ export default {
       this.page.pageSize = pageSize;
       this.GetData();
     },
-    async GetData() {
+    async GetData(dept) {
       this.$bus.BeginLoading();
-      this.page.deptIdList = this.dept;
+      if (dept != undefined) this.page.deptIdList = dept;
+      else this.page.deptIdList = this.dept;
+     
       let re = await this.$util.post(this.action, this.page);
-      console.log(re);
       this.page.pageId = re.data.SeachObj.PageId;
       this.page.pageSize = re.data.SeachObj.PageSize;
       this.page.total = re.data.SeachObj.Total;
-      if (re.data.SeachObj.Total > 0) this.tableData = re.data.Result;
+      if (re.data.SeachObj.Total >= 0) this.tableData = re.data.Result;
       this.$bus.EndLoading();
     }
   },

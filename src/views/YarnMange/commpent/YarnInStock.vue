@@ -157,14 +157,12 @@ export default {
     };
   },
   methods: {
-    reload(){
-       console.log("reloaddept",this.dept)
-       this.page.pageId=1;
-       this.GetData();
+    reload(v) {
+      this.page.pageId = 1;
+      this.GetData(v);
     },
     showOutStock(row) {
       this.$refs.yom.Show(row.BatchNum);
-      console.log("test", row);
     },
     pageChange(pageid) {
       this.page.pageId = pageid;
@@ -175,11 +173,13 @@ export default {
       this.GetData();
     },
 
-    async GetData() {
+    async GetData(dept) {
+      console.log(dept);
       this.$bus.BeginLoading();
-      this.page.deptIdList=this.dept;
+      if (dept != undefined) this.page.deptIdList = dept;
+      else this.page.deptIdList = this.dept;
       let re = await this.$util.post(this.action, this.page);
-      console.log(re);
+
       this.page.pageId = re.data.SeachObj.PageId;
       this.page.pageSize = re.data.SeachObj.PageSize;
       this.page.total = re.data.SeachObj.Total;

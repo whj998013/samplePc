@@ -56,7 +56,7 @@ import ColorHelp from "../../libs/ColorHelp";
 
 
 export default {
-    inject: ["reload"],
+  inject: ["reload"],
   components: {
     LocalStockView
   },
