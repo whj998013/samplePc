@@ -80,8 +80,8 @@ p {
             <p>尺码:{{value.Size}}</p>
             <p>针型:{{value.Gauge}}</p>
             <p>克重:{{value.Weight}}K</p>
-            <p>成份:{{Material}}</p>
-            <p>支数:{{value.Counts}}</p>
+            <p>成份:<span v-for="item in mList" :key="item.yranId">{{item.yarnId}}、{{item.counts==""?"":"支数："+item.counts+" "}}{{item.Material}}<br/></span></p>
+            <p v-if="value.Counts!=''">支数:{{value.Counts}}</p>
             <p>录入人:{{value.User}}</p>
             <p>部门:{{value.DeptName}}</p>
             <p>日期:{{value.CreateDate}}</p>
@@ -221,6 +221,7 @@ export default {
 
   data: function () {
     return {
+      mList: [],
       checked: this.value.checked,
       dataUrl: this.$util.dataUrl,
       modalVisible: false,
@@ -260,10 +261,28 @@ export default {
     }
   },
   mounted() {
+    console.log('info', this.value);
     this.picstr = this.value.Pic;
     for (let p of this.value.Material) {
-      this.Material = this.Material + p.percent + "%" + p.materials + " ";
+      if (!p.yarnId) p.yarnId = 1;
+      if (!p.enName) p.enName = "";
+      let m = this.mList.find(t => {
+        return t.yarnId == p.yarnId;
+      });
+      if (m) {
+        m.Material = m.Material + p.percent + "%" + p.materials + '(' + p.enName + ')' + " ";
+      } else {
+        let nm = {
+          yarnId: p.yarnId,
+          Material: '',
+          counts: p.counts ? p.counts : "",
+        };
+        nm.Material = nm.Material + p.percent + "%" + p.materials + '(' + p.enName + ')' + " ";
+        this.mList.push(nm);
+      }
     }
+    console.log(this.mList);
+
     for (let f of this.value.Files) {
       if (f.FileType == 0) {
         //图片

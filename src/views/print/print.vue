@@ -33,7 +33,7 @@ img {
         <h4>款号:{{sample.StyleNo}}</h4>
         <h4>可外借:{{canlendout}}</h4>
         <h4>现货:{{haveStock}}</h4>
-        <h4>成份:</h4><p v-for="item in mList" :key="item.yranId">{{item.yarnId}}:{{item.Material}}{{item.counts==""?"":"支数："+item.counts}}</p>
+        <h4>成份:<span v-for="item in mList" :key="item.yranId">{{item.yarnId}}、{{item.counts==""?"":"支数："+item.counts+" "}}{{item.Material}}<br/></span></h4>
         <h4 v-if="sample.Counts!=''">支数:{{sample.Counts}}</h4>
         <h4>针型:{{sample.Gauge}}</h4>
         <h4>克重:{{sample.Weight}}G</h4>

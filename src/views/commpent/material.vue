@@ -7,7 +7,7 @@
   <div>
     <Form ref="material" :model="materialsList" :label-width="70" label-position="right">
       <Row v-for="(item, index) in materialsList.items" :key="index" type="flex">
-        <Col  span="3">
+        <Col span="3">
         <FormItem label='纱线ID'>
           <AutoComplete id="yarnId" type="text" v-model="item.yarnId " placeholder="请输入原料名" :data="yarnIdList">
           </AutoComplete>
@@ -20,7 +20,7 @@
         </FormItem>
         </Col>
         <Col span="5">
-        <FormItem label='英文' :prop="'items.' + index + '.materials'" :rules="{required: true, message: '请输入英文成份名', trigger: 'change'}">
+        <FormItem label='英文' :prop="'items.' + index + '.enName'" :rules="{required: true, message: '请输入英文成份名', trigger: 'change'}">
           <Input type="text" v-model="item.enName " placeholder="请输入原料名">
           </Input>
         </FormItem>
@@ -66,7 +66,7 @@ export default {
             yarnId: 1,
             materials: "",
             enName: "",
-            counts:"",
+            counts: "",
             percent: 50,
             index: 0
           }
@@ -104,9 +104,10 @@ export default {
 
       this.materialsList.items.push({
         yarnId: 1,
-        materials: "",
         enName: "",
-        counts:"",
+        materials: "",
+
+        counts: "",
         percent: p,
         index: this.index++
       });
@@ -117,11 +118,15 @@ export default {
       this.dataChange();
     },
     dataChange(v) {
-      let re = this.materials.find(v => v.CnName == this.tempVal);
-      if (re) {
-        this.materialsList.items[v].enName = re.EnName;
-      } else if (this.materialsList.items[v].enName) this.materialsList.items[v].enName = "";
-      this.sentDate();
+    
+      if (v!=undefined) {
+        let re = this.materials.find(v => v.CnName == this.tempVal);
+        
+        if (re) {
+          this.materialsList.items[v].enName = re.EnName;
+        } else if (this.materialsList.items[v].enName) this.materialsList.items[v].enName = "";
+        this.sentDate();
+      }
     },
     sentDate() {
       this.$emit("input", this.materialsList.items);
