@@ -5,7 +5,10 @@
 
     <Row type="flex" :gutter="16">
       <Col v-for="(item,i) in items" :key="item.Id">
-      <sampleInfo v-if="show" class="sample" v-model="items[i]" :canSelect="canSelect" :limtView='limtView' :haveAction='haveAction' :haveLend='haveLend' :haveEdit='haveEdit' :haveDelete='haveDelete' :haveReturn='haveReturn' :havePrint='havePrint' :haveInStorage='haveInStorage' :haveAcceptInStorage='haveAcceptInStorage' :haveAcceptLend='haveAcceptLend' :haveAcceptReturn='haveAcceptReturn' @onLend='handleLend' @onEdit='handleEdit' @onDelete='handleDelete' @onReturn='handleReturn' @onPrint='handlePrint' @onInStorage='handleInStorage' @onAcceptInStorage='handleAcceptInStorage' @onAcceptLend='handleAcceptLend' @onAcceptReturn='handleAcceptReturn'>
+      <sampleInfo v-if="show" class="sample" v-model="items[i]" :canSelect="canSelect" :limtView='limtView' :haveAction='haveAction' :haveLend='haveLend' :haveEdit='haveEdit' :haveDelete='haveDelete'
+        :haveReturn='haveReturn' :havePrint='havePrint' :haveInStorage='haveInStorage' :haveAcceptInStorage='haveAcceptInStorage' :haveAcceptLend='haveAcceptLend' :haveAcceptReturn='haveAcceptReturn' @onLend='handleLend'
+        @onEdit='handleEdit' @onDelete='handleDelete' @onReturn='handleReturn' @onPrint='handlePrint' @onInStorage='handleInStorage' @onAcceptInStorage='handleAcceptInStorage' @onAcceptLend='handleAcceptLend'
+        @onAcceptReturn='handleAcceptReturn' @addToPrint='handleAddToPrint'>
       </sampleInfo>
       </Col>
     </Row>
@@ -75,12 +78,12 @@ export default {
       type: Boolean,
       default: false
     },
-     limtView: {
+    limtView: {
       type: Boolean,
       default: false
     }
   },
-  data: function() {
+  data: function () {
     return {
       show: true,
       isLoading: false,
@@ -103,7 +106,7 @@ export default {
       this.pageobj.dateValue = obj.dateValue;
       this.pageobj.State = obj.State;
       this.pageobj.UserId = obj.UserId;
-      this.pageobj.current=1;
+      this.pageobj.current = 1;
       this.getData();
     },
     reload() {
@@ -136,6 +139,9 @@ export default {
           this.$bus.EndLoading();
         });
       }
+    },
+    handleAddToPrint(val) {
+      console.log('添加待打印', val);
     },
     handleInStorage(val) {
       let actionStr = "/InOutStorage/PutInStorage";
@@ -213,12 +219,12 @@ export default {
     handlePrint(val) {
       window.open("/sample/printcode/" + val.StyleId);
     },
-    handleLend(val) {},
-    handleAcceptLend(val) {},
-    handleReturn(val) {},
-    handleAcceptReturn(val) {}
+    handleLend(val) { },
+    handleAcceptLend(val) { },
+    handleReturn(val) { },
+    handleAcceptReturn(val) { }
   },
-  mounted: function() {
+  mounted: function () {
     //初始化数据
     this.getData();
   }

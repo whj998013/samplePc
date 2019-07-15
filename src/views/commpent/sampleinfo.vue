@@ -50,6 +50,8 @@ p {
           <DropdownItem name='onEdit' v-if="haveEdit">编辑</DropdownItem>
           <DropdownItem name='onDelete' v-if="haveDelete">删除</DropdownItem>
           <DropdownItem name='onPrint' v-if="havePrint">打印二维码</DropdownItem>
+          <DropdownItem name='addToPrint' v-if="havePrint">添加到待打印</DropdownItem>
+
         </DropdownMenu>
       </Dropdown>
       <Row>
@@ -261,7 +263,6 @@ export default {
     }
   },
   mounted() {
-    console.log('info', this.value);
     this.picstr = this.value.Pic;
     for (let p of this.value.Material) {
       if (!p.yarnId) p.yarnId = 1;
@@ -281,7 +282,6 @@ export default {
         this.mList.push(nm);
       }
     }
-    console.log(this.mList);
 
     for (let f of this.value.Files) {
       if (f.FileType == 0) {
