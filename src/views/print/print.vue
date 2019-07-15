@@ -30,16 +30,15 @@ img {
         </div>
         </Col>
         <Col span="11" style="" class="brod">
-        <h2>ID:{{sample.StyleId}}</h2>
         <h4>款号:{{sample.StyleNo}}</h4>
         <h4>可外借:{{canlendout}}</h4>
         <h4>现货:{{haveStock}}</h4>
-        <h4>成份:{{Material}}</h4>
-        <h4>{{MaterialEn}}</h4>
-        <h4>支数:{{sample.Counts}}</h4>
+        <h4>成份:</h4><p v-for="item in mList" :key="item.yranId">{{item.yarnId}}:{{item.Material}}{{item.counts==""?"":"支数："+item.counts}}</p>
+        <h4 v-if="sample.Counts!=''">支数:{{sample.Counts}}</h4>
+        <h4>针型:{{sample.Gauge}}</h4>
+        <h4>克重:{{sample.Weight}}G</h4>
         <h4>零售价:{{sample.SalePrice}}元</h4>
         <div id="qrcode" style="text-align:center"></div>
-        <br>
         <h3>钉钉扫码查看更多信息</h3>
         </Col>
       </Row>
@@ -55,6 +54,7 @@ export default {
       isfinsh: false,
       sample: {},
       picstr: "",
+      mList:[],
       Material: "",
       MaterialEn:"",
       salePrice: 0,
@@ -75,11 +75,13 @@ export default {
     getData() {
       let p = new Promise((resolve, reject) => {
         console.log("getdata");
+        let _this=this;
         this.$util
           .get("/Print/GetSample", {
             params: { styleId: this.id }
           })
           .then(result => {
+            console.log(result);
             result.data.PicList.forEach(item => {
               item.url = "/pic/minPic/" + item.name;
             });
@@ -87,10 +89,28 @@ export default {
             this.picstr = this.sample.PicList[0].name;
             console.log("sample:", this.sample);
             for (let p of this.sample.Material) {
-              this.Material =
-                this.Material + p.percent + "%" + p.materials + " ";
-                if(p.enName) this.MaterialEn=this.MaterialEn + p.percent + "%" + p.enName + " ";
+              if(!p.yarnId) p.yarnId=1;
+              if(!p.enName) p.enName="";
+              let m=this.mList.find(t=>{
+                return t.yarnId==p.yarnId;
+               });
+               if(m){
+                    m.Material = m.Material + p.percent + "%" + p.materials +'('+p.enName + ')'+" ";
+               }else{
+                  let nm={
+                      yarnId:p.yarnId,
+                      Material:'',
+                      MaterialEn:'',
+                      counts:p.counts?p.counts:"",
+                  };
+                  nm.Material = nm.Material + p.percent + "%" + p.materials +'('+p.enName + ')'+" ";
+                  _this.mList.push(nm);
+               }
+
+              // this.Material = this.Material + p.percent + "%" + p.materials + " ";
+              //   if(p.enName) this.MaterialEn=this.MaterialEn + p.percent + "%" + p.enName + " ";
             }
+             console.log("mlist",this.mList);
             resolve(this.sample);
           });
       });
@@ -101,7 +121,7 @@ export default {
       let val = this.$util.PrintUrl + this.id + "?showmenu=false";
       let p = new Promise(resolve => {
         if (this.id) {
-          this.$util.qrcode("qrcode", val, 150, p => {
+          this.$util.qrcode("qrcode", val, 95, p => {
             console.log("step1");
             resolve(p);
           });
@@ -118,9 +138,10 @@ export default {
       })
       .then(p => {
         console.log("print");
-        setTimeout(() => {
-         this.$util.print2(this.$refs.print);
-        }, 500);
+     
+        // setTimeout(() => {
+        //  this.$util.print2(this.$refs.print);
+        // }, 500);
       });
   }
 };

@@ -27,7 +27,7 @@
     </Row>
     <br>
     <Row>
-      <Page show-total show-sizer placement='top' :current="page.pageId" :total='page.total' :page-size='page.pageSize' @on-change='pageChange' @on-page-size-change='pageSizeChange' />
+      <Page show-total show-sizer placement='top' :page-size-opts="pageSizeOpts" :current="page.pageId" :total='page.total' :page-size='page.pageSize' @on-change='pageChange' @on-page-size-change='pageSizeChange' />
     </Row>
     <YarnOutModel ref="yom"></YarnOutModel>
   </div>
@@ -46,6 +46,7 @@ export default {
   },
   data: function () {
     return {
+      pageSizeOpts:[10,20,50,100],
       page: {
         pageId: 1,
         pageSize: 10,

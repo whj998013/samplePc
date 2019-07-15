@@ -33,11 +33,10 @@ export default {
     },
     deptInput(v) {
       this.haveChange = true;
-      console.log("input",v);
-        if (!this.isOpen) {
-          this.doSelect();
-        }
-      
+      console.log("input", v);
+      if (!this.isOpen) {
+        this.doSelect();
+      }
     },
     deptClose(v) {
       if (this.haveChange) {
@@ -48,14 +47,13 @@ export default {
     },
     doSelect() {
       this.$emit("input", this.dept);
-      this.$emit("SelectChange",this.dept);
+      this.$emit("SelectChange", this.dept);
     },
     async getDeptData() {
       let re = await this.$util.get("/Public/GetDeptPvList");
       if (re.data.length > 0) {
         this.SetDeptOptions(this.options, re.data);
       }
-
     },
 
     SetDeptOptions(options, depts) {
@@ -70,9 +68,9 @@ export default {
         };
         options.push(newOptions);
       });
-
     }
-  },
+
+},
   mounted: function () {
     this.getDeptData();
   }
