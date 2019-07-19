@@ -2,7 +2,7 @@
 </style>
 <template>
   <div>
-    <Table border :columns="columns" max-height="700" :data="value" border>
+    <Table border :columns="columns" max-height="550" :data="value" border>
       <template slot-scope="{ row }" slot="color">
         <span :style="'background-color:'+row.RGB">&emsp;&emsp;</span>{{ row.Color }}
       </template>

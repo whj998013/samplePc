@@ -41,7 +41,7 @@ export default {
     };
   },
   methods: {
-     reload() {
+    reload() {
       this.$refs.yarnIn.reload(this.dept);
       this.$refs.yarnOut.reload(this.dept);
     },
