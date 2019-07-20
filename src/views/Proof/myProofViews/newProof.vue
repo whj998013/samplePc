@@ -80,16 +80,21 @@
         </Col>
         <Divider>其它要求</Divider>
         <Col :xs="24" :sm="24" :md="12" :lg="12">
-        <FormItem label='指定工艺'>
-          <workerSelect v-model="proof.DesignatedGY" action="/ProofWorker/GetWorkerList/1"></workerSelect>
-
+        <FormItem label='打样部门' prop="ProofDept">
+          <proofDeptSelect v-model="proof.ProofDept" action="/ProofWorker/GetProofDepts"></proofDeptSelect>
         </FormItem>
         </Col>
-        <Col v-if="false" :xs="24" :sm="24" :md="12" :lg="12">
-        <!-- <FormItem label='指定程序'>
-          <workerSelect v-model="proof.DesignatedCX" action="/ProofWorker/GetWorkerList/2"></workerSelect>
-        </FormItem> -->
+
+        <Col :xs="24" :sm="24" :md="12" :lg="12">
+        <FormItem label='指定工艺'>
+          <workerSelect v-model="proof.DesignatedGY" action="/ProofWorker/GetWorkerList/1"></workerSelect>
+        </FormItem>
         </Col>
+        <!-- <Col v-if="false" :xs="24" :sm="24" :md="12" :lg="12">
+        <FormItem label='指定程序'>
+          <workerSelect v-model="proof.DesignatedCX" action="/ProofWorker/GetWorkerList/2"></workerSelect>
+        </FormItem>
+        </Col> -->
         <Col :xs="24" :sm="24" :md="24" :lg="24">
         <FormItem label='紧急度'>
           <RadioGroup v-model="proof.Urgency" size="large">
@@ -109,8 +114,7 @@
         <Row>
           <Col span="8">
           <FormItem>
-            <Upload type="drag" :with-credentials="true" :action="baseUrl + '/NewProof/UpLoadFile'" :on-success="fileUploadOUpSuccess" :data="proof"
-              :show-upload-list=false>
+            <Upload type="drag" :with-credentials="true" :action="baseUrl + '/NewProof/UpLoadFile'" :on-success="fileUploadOUpSuccess" :data="proof" :show-upload-list=false>
               <div>
                 <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
                 <p>点击或将文件拖入框内上传</p>
@@ -129,9 +133,12 @@
 
 <script>
 import workerSelect from "../../commpent/workerSelect.vue";
+import proofDeptSelect from "../../commpent/proofDeptSelect.vue";
+
 export default {
   components: {
-    workerSelect
+    workerSelect,
+    proofDeptSelect
   },
   props: {
     value: {
@@ -142,7 +149,7 @@ export default {
       default: false
     }
   },
-  data: function() {
+  data: function () {
     return {
       baseUrl: this.$util.baseUrl,
       dataUrl: this.$util.dataUrl,
@@ -158,6 +165,7 @@ export default {
         ProofStyleNo: "",
         ClientNo: "",
         StyleName: "",
+        ProofDept: 0,
         proofType: "",
         Counts: "",
         Material: "",
@@ -193,6 +201,15 @@ export default {
             trigger: "change"
           }
         ],
+          ProofDept: [
+          {
+            required: true,
+            type: "number",
+            min:1,
+            message: "请选择要申请的打样部门",
+            trigger: "change"
+          }
+        ],
 
         ProofNum: [
           {
@@ -212,6 +229,7 @@ export default {
       return option.toUpperCase().indexOf(value.toUpperCase()) !== -1;
     },
     saveProof() {
+      console.log(this.proof);
       return new Promise((resolve, reject) => {
         this.validate().then(p => {
           if (p) {
@@ -301,6 +319,7 @@ export default {
       this.proof.ClientNo = "";
       this.proof.StyleName = "";
       this.proof.proofType = "";
+      this.proof.ProofDept=0;
       this.proof.Counts = "";
       this.proof.Material = "";
       this.proof.Weight = 0;
@@ -323,6 +342,7 @@ export default {
       this.proof.ClientNo = proofobj.ProofStyle.ClientNo;
       this.proof.StyleName = proofobj.ProofStyle.StyleName;
       this.proof.proofType = proofobj.ProofStyle.ProofTypeText;
+      this.proof.ProofDept=proofobj.ProofDeptId;
       this.proof.Counts = proofobj.ProofStyle.Counts;
       this.proof.Material = proofobj.ProofStyle.Material;
       this.proof.Weight = proofobj.ProofStyle.Weight;
@@ -342,7 +362,7 @@ export default {
       });
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.Init();
     this.GetClients();
   }

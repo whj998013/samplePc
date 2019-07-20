@@ -211,6 +211,7 @@ export default {
 
     async exportAllData() {
       let page = JSON.parse(JSON.stringify(this.page));
+      page.pageId=1;
       page.pageSize = 65535;
       let re = await this.$util.post(this.action, page);
       await this.GetData();

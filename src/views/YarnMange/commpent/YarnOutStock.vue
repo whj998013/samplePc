@@ -22,7 +22,7 @@
       </Col>
       <Col> 时间：<DatePicker @on-change="dataChange" :options="options1" v-model="dateRange" transfer type="daterange" placement="bottom-end" placeholder="选择显示日期范围" style="width: 200px"></DatePicker>
       </Col>
-      <Col> <Button @click="exportData">导出数据</Button>
+      <Col> <Button @click="exportData">导出本页数据</Button>
       <Button @click="exportAllData">导出全部数据</Button>
       </Col>
 
@@ -190,6 +190,7 @@ export default {
     async exportAllData() {
 
       let page = JSON.parse(JSON.stringify(this.page));
+      page.pageId = 1;
       page.pageSize = 65535;
       let re = await this.$util.post(this.action, page);
       await this.GetData();

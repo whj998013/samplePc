@@ -57,7 +57,6 @@ export default new Vue({
             return new Promise((resolve, reject) => {
                 if (this.selectData == null) {
                     this.$util.get("/Public/GetSelectList").then(result => {
-                        console.log("getSelectDate");
                         this.selectData=result.data;
                         resolve(result.data);
                     }).catch(re => {

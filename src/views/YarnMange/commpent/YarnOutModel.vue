@@ -55,8 +55,6 @@ export default {
   methods: {
     async   Show(BatchNum) {
       let re = await this.$util.post("/YarnSeach/GetOutList/",{BatchNum:BatchNum} );
-
-      console.log(re);
       this.tableData = re.data;
       this.modal = true;
     }

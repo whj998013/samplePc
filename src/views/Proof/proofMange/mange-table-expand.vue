@@ -21,6 +21,10 @@ img {
       <span class="expand-value">{{ row.ProofApplyDeptName }}</span>
       </Col>
       <Col span="8">
+      <span class="expand-key">打样部门: </span>
+      <span class="expand-value">{{ row.ProofDept.DeptName }}</span>
+      </Col>
+      <Col span="8">
       <span class="expand-key">交期: </span>
       <span class="expand-value">{{row.rdate}}</span>
       </Col>
@@ -31,6 +35,10 @@ img {
       <Col span="8">
       <span class="expand-key">款名: </span>
       <span class="expand-value">{{ row.ProofStyle.StyleName }}</span>
+      </Col>
+      <Col span="8">
+      <span class="expand-key">客户: </span>
+      <span class="expand-value">{{ row.ProofStyle.ClentName }}</span>
       </Col>
       <Col span="8">
       <span class="expand-key">客户款名: </span>
@@ -173,12 +181,12 @@ export default {
     async getProofRecord(ProofOrderId) {
       let re = await this.$util.get("/MyProof/GetProofRecord/" + ProofOrderId);
       this.taskList = re.data;
-      console.log("proofRecord", re);
+      // console.log("proofRecord", re);
     }
   },
   mounted: function () {
 
-    console.log("ProofRow", this.row);
+    //  console.log("ProofRow", this.row);
     this.getProofRecord(this.row.ProofOrderId);
 
   },

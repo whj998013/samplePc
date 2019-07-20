@@ -18,7 +18,6 @@
       <Col>
       <Button @click="reload">&emsp;&emsp;刷新&emsp;&emsp;</Button>
       <Button @click="newProof" v-if="$Auth('Sample_MySample_NewSample')" type="primary">新的打样申请</Button>
-
       </Col>
     </Row>
     <Tabs value="name0">

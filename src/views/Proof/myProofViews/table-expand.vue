@@ -38,6 +38,10 @@ img {
       <span class="expand-key">申请部门: </span>
       <span class="expand-value">{{ row.ProofApplyDeptName }}</span>
       </Col>
+       <Col span="8">
+      <span class="expand-key">打样部门: </span>
+      <span class="expand-value">{{ row.ProofDept.DeptName }}</span>
+      </Col>
       <Col span="8">
       <span class="expand-key">交期: </span>
       <span class="expand-value">{{row.rdate}}</span>

@@ -117,8 +117,8 @@ export default {
           minWidth: 110,
         },
         {
-          title: "客户",
-          slot: "ClentName",
+          title: "业务员",
+          key: "ProofApplyUserName",
           minWidth: 110,
         },
         {
