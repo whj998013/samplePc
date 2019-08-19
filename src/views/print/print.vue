@@ -6,7 +6,7 @@
 .brod {
   border-style: dashed;
   border-width: 1px;
-  height: 365px;
+  min-height: 390px;
   width: 260px;
   margin: 10px 0px 0px 1px;
   padding: 10px 10px;
@@ -22,8 +22,12 @@ img {
   <div>
     <Row>
       <div ref="print">
+
         <Col span="12" class="brod">
         <div style="text-align:center">
+          <div style="border-bottom :1px solid #e8eaec;">
+            <h3><img style="width:35px;heigth:35px" src=".\logo.jpg">SUNGIN GROUP</img></h3>
+          </div>
           <h2>ID:{{sample.StyleId}}</h2>
           <img :src="dataUrl+'/pic/minpic/'+picstr"></img>
         </div>
@@ -35,10 +39,18 @@ img {
         <h4>成份:<span v-for="item in mList" :key="item.yranId">{{item.yarnId}}、{{item.counts==""?"":"支数："+item.counts+" "}}{{item.Material}}<br /></span></h4>
         <h4 v-if="sample.Counts!=''">支数:{{sample.Counts}}</h4>
         <h4>针型:{{sample.Gauge}}</h4>
-        <h4>克重:{{sample.Weight}}G</h4>
+        <h4>克重:{{sample.Weight}}g</h4>
         <h4>零售价:{{sample.SalePrice}}元</h4>
-        <div id="qrcode" style="text-align:center"></div>
-        <h3>钉钉扫码查看更多信息</h3>
+        <Row type="flex" justify="center">
+          <Col span="12">
+          <div id="qrcode" style="text-align:center"></div>
+          </Col>
+          <Col span="12">
+          <img style="width:120px" src=".\logo2.png"></img>
+          <h3>钉钉扫码查看详情</h3>
+          </Col>
+        </Row>
+
         </Col>
       </div>
     </Row>
@@ -122,7 +134,7 @@ export default {
       let val = this.$util.PrintUrl + this.id + "?showmenu=false";
       let p = new Promise(resolve => {
         if (this.id) {
-          this.$util.qrcode("qrcode", val, 95, p => {
+          this.$util.qrcode("qrcode", val, 105, p => {
             console.log("step1");
             resolve(p);
           });
@@ -132,8 +144,8 @@ export default {
     }
   },
   mounted() {
-    console.log("v",this.value);
-    this.id = this.value?this.value:this.$route.params.id;
+    console.log("v", this.value);
+    this.id = this.value ? this.value : this.$route.params.id;
     this.getData()
       .then(p => {
         this.creatQrCode();
@@ -142,7 +154,7 @@ export default {
         console.log("print");
 
         setTimeout(() => {
-         this.$util.print2(this.$refs.print);
+           this.$util.print2(this.$refs.print);
         }, 500);
       });
   }

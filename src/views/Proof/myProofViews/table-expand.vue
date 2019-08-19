@@ -102,19 +102,21 @@ img {
       </span>
       </Col>
       <Col span="24">
-      <span class="expand-key">工艺文件: </span>
+      <span class="expand-key">工艺文件: </span ><span  v-if="!row.AlowDownloadFile">(需申请后方可下载)</span>
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <span v-if="item.FileType==3">
-          <a :href="proofDataUrl+item.Url" download>{{item.DisplayName }}</a>
+          <a v-if="row.AlowDownloadFile" :href="proofDataUrl+item.Url" download>{{item.DisplayName }}</a>
+          <span v-else>{{item.DisplayName }}</span>
           <Divider type="vertical" />
         </span>
       </span>
       </Col>
       <Col span="24">
-      <span class="expand-key">制版文件: </span>
+      <span class="expand-key">制版文件: </span><span  v-if="!row.AlowDownloadFile">(需申请后方可下载)</span>
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <span v-if="item.FileType==4">
-          <a :href="proofDataUrl+item.Url" download>{{item.DisplayName }}</a>
+          <a v-if="row.AlowDownloadFile" :href="proofDataUrl+item.Url" download>{{item.DisplayName }}</a>
+          <span v-else>{{item.DisplayName }}</span>
           <Divider type="vertical" />
         </span>
       </span>
