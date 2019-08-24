@@ -38,7 +38,7 @@ img {
       <span class="expand-key">申请部门: </span>
       <span class="expand-value">{{ row.ProofApplyDeptName }}</span>
       </Col>
-       <Col span="8">
+      <Col span="8">
       <span class="expand-key">打样部门: </span>
       <span class="expand-value">{{ row.ProofDept.DeptName }}</span>
       </Col>
@@ -101,8 +101,9 @@ img {
 
       </span>
       </Col>
+
       <Col span="24">
-      <span class="expand-key">工艺文件: </span ><span  v-if="!row.AlowDownloadFile">(需申请后方可下载)</span>
+      <span class="expand-key">工艺文件<span v-if="!row.AlowDownloadFile">(需申请后方可下载)</span>: </span>
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <span v-if="item.FileType==3">
           <a v-if="row.AlowDownloadFile" :href="proofDataUrl+item.Url" download>{{item.DisplayName }}</a>
@@ -112,7 +113,7 @@ img {
       </span>
       </Col>
       <Col span="24">
-      <span class="expand-key">制版文件: </span><span  v-if="!row.AlowDownloadFile">(需申请后方可下载)</span>
+      <span class="expand-key">制版文件<span v-if="!row.AlowDownloadFile">(需申请后方可下载)</span>: </span>
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <span v-if="item.FileType==4">
           <a v-if="row.AlowDownloadFile" :href="proofDataUrl+item.Url" download>{{item.DisplayName }}</a>
@@ -120,6 +121,9 @@ img {
           <Divider type="vertical" />
         </span>
       </span>
+      </Col>
+      <Col v-if="!row.AlowDownloadFile&&row.ProofStatusText=='完成'" span="24">
+      <Button type="info" size="small" @click="applyDownLoad">点击申请下载文件</Button>
       </Col>
       <Col span="24"> <span class="expand-key">样衣图片: </span> </Col>
       <Col span="24">
@@ -192,7 +196,10 @@ export default {
     async getProofRecord(ProofOrderId) {
       let re = await this.$util.get("/MyProof/GetProofRecord/" + ProofOrderId);
       this.taskList = re.data;
-      console.log("proofRecord", re);
+      //console.log("proofRecord", re);
+    },
+    applyDownLoad() {
+       this.$emit("applyDownloadFile",this.row);
     }
   },
   mounted: function () {

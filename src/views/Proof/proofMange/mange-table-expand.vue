@@ -181,7 +181,6 @@ export default {
     async getProofRecord(ProofOrderId) {
       let re = await this.$util.get("/MyProof/GetProofRecord/" + ProofOrderId);
       this.taskList = re.data;
-      // console.log("proofRecord", re);
     }
   },
   mounted: function () {

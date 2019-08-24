@@ -45,11 +45,13 @@ export default {
         {
           type: "expand",
           width: 40,
-          
           render: (h, params) => {
             return h(expandRow, {
               props: {
                 row: params.row
+              },
+              on: {
+                "applyDownloadFile": this.applyDownloadFile
               }
             });
           }
@@ -111,7 +113,7 @@ export default {
           slot: "action",
           minWidth: 170,
           align: "center",
-         
+
         }
       ],
       proofList: []
@@ -123,7 +125,20 @@ export default {
         this.proofList = result.data;
       });
     },
+    applyDownloadFile(val) {
+      console.log("appdownload", val);
+      this.$Modal.confirm({
+        title: '是否继续',
+        content: '<p>将发起钉钉申请，通过后即可在本页面下载文件。</p>',
+        onOk: async () => {
+          console.log("app", val);
+          let re = await this.$util.get("/MyProof/ApplyDownload/" + val.ProofStyle.ProofStyleId);
+          
+        },
+      });
 
+
+    },
     submit(row) {
       this.$bus.BeginLoading();
       let proof = {

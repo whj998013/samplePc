@@ -24,7 +24,7 @@
       <TabPane label="当前打样" name="name0">
         <ProofList ref="CurrentProof" action="/MyProof/GetMyProofs" v-model="currnetProofs" @onEdit="edit"></ProofList>
       </TabPane>
-      <TabPane label="历史打样" name="name1">
+      <TabPane label="已完成打样" name="name1">
         <ProofList ref="FinshProof" action="/MyProof/GetMyFinshProofs" v-model="finshProofs"></ProofList>
       </TabPane>
     </Tabs>
