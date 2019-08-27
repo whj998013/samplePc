@@ -132,7 +132,7 @@ export default {
         content: '<p>将发起钉钉申请，通过后即可在本页面下载文件。</p>',
         onOk: async () => {
           console.log("app", val);
-          let re = await this.$util.get("/MyProof/ApplyDownload/" + val.ProofStyle.ProofStyleId);
+          let re = await this.$util.get("/MyProof/ApplyDownload/" + val.ProofOrderId);
           
         },
       });
