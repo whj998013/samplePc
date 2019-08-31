@@ -33,13 +33,12 @@ img {
         </div>
         </Col>
         <Col span="11" style="" class="brod">
-        <h4>款号:{{sample.StyleNo}}</h4>
+        <h4>STYLE NO:{{sample.StyleNo}}</h4>
         <h4>可外借:{{canlendout}}</h4>
         <h4>现货:{{haveStock}}</h4>
-        <h4>成份:<span v-for="item in mList" :key="item.yranId">{{item.yarnId}}、{{item.counts==""?"":"支数："+item.counts+" "}}{{item.Material}}<br /></span></h4>
-        <h4 v-if="sample.Counts!=''">支数:{{sample.Counts}}</h4>
-        <h4>针型:{{sample.Gauge}}</h4>
-        <h4>克重:{{sample.Weight}}g</h4>
+        <h4>QUALITY:<span v-for="item in mList" :key="item.yranId">{{item.yarnId}}、{{item.counts==""?"":"COUNT："+item.counts+" "}}{{item.Material}}<br /></span></h4>
+        <h4 v-if="sample.Counts!=''">COUNT:{{sample.Counts}}</h4>
+        <h4>GAUGE:{{sample.Gauge}}&nbsp;&nbsp;&nbsp;&nbsp;WEIGHT:{{sample.Weight}}g</h4>
         <h4>零售价:{{sample.SalePrice}}元</h4>
         <Row type="flex" justify="center">
           <Col span="12">
@@ -108,7 +107,7 @@ export default {
                 return t.yarnId == p.yarnId;
               });
               if (m) {
-                m.Material = m.Material + p.percent + "%" + p.materials + '(' + p.enName + ')' + " ";
+                m.Material = m.Material + p.percent + "%" + p.enName + " ";
               } else {
                 let nm = {
                   yarnId: p.yarnId,
@@ -116,7 +115,7 @@ export default {
                   MaterialEn: '',
                   counts: p.counts ? p.counts : "",
                 };
-                nm.Material = nm.Material + p.percent + "%" + p.materials + '(' + p.enName + ')' + " ";
+                nm.Material = nm.Material + p.percent + "%" + p.enName  + " ";
                 _this.mList.push(nm);
               }
 
