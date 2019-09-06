@@ -29,7 +29,7 @@
       </TabPane>
     </Tabs>
     <!-- 新的打样申请  -->
-    <Modal id="newProofModel" v-model="newProofModel" width=80 :title="modelText">
+    <Modal id="newProofModel" v-model="newProofModel" width=80 :title="modelText" :mask-closable='false'>
       <newProof ref="proofedit" :editMode="editMode"></newProof>
       <div slot="footer">
         <Button size="large" @click="cancelProof">取消</Button>

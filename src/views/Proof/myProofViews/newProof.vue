@@ -8,7 +8,6 @@
 <template>
   <div>
     <div>
-
       <Form ref="proof" :model="proof" :label-width="75" label-position="right" :rules="proofRuleValidate">
         <Col :xs="24" :sm="12" :md="12" :lg="8">
         <FormItem label="打样单号">
@@ -23,11 +22,6 @@
         </Col>
 
         <Col :xs="24" :sm="12" :md="12" :lg="8">
-        <FormItem label="款名">
-          <Input v-model="proof.StyleName" placeholder="款名"></Input>
-        </FormItem>
-        </Col>
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
         <FormItem label="打样类别" prop="proofType">
           <Select v-model="proof.proofType">
             <Option v-for="item in proofTypeList" :value="item.TypeName" :key="item.Id">{{ item.TypeName }}</Option>
@@ -35,8 +29,8 @@
         </FormItem>
         </Col>
         <Col :xs="24" :sm="12" :md="12" :lg="8">
-        <FormItem label="客户" prop="ClentName">
-          <AutoComplete id="client" v-model="proof.ClentName" :data="clients" clearable :filter-method="filterMethod" placeholder="客户"></AutoComplete>
+        <FormItem label="款名">
+          <div><Input v-model="proof.StyleName" placeholder="款名"></Input></div>
         </FormItem>
         </Col>
         <Col :xs="24" :sm="12" :md="12" :lg="8">
@@ -45,20 +39,11 @@
         </FormItem>
         </Col>
         <Col :xs="24" :sm="12" :md="12" :lg="8">
-        <FormItem label="纱支">
-          <Input v-model="proof.Counts" placeholder="纱支"></Input>
+        <FormItem label="客户" prop="ClentName">
+          <AutoComplete id="client" v-model="proof.ClentName" :data="clients" clearable :filter-method="filterMethod" placeholder="客户"></AutoComplete>
         </FormItem>
         </Col>
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
-        <FormItem label="成份">
-          <Input v-model="proof.Material" placeholder="成份"></Input>
-        </FormItem>
-        </Col>
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
-        <FormItem label='克重(g)' prop="Weight">
-          <InputNumber :step=50 style="width:100%" v-model="proof.Weight "></InputNumber>
-        </FormItem>
-        </Col>
+
         <Col :xs="24" :sm="12" :md="12" :lg="8">
         <FormItem label="针形">
           <Select v-model="proof.Gauge">
@@ -78,6 +63,28 @@
           <DatePicker style="width:100%" v-model="proof.FinshDate" type="date" placeholder="要求样品交期"></DatePicker>
         </FormItem>
         </Col>
+        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <FormItem label='克重(g)' prop="Weight"  v-if="false">
+          <InputNumber :step=50 style="width:100%" v-model="proof.Weight "></InputNumber>
+        </FormItem>
+        </Col>
+        <Divider>毛纱信息</Divider>
+        <Col :xs="24" :sm="24" :md="24" :lg="24">
+        <FormItem label='原料纱'>
+          <Button @click="outStockSelect">绑定样纱出库单...</Button>
+        </FormItem>
+        </Col>
+        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <FormItem label="纱支">
+          <Input v-model="proof.Counts" placeholder="纱支"></Input>
+        </FormItem>
+        </Col>
+        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <FormItem label="成份">
+          <Input v-model="proof.Material" placeholder="成份"></Input>
+        </FormItem>
+        </Col>
+
         <Divider>其它要求</Divider>
         <Col :xs="24" :sm="24" :md="12" :lg="12">
         <FormItem label='打样部门' prop="ProofDept">
@@ -106,7 +113,7 @@
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="24">
         <FormItem label='备注'>
-          <Input type="textarea" :rows="2" :step=1 style="width:100%" v-model="proof.Remark"></Input>
+          <Input type="textarea" :rows="1" :step=1 style="width:100%" v-model="proof.Remark"></Input>
         </FormItem>
         </Col>
 
@@ -116,8 +123,8 @@
           <FormItem>
             <Upload type="drag" :with-credentials="true" :action="baseUrl + '/NewProof/UpLoadFile'" :on-success="fileUploadOUpSuccess" :data="proof" :show-upload-list=false>
               <div>
-                <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-                <p>点击或将文件拖入框内上传</p>
+                <Icon type="ios-cloud-upload" size="42" style="color: #3399ff"></Icon>
+                <p>点击或将打样资料拖入框内上传</p>
               </div>
             </Upload>
           </FormItem>
@@ -128,17 +135,21 @@
         </Row>
       </Form>
     </div>
+    <div>
+      <outStockSelect ref="oss"></outStockSelect>
+    </div>
   </div>
 </template>
 
 <script>
 import workerSelect from "../../commpent/workerSelect.vue";
 import proofDeptSelect from "../../commpent/proofDeptSelect.vue";
-
+import outStockSelect from "./outStockSelect";
 export default {
   components: {
     workerSelect,
-    proofDeptSelect
+    proofDeptSelect,
+    outStockSelect
   },
   props: {
     value: {
@@ -201,11 +212,11 @@ export default {
             trigger: "change"
           }
         ],
-          ProofDept: [
+        ProofDept: [
           {
             required: true,
             type: "number",
-            min:1,
+            min: 1,
             message: "请选择要申请的打样部门",
             trigger: "change"
           }
@@ -225,6 +236,10 @@ export default {
   },
 
   methods: {
+    outStockSelect(){
+      
+       this.$refs.oss.show();
+    },
     filterMethod(value, option) {
       return option.toUpperCase().indexOf(value.toUpperCase()) !== -1;
     },
@@ -319,7 +334,7 @@ export default {
       this.proof.ClientNo = "";
       this.proof.StyleName = "";
       this.proof.proofType = "";
-      this.proof.ProofDept=0;
+      this.proof.ProofDept = 0;
       this.proof.Counts = "";
       this.proof.Material = "";
       this.proof.Weight = 0;
@@ -342,7 +357,7 @@ export default {
       this.proof.ClientNo = proofobj.ProofStyle.ClientNo;
       this.proof.StyleName = proofobj.ProofStyle.StyleName;
       this.proof.proofType = proofobj.ProofStyle.ProofTypeText;
-      this.proof.ProofDept=proofobj.ProofDeptId;
+      this.proof.ProofDept = proofobj.ProofDeptId;
       this.proof.Counts = proofobj.ProofStyle.Counts;
       this.proof.Material = proofobj.ProofStyle.Material;
       this.proof.Weight = proofobj.ProofStyle.Weight;
