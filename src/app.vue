@@ -20,6 +20,7 @@ export default {
   methods: {
     reloadAll() {
       this.isRouterAlive = false;
+      
       this.$nextTick(function() {
         this.isRouterAlive = true;
       });
