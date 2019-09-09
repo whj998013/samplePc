@@ -45,6 +45,7 @@ import proofPlan from "./proofPlan.vue";
 import expandRow from "./mange-table-expand.vue";
 import workerSelect from "../../commpent/workerSelect.vue";
 export default {
+  inject: ["reload"],
   props: {
     action: String
   },
@@ -79,45 +80,52 @@ export default {
         {
           title: "状态",
           key: "ProofStatusText",
-          width: 75
+          width: 75,
         },
         {
           title: "单号",
           width: 110,
-          slot: "ProofOrderId"
+          slot: "ProofOrderId",
         },
         {
           title: "交样日期",
-          width: 120,
+          minWidth: 120,
           slot: "FinshDateStr"
         },
 
         {
           title: "款号",
-          slot: "ProofStyleNo"
+          slot: "ProofStyleNo",
+          minWidth: 110,
+
         },
         {
           title: "类型",
-          slot: "ProofTypeText"
+          slot: "ProofTypeText",
+          minWidth: 110,
+
         },
         {
           title: "数量",
-          key: "ProofNum"
+          key: "ProofNum",
+          minWidth: 110,
         },
 
         {
           title: "紧急度",
-          key: "Urgency"
+          key: "Urgency",
+          minWidth: 110,
         },
         {
-          title: "客户",
-          slot: "ClentName"
+          title: "业务员",
+          key: "ProofApplyUserName",
+          minWidth: 110,
         },
         {
           title: "操作",
           slot: "action",
           align: "center",
-          width: 160,
+          minWidth: 160,
         }
       ],
       proofList: []
@@ -134,12 +142,14 @@ export default {
     },
     async FinshProof(row) {
       console.log("交样", row);
+      this.$bus.BeginLoading();
       let re = await this.$util.get("/ProofMange/FinshProof/" + row.ProofOrderId);
       this.$Notice.success({
         title: '成功',
         desc: '已发出交样审批，请在钉钉查看审批并拍照上传照片。 '
       });
-
+      this.reload();
+      this.$bus.EndLoading();
     },
     GetData() {
       this.$util.get(this.action).then(result => {

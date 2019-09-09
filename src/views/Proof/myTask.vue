@@ -17,7 +17,7 @@
       <TabPane :label="label1" name="name0">
         <taskList @TaskCount="setCount" action="/ProofTask/GetMyTasks"></taskList>
       </TabPane>
-      <TabPane label="历史任务" name="name1">
+      <TabPane label="已完成任务" name="name1">
         <taskList action="/ProofTask/GetMyFinshTasks"></taskList>
       </TabPane>
     </Tabs>

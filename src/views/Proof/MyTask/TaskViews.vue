@@ -89,7 +89,7 @@
       <Row>
         <Col span="24">
         <span class="expand-value" v-for="item in dyzl">
-          <a :href="proofDataUrl+item.Url" >{{item.DisplayName }}</a>
+          <a :href="proofDataUrl+item.Url" download>{{item.DisplayName }}</a>
           <Divider type="vertical" />
         </span>
         </Col>
@@ -101,7 +101,7 @@
       <Row>
         <Col span="24">
         <span class="expand-value" v-for="item in gy">
-          <a :href="proofDataUrl+item.Url">{{item.DisplayName }}</a>
+          <a :href="proofDataUrl+item.Url" download>{{item.DisplayName }}</a>
           <Divider type="vertical" />
         </span>
         </Col>
@@ -113,7 +113,7 @@
       <Row>
         <Col span="12">
         <span class="expand-value" v-for="item in zb">
-          <a :href="proofDataUrl+item.Url">{{item.DisplayName }}</a>
+          <a :href="proofDataUrl+item.Url" download>{{item.DisplayName }}</a>
           <Divider type="vertical" />
         </span>
         </Col>
@@ -125,7 +125,7 @@
 //import bus from "../bus.js";
 export default {
   props: ["value"],
-  data: function() {
+  data: function () {
     return {
       proofDataUrl: this.$util.proofDataUrl,
       pStyle: {
@@ -138,24 +138,24 @@ export default {
     };
   },
   computed: {
-    dyzl: function() {
+    dyzl: function () {
       return this.value.ProofStyle.ProofFiles.filter(item => {
         return item.FileType == 2;
       });
     },
-    gy: function() {
+    gy: function () {
       return this.value.ProofStyle.ProofFiles.filter(item => {
         return item.FileType == 3;
       });
     },
-    zb: function() {
+    zb: function () {
 
-       return this.value.ProofStyle.ProofFiles.filter(item => {
+      return this.value.ProofStyle.ProofFiles.filter(item => {
         return item.FileType == 4;
       });
     }
   },
   methods: {},
-  mounted: function() {}
+  mounted: function () { }
 };
 </script>

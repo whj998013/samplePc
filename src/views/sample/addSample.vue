@@ -113,7 +113,7 @@
       <material ref="material" v-model="sample.Material" :materials="materialist"></material>
       <Row>
         <Col :xs="24" :sm="12" :md="12" :lg="8">
-        <FormItem label='纱线支数' prop="Counts">
+        <FormItem label='纱线支数'>
           <Input v-model="sample.Counts" placeholder="输入纱线支数">
           </Input>
         </FormItem>
@@ -390,6 +390,7 @@ export default {
       this.validate().then(p => {
         if (p) {
           this.$bus.BeginLoading();
+          console.log('savesample',this.sample);
           this.$util
             .post("/sample/SaveSample", this.sample)
             .then(result => {

@@ -18,26 +18,24 @@
       <Col>
       <Button @click="reload">&emsp;&emsp;刷新&emsp;&emsp;</Button>
       <Button @click="newProof" v-if="$Auth('Sample_MySample_NewSample')" type="primary">新的打样申请</Button>
-
       </Col>
     </Row>
     <Tabs value="name0">
       <TabPane label="当前打样" name="name0">
         <ProofList ref="CurrentProof" action="/MyProof/GetMyProofs" v-model="currnetProofs" @onEdit="edit"></ProofList>
       </TabPane>
-      <TabPane label="历史打样" name="name1">
+      <TabPane label="已完成打样" name="name1">
         <ProofList ref="FinshProof" action="/MyProof/GetMyFinshProofs" v-model="finshProofs"></ProofList>
       </TabPane>
     </Tabs>
     <!-- 新的打样申请  -->
-    <Modal id="newProofModel" v-model="newProofModel" width=80 :title="modelText">
-      <newProof  ref="proofedit" :editMode="editMode"></newProof>
+    <Modal id="newProofModel" v-model="newProofModel" width=80 :title="modelText" :mask-closable='false'>
+      <newProof ref="proofedit" :editMode="editMode"></newProof>
       <div slot="footer">
         <Button size="large" @click="cancelProof">取消</Button>
         <Button type="primary" size="large" @click="saveNewProof">保存</Button>
       </div>
     </Modal>
-
   </div>
 </template>
 
@@ -50,7 +48,7 @@ export default {
     ProofList,
     newProof
   },
-  data: function() {
+  data: function () {
     return {
       editMode: true,
       newProofModel: false,
@@ -97,7 +95,7 @@ export default {
       } else this.$refs.proofedit.NewProof(this.proofNo);
       this.newProofModel = true;
     },
-   
+
     getProofNo() {
       return new Promise((resolve, reject) => {
         this.$util
@@ -111,7 +109,7 @@ export default {
       });
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.$bus.$emit("changeMenuItem", ["打样中心", "我的打样"]);
   }
 };

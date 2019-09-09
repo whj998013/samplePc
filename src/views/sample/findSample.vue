@@ -2,7 +2,7 @@
 </style>
 <template>
   <div>
-    <all-sample havePrint  limtView></all-sample>
+    <all-sample   limtView></all-sample>
   </div>
 </template>
 <script>

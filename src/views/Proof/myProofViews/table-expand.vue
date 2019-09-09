@@ -39,6 +39,10 @@ img {
       <span class="expand-value">{{ row.ProofApplyDeptName }}</span>
       </Col>
       <Col span="8">
+      <span class="expand-key">打样部门: </span>
+      <span class="expand-value">{{ row.ProofDept.DeptName }}</span>
+      </Col>
+      <Col span="8">
       <span class="expand-key">交期: </span>
       <span class="expand-value">{{row.rdate}}</span>
       </Col>
@@ -91,35 +95,41 @@ img {
       <span class="expand-key">打样资料: </span>
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <span v-if="item.FileType==2">
-          <a :href="proofDataUrl+item.Url">{{item.DisplayName }}</a>
+          <a :href="proofDataUrl+item.Url" download>{{item.DisplayName }}</a>
           <Divider type="vertical" />
         </span>
 
       </span>
       </Col>
+
       <Col span="24">
-      <span class="expand-key">工艺文件: </span>
+      <span class="expand-key">工艺文件<span v-if="!row.AlowDownloadFile">(需申请后方可下载)</span>: </span>
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <span v-if="item.FileType==3">
-          <a :href="proofDataUrl+item.Url">{{item.DisplayName }}</a>
+          <a v-if="row.AlowDownloadFile" :href="proofDataUrl+item.Url" download>{{item.DisplayName }}</a>
+          <span v-else>{{item.DisplayName }}</span>
           <Divider type="vertical" />
         </span>
       </span>
       </Col>
       <Col span="24">
-      <span class="expand-key">制版文件: </span>
+      <span class="expand-key">制版文件<span v-if="!row.AlowDownloadFile">(需申请后方可下载)</span>: </span>
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <span v-if="item.FileType==4">
-          <a :href="proofDataUrl+item.Url">{{item.DisplayName }}</a>
+          <a v-if="row.AlowDownloadFile" :href="proofDataUrl+item.Url" download>{{item.DisplayName }}</a>
+          <span v-else>{{item.DisplayName }}</span>
           <Divider type="vertical" />
         </span>
       </span>
+      </Col>
+      <Col v-if="!row.AlowDownloadFile&&row.ProofStatusText=='完成'" span="24">
+      <Button type="info" size="small" @click="applyDownLoad">点击申请下载文件</Button>
       </Col>
       <Col span="24"> <span class="expand-key">样衣图片: </span> </Col>
       <Col span="24">
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <span v-if="item.FileType==0">
-          <img class="maxHeight" :src="proofDataUrl+item.Url"></img>
+          <a :href="proofDataUrl+item.Url" download><img class="maxHeight" :src="proofDataUrl+item.Url"></img></a>
           <Divider type="vertical" />
         </span>
       </span>
@@ -186,7 +196,10 @@ export default {
     async getProofRecord(ProofOrderId) {
       let re = await this.$util.get("/MyProof/GetProofRecord/" + ProofOrderId);
       this.taskList = re.data;
-      console.log("proofRecord", re);
+      //console.log("proofRecord", re);
+    },
+    applyDownLoad() {
+       this.$emit("applyDownloadFile",this.row);
     }
   },
   mounted: function () {

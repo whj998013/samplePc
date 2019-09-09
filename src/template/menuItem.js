@@ -7,46 +7,56 @@ let menuObj = [
         authKey: 'Sample',
         //子菜单
         menuItem: [{
-                name: '/Sample/findSample/',
-                text: '找样衣',
-                authKey: 'Sample_FindSample',
-            },
-            {
-                name: '/Sample/mySample/',
-                text: '我的样衣',
-                authKey: 'Sample_MySample',
-            },
-            {
-                name: '/sample/inOutmange',
-                text: '入库管理',
-                authKey: 'Sample_InOutMange',
-            },
-            {
-                name: '/sample/LendMange',
-                text: '借用管理',
-                authKey: 'Sample_LendMange',
-            },
+            name: '/Sample/findSample/',
+            text: '找样衣',
+            authKey: 'Sample_FindSample',
+        },
+        {
+            name: '/Sample/mySample/',
+            text: '我的样衣',
+            authKey: 'Sample_MySample',
+        },
+        {
+            name: '/sample/inOutmange',
+            text: '入库管理',
+            authKey: 'Sample_InOutMange',
+        },
+        {
+            name: '/sample/LendMange',
+            text: '借用管理',
+            authKey: 'Sample_LendMange',
+        },
 
         ]
     },
-    //成衣仓库
+    //样纱管理
     {
-        subMenuName: 'mangeMenu',
-        iconType: 'ios-clipboard-outline',
-        subMenuText: '成衣仓库',
-        authKey: 'SampleMange',
+        subMenuName: 'YarnMenu',
+        iconType: 'ios-cube-outline',
+        subMenuText: '样纱管理',
+        authKey: 'YarnMange',
         menuItem: [
 
+            {
+                name: '/YarnMange/YarnSeach',
+                text: '样纱查询',
+                authKey: 'Yarn_YarnSeach',
+            },
+            {
+                name: '/YarnMange/MyYarn',
+                text: '我的样纱',
+                authKey: 'Yarn_MyYarn',
+            },
         ]
     },
 
-       //打样管理
-       {
-        subMenuName: 'mangeMenu',
-        iconType: 'ios-clipboard-outline',
+    //打样管理
+    {
+        subMenuName: 'ProofMenu',
+        iconType: 'ios-cut-outline',
         subMenuText: '打样中心',
         authKey: 'Proof',
-        menuItem: [   
+        menuItem: [
             {
                 name: '/Proof/MyProof',
                 text: '我的打样',
@@ -62,7 +72,7 @@ let menuObj = [
             {
                 name: '/Proof/ProofMange',
                 text: '打样管理',
-                authKey:'Proof_ProofMange', 
+                authKey: 'Proof_ProofMange',
 
             },
         ]
@@ -75,18 +85,17 @@ let menuObj = [
         subMenuText: '系统设置',
         authKey: 'SystemMange',
         menuItem: [{
-                name: '/system/RoleSetting',
-                text: '角色权限配置',
-                authKey: 'SystemMange_RoleUserMange',
+            name: '/system/RoleSetting',
+            text: '角色权限配置',
+            authKey: 'SystemMange_RoleUserMange',
 
-            },
-            {
-                name: '/system/SampleSetting',
-                text: '样衣系统配置',
-                authKey:'SystemMange_SampleMange', 
+        },
+        {
+            name: '/system/SampleSetting',
+            text: '系统配置',
+            authKey: 'SystemMange_SampleMange',
 
-            },
-
+        },
         ]
     },
 

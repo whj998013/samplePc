@@ -114,6 +114,22 @@ const routers = [
                 component: (resolve) => require(['./views/Proof/ProofMange.vue'], resolve)
             },
             
+            {
+                path: '/YarnMange/MyYarn',
+                meta: {
+                    title: '我的样纱',
+                    requireAuth: true,
+                },
+                component: (resolve) => require(['./views/YarnMange/MyYarn.vue'], resolve)
+            },
+            {
+                path: '/YarnMange/YarnSeach',
+                meta: {
+                    title: '样纱查询',
+                    requireAuth: true,
+                },
+                component: (resolve) => require(['./views/YarnMange/YarnSeach.vue'], resolve)
+            },
 
             {
                 path: '/system/RoleSetting',

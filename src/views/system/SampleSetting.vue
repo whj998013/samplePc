@@ -4,29 +4,33 @@
   <div>
     <!-- <Tabs value="name0">
       <TabPane label="样衣系统配置" name="name0"> -->
-        <Form>
-          <FormItem label='入库申请后需管理员审批后方可入库：'>
-            <Switch v-model="Setting.IsInputStrageNeedAlow" />
-          </FormItem>
-          <FormItem label='入库后入库人员仍可修改删除样衣信息：'>
-            <Switch v-model="Setting.InStrageAlowChange" />
-          </FormItem>
-          <FormItem label='启用受限视图：'>
-            <Switch v-model="Setting.EnableLimtView" />
-          </FormItem>
-          <FormItem label='所有样衣可外借：'>
-            <Switch v-model="Setting.AllSampleCanLend" />
-          </FormItem>
-          <Button type="primary" @click="saveSetting">保存</Button>
-        </Form>
-      <!-- </TabPane>
+    <Form>
+      <Divider>样衣系统配置</Divider>
+      <FormItem label='入库申请后需管理员审批后方可入库：'>
+        <Switch v-model="Setting.IsInputStrageNeedAlow" />
+      </FormItem>
+      <FormItem label='入库后入库人员仍可修改删除样衣信息：'>
+        <Switch v-model="Setting.InStrageAlowChange" />
+      </FormItem>
+      <FormItem label='启用受限视图：'>
+        <Switch v-model="Setting.EnableLimtView" />
+      </FormItem>
+      <FormItem label='所有样衣可外借：'>
+        <Switch v-model="Setting.AllSampleCanLend" />
+      </FormItem>
+      <Button type="primary" @click="saveSetting">保存</Button>
+      <Divider>毛纱系统配置</Divider>
+      <Button type="primary" @click="YarnStockCorrect">毛纱库存小数位修正</Button>
+
+    </Form>
+    <!-- </TabPane>
     </Tabs> -->
   </div>
 </template>
 <script>
 //import bus from "../bus.js";
 export default {
-  data: function() {
+  data: function () {
     return {
       Setting: {
         IsInputStrageNeedAlow: false,
@@ -47,13 +51,19 @@ export default {
         });
         this.$bus.EndLoading();
       });
+    },
+    async YarnStockCorrect() {
+      this.$bus.BeginLoading();
+      await this.$util.get("/YarnSetting/YarnStockCorrect");
+      this.$bus.EndLoading();
     }
+
   },
-  mounted: function() {
+  mounted: function () {
     this.$bus.getSystemSetting().then(re => {
       this.Setting = re;
     });
-    this.$bus.$emit("changeMenuItem", ["系统设置","样衣系统配置"]);
+    this.$bus.$emit("changeMenuItem", ["系统设置", "样衣系统配置"]);
   }
 };
 </script>

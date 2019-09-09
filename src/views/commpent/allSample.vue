@@ -15,7 +15,7 @@
 
 <template>
   <div>
-    <Row type="flex" class="menuid">
+    <Row type="flex" class="menuid" justify="space-between">
       <Col span='8'>
       <Input search enter-button  placeholder="输入搜索" v-model="seachObj.keyWord" @on-enter="beginSeach" @on-search="beginSeach" style="width: 100%" />
       </Col>
@@ -23,7 +23,7 @@
       <p class="box">&nbsp&nbsp&nbsp入库时间：</p>
       <DatePicker v-model="dateValue" @on-change="handDateChange" format="yyyy/MM/dd" type="daterange" placement="bottom-end" placeholder="选择时间段" style="width: 70%"></DatePicker>
       </Col>
-      <Col span='4'>
+      <Col >
        <Button @click="reload">&emsp;&emsp;刷新&emsp;&emsp;</Button>
       </Col>
     </Row>

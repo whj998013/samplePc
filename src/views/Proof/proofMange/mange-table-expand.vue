@@ -21,6 +21,10 @@ img {
       <span class="expand-value">{{ row.ProofApplyDeptName }}</span>
       </Col>
       <Col span="8">
+      <span class="expand-key">打样部门: </span>
+      <span class="expand-value">{{ row.ProofDept.DeptName }}</span>
+      </Col>
+      <Col span="8">
       <span class="expand-key">交期: </span>
       <span class="expand-value">{{row.rdate}}</span>
       </Col>
@@ -31,6 +35,10 @@ img {
       <Col span="8">
       <span class="expand-key">款名: </span>
       <span class="expand-value">{{ row.ProofStyle.StyleName }}</span>
+      </Col>
+      <Col span="8">
+      <span class="expand-key">客户: </span>
+      <span class="expand-value">{{ row.ProofStyle.ClentName }}</span>
       </Col>
       <Col span="8">
       <span class="expand-key">客户款名: </span>
@@ -72,7 +80,7 @@ img {
       <span class="expand-key">打样资料: </span>
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <span v-if="item.FileType==2">
-          <a :href="proofDataUrl+item.Url">{{item.DisplayName }}</a>
+          <a :href="proofDataUrl+item.Url" download>{{item.DisplayName }}</a>
           <Divider type="vertical" />
         </span>
       </span>
@@ -81,7 +89,7 @@ img {
       <span class="expand-key">工艺文件: </span>
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <span v-if="item.FileType==3">
-          <a :href="proofDataUrl+item.Url">{{item.DisplayName }}</a>
+          <a :href="proofDataUrl+item.Url" download>{{item.DisplayName }}</a>
           <Divider type="vertical" />
         </span>
       </span>
@@ -90,7 +98,7 @@ img {
       <span class="expand-key">制版文件: </span>
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <span v-if="item.FileType==4">
-          <a :href="proofDataUrl+item.Url">{{item.DisplayName }}</a>
+          <a :href="proofDataUrl+item.Url" download>{{item.DisplayName }}</a>
           <Divider type="vertical" />
         </span>
       </span>
@@ -100,19 +108,33 @@ img {
       <Col span="24">
       <span class="expand-value" v-for="item in row.ProofStyle.ProofFiles">
         <span v-if="item.FileType==0">
-          <img class="maxHeight" :src="proofDataUrl+item.Url"></img>
+          <a :href="proofDataUrl+item.Url" download><img class="maxHeight" :src="proofDataUrl+item.Url"></img></a>
           <Divider type="vertical" />
         </span>
       </span>
       </Col>
 
     </Row>
-    <br /> 
+    <Row>
+      <Col span="22">
+      <span class="expand-key">生产记录: </span>
+      <Table size="small" :columns="columns1" :data="taskList">
+        <template slot-scope="{ row, index }" slot="finshDate">
+          {{row.FinshDate==null?"":JSON.stringify(row.FinshDate ).substring(1, 11)+" "+JSON.stringify(row.FinshDate ).substring(12, 20)}}
+        </template>
         <template slot-scope="{ row, index }" slot="beginDate">
           {{row.BeginDate==null?"":JSON.stringify(row.BeginDate ).substring(1, 11)+" "+JSON.stringify(row.BeginDate ).substring(12, 20)}}
         </template>
       </Table>
       </Col>
+    </Row>
+
+    <br />
+    <template slot-scope="{ row, index }" slot="beginDate">
+      {{row.BeginDate==null?"":JSON.stringify(row.BeginDate ).substring(1, 11)+" "+JSON.stringify(row.BeginDate ).substring(12, 20)}}
+    </template>
+    </Table>
+    </Col>
     </Row>
     <br>
     <hr color=#e8eaec size=1>
@@ -159,12 +181,11 @@ export default {
     async getProofRecord(ProofOrderId) {
       let re = await this.$util.get("/MyProof/GetProofRecord/" + ProofOrderId);
       this.taskList = re.data;
-      console.log("proofRecord", re);
     }
   },
   mounted: function () {
 
-    console.log("ProofRow", this.row);
+    //  console.log("ProofRow", this.row);
     this.getProofRecord(this.row.ProofOrderId);
 
   },

@@ -15,7 +15,6 @@ export default {
       isLoading: false,
       isRouterAlive: true
     };
-    
   },
   mounted() {},
   methods: {

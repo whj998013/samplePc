@@ -143,6 +143,73 @@ let ColorHelp = {
             hab = 360 + h;
         }
         return hab;
-    }
+    },
+    rgbToLab:function(rgb){
+     var r=parseInt(rgb.substring(1,3),16);
+     var g=parseInt(rgb.substring(3,5),16);
+     var b=parseInt(rgb.substring(5,7),16);
+     return this.rgb2lab(r,g,b);
+
+    },
+
+
+     rgb2lab:function(R, G, B){
+        var r = R / 255.000; // rgb range: 0 ~ 1
+            var g = G / 255.000;
+            var b = B / 255.000;
+            // gamma 2.2
+            if ( r > 0.04045 ){
+                r = Math.pow(( r + 0.055 ) / 1.055, 2.4);
+            } else {
+                r = r / 12.92;
+            }
+            if ( g > 0.04045 ){
+                g = Math.pow(( g + 0.055 ) / 1.055, 2.4);
+            } else {
+                g = g / 12.92;
+            }
+            if ( b > 0.04045 ){
+                b = Math.pow(( b + 0.055 ) / 1.055, 2.4);
+            } else {
+                b = b / 12.92;
+            }
+            // sRGB
+            var X = r * 0.436052025 + g * 0.385081593 + b * 0.143087414;
+            var Y = r * 0.222491598 + g * 0.716886060 + b * 0.060621486;
+            var Z = r * 0.013929122 + g * 0.097097002 + b * 0.714185470;
+            // XYZ range: 0~100
+            X = X * 100.000;
+            Y = Y * 100.000;
+            Z = Z * 100.000;
+            // Reference White Point
+            var ref_X = 96.4221;
+            var ref_Y = 100.000;
+            var ref_Z = 82.5211;
+            X = X / ref_X;
+            Y = Y / ref_Y;
+            Z = Z / ref_Z;
+            // Lab
+            if (X > 0.008856){
+                X = Math.pow(X, 1/3.000);
+            } else {
+                X = ( 7.787 * X ) + ( 16 / 116.000 );
+            }
+            if (Y > 0.008856){
+                Y = Math.pow(Y, 1/3.000);
+            } else {
+                Y = ( 7.787 * Y ) + ( 16 / 116.000 );
+            }
+            if (Z > 0.008856){
+                Z = Math.pow(Z, 1/3.000);
+            } else {
+                Z = ( 7.787 * Z ) + ( 16 / 116.000 );
+            }
+     
+            var lab_L = ( 116.000 * Y ) - 16.000;
+            var lab_A = 500.000 * ( X - Y );
+            var lab_B = 200.000 * ( Y - Z );
+     
+            return [lab_L, lab_A , lab_B];
+        }
 };
 export default ColorHelp;

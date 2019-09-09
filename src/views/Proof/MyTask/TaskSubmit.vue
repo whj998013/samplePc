@@ -139,7 +139,7 @@ export default {
       this.currentTask.proofId = row.ProofOrderId;
       this.currentTask.taskId = row.Id;
       let filetype = 3;
-      if (row.ProcessName == "制版") filetype = 4;
+      if (row.ProcessName == "程序") filetype = 4;
       this.uploadList = re.data.ProofStyle.ProofFiles.filter(item => {
         return item.FileType == filetype;
       });

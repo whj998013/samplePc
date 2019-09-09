@@ -1,5 +1,6 @@
 import Vue from 'vue';
-import cookie from "./libs/cookie.js"
+import cookie from "./libs/cookie.js";
+import doAjax from "./libs/doAjax.js"
 export default new Vue({
     data() {
         return {
@@ -57,7 +58,6 @@ export default new Vue({
             return new Promise((resolve, reject) => {
                 if (this.selectData == null) {
                     this.$util.get("/Public/GetSelectList").then(result => {
-                        console.log("getSelectDate");
                         this.selectData=result.data;
                         resolve(result.data);
                     }).catch(re => {
@@ -68,8 +68,8 @@ export default new Vue({
 
         },
         alert(alertstr) {
-            this.$Notice.error({
-                title: "错误",
+            this.$Notice.warning({
+                title: "警告",
                 desc:  alertstr,
                 duration: 4
             });
@@ -92,5 +92,8 @@ export default new Vue({
             this.$bus.$emit("EndLoading", "");
         }
     },
-
+    created(){
+        
+    }
+    
 });
