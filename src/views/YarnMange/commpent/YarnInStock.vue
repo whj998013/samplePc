@@ -21,6 +21,9 @@
         <template slot-scope="{ row }" slot="date">
           {{ $util.getGmtDate(row.CreateTime)}}
         </template>
+        <template slot-scope="{ row, index }" slot="action">
+          <Button @click="outStock(row)" type="primary" size="small">用纱申请</Button>
+        </template>
       </Table>
     </Row>
     <br>
@@ -197,9 +200,17 @@ export default {
           title: "入库时间",
           key: "CreateTime",
           sortable: true,
-          minWidth: 180,
+          minWidth: 160,
           slot: "date",
         },
+
+        {
+          title: "操作",
+          slot: "action",
+          align: "center",
+          minWidth: 100,
+          fixed: 'right'
+        }
 
       ]
     };
@@ -208,10 +219,13 @@ export default {
     exportData() {
       this.$refs.table.exportCsv({ filename: "入库信息", separator: " , " });
     },
-
+    outStock(row) {
+      console.log('OutStock', row);
+      this.$bus.$emit('OutStock', row);
+    },
     async exportAllData() {
       let page = JSON.parse(JSON.stringify(this.page));
-      page.pageId=1;
+      page.pageId = 1;
       page.pageSize = 65535;
       let re = await this.$util.post(this.action, page);
       await this.GetData();

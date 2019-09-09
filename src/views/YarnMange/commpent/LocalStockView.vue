@@ -12,6 +12,9 @@
       <template slot-scope="{ row }" slot="date">
         {{ $util.getGmtDate(row.CreateTime)}}
       </template>
+         <template slot-scope="{ row, index }" slot="action">
+          <Button @click="outStock(row)"  type="primary" size="small">用纱申请</Button>
+        </template>
     </Table>
     <br>
     <Row v-if="showPage">
@@ -125,11 +128,22 @@ export default {
           minWidth: 180,
           slot: "date",
         },
+         {
+          title: "操作",
+          slot: "action",
+          align: "center",
+          minWidth: 100,
+          fixed: 'right'
+        }
 
       ]
     };
   },
   methods: {
+    outStock(row){
+      console.log('OutStock',row);
+      this.$bus.$emit('OutStock',row);
+    },
     pageChange(pageid) {
       this.page.pageId = pageid;
       this.$emit("pageChange", this.page);

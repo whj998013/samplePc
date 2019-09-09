@@ -1,5 +1,6 @@
 import Vue from 'vue';
-import cookie from "./libs/cookie.js"
+import cookie from "./libs/cookie.js";
+import doAjax from "./libs/doAjax.js"
 export default new Vue({
     data() {
         return {
@@ -91,5 +92,7 @@ export default new Vue({
             this.$bus.$emit("EndLoading", "");
         }
     },
-
+    created(){
+        
+    }
 });

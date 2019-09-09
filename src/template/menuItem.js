@@ -92,7 +92,7 @@ let menuObj = [
         },
         {
             name: '/system/SampleSetting',
-            text: '样衣系统配置',
+            text: '系统配置',
             authKey: 'SystemMange_SampleMange',
 
         },
