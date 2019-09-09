@@ -94,6 +94,13 @@ export default new Vue({
     },
     created(){
         
+<<<<<<< HEAD
     }
     
+=======
+
+
+        
+    }
+>>>>>>> dev
 });
