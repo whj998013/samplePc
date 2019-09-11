@@ -21,6 +21,7 @@
         <YarnOutStock :dept="dept" ref="yarnOut" action="/MyYarn/GetMyYarnOutStock"></YarnOutStock>
       </TabPane>
     </Tabs>
+    <OutStockApply></OutStockApply>
   </div>
 </template>
 <script>
@@ -28,12 +29,14 @@
 import DeptSelect from "../commpent/deptSelect.vue"
 import YarnOutStock from "./commpent/YarnOutStock.vue";
 import YarnInStock from "./commpent/YarnInStock.vue";
+import OutStockApply from "./commpent/outStockApply";
 
 export default {
   components: {
     YarnInStock,
     YarnOutStock,
     DeptSelect,
+    OutStockApply
   },
   data: function () {
     return {

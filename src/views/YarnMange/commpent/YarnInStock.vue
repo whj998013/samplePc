@@ -220,7 +220,6 @@ export default {
       this.$refs.table.exportCsv({ filename: "入库信息", separator: " , " });
     },
     outStock(row) {
-      console.log('OutStock', row);
       this.$bus.$emit('OutStock', row);
     },
     async exportAllData() {

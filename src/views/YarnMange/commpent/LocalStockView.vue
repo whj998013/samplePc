@@ -141,7 +141,6 @@ export default {
   },
   methods: {
     outStock(row){
-      console.log('OutStock',row);
       this.$bus.$emit('OutStock',row);
     },
     pageChange(pageid) {

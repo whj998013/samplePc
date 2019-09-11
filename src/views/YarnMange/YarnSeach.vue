@@ -47,18 +47,21 @@
     </Row>
     <br>
     <LocalStockView v-model="YarnList" :page="pageObj" @pageChange="pageChange" :showPage="showPage"></LocalStockView>
+    <OutStockApply></OutStockApply>
   </div>
 </template>  
 <script>
 //import bus from "../bus.js";
 import LocalStockView from "./commpent/LocalStockView.vue";
+import OutStockApply from "./commpent/outStockApply";
 import ColorHelp from "../../libs/ColorHelp";
 
 
 export default {
   inject: ["reload"],
   components: {
-    LocalStockView
+    LocalStockView,
+    OutStockApply
   },
   data: function () {
     return {
