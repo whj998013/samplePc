@@ -10,6 +10,9 @@
         <template slot-scope="{ row }" slot="num">
           {{ row.Num.toFixed(2) }}
         </template>
+        <template slot-scope="{ row }" slot="minNum">
+          {{ row.MinNum.toFixed(2) }}
+        </template>
         <template slot-scope="{ row }" slot="inStorNum">
           <a class="link" @click="showOutStock(row)" v-if="row.Num!=row.InStorNum">
             <Badge status="processing"></Badge>{{ row.InStorNum==null?0:row.InStorNum.toFixed(2) }}
@@ -19,10 +22,11 @@
           </p>
         </template>
         <template slot-scope="{ row }" slot="date">
-          {{ $util.getGmtDate(row.CreateTime)}}
+          {{ $util.getGmtDate(row.ApplyDate)}}
         </template>
-        <template slot-scope="{ row, index }" slot="action">
-          <Button @click="outStock(row)" type="primary" size="small">用纱申请</Button>
+        <template slot-scope="{ row }" slot="stats">
+
+          <div v-html="$util.getState(row.Stats)"></div>
         </template>
       </Table>
     </Row>
@@ -105,6 +109,13 @@ export default {
       tableData: [],
       columns: [
         {
+          title: "申请人",
+          key: "ApplyEmpName",
+          sortable: true,
+          minWidth: 130
+
+        },
+        {
           title: "纱名",
           key: "ProductName",
           sortable: true,
@@ -120,7 +131,15 @@ export default {
           minWidth: 100
         },
         {
-          title: "入库数(KG)",
+          title: "申请数(KG)",
+          key: "MinNum",
+          slot: "minNum",
+          fixed: "left",
+          sortable: true,
+          minWidth: 120
+        },
+        {
+          title: "出库数(KG)",
           key: "Num",
           slot: "num",
           fixed: "left",
@@ -128,12 +147,12 @@ export default {
           minWidth: 120
         },
         {
-          title: "库存数(KG)",
-          key: "InStorNum",
-          slot: "inStorNum",
+          title: "状态",
+          key: "Stats",
+          slot: "stats",
           fixed: "left",
           sortable: true,
-          minWidth: 120
+          minWidth: 100
         },
         {
           title: "支数",
@@ -152,14 +171,20 @@ export default {
 
         },
         {
-          title: "入库单号",
-          key: "OrderNum",
-          minWidth: 100
+          title: "出库单号",
+          key: "NO",
+          minWidth: 110
 
         },
         {
           title: "入库价",
           key: "InPrice",
+          minWidth: 100
+
+        },
+        {
+          title: "出库价",
+          key: "OutPrice",
           minWidth: 100
 
         },
@@ -170,11 +195,6 @@ export default {
 
         },
         {
-          title: "库位",
-          key: "LocalName",
-          minWidth: 80
-
-        }, {
           title: "查询码",
           key: "BarCode",
           minWidth: 80
@@ -182,35 +202,30 @@ export default {
         },
         {
           title: "入库人",
-          key: "UserName",
+          key: "YarnOwerEmpName",
           sortable: true,
           minWidth: 100
         },
         {
           title: "入库部门",
-          key: "DeptName",
+          key: "YarnOwerDeptName",
           sortable: true,
           minWidth: 100
         },
         {
-          title: "供应商",
-          key: "SupName",
+          title: "申请部门",
+          key: "ApplyDeptName",
+          sortable: true,
           minWidth: 100
-        }, {
-          title: "入库时间",
-          key: "CreateTime",
+        },
+        {
+          title: "申请时间",
+          key: "ApplyDate",
           sortable: true,
           minWidth: 160,
           slot: "date",
         },
 
-        {
-          title: "操作",
-          slot: "action",
-          align: "center",
-          minWidth: 100,
-          fixed: 'right'
-        }
 
       ]
     };
@@ -267,6 +282,7 @@ export default {
       if (dept != undefined) this.page.deptIdList = dept;
       else this.page.deptIdList = this.dept;
       let re = await this.$util.post(this.action, this.page);
+      console.log(re);
       this.page.pageId = re.data.SeachObj.PageId;
       this.page.pageSize = re.data.SeachObj.PageSize;
       this.page.total = re.data.SeachObj.Total;

@@ -71,7 +71,7 @@
         <Divider>毛纱信息</Divider>
         <Col :xs="24" :sm="24" :md="24" :lg="24">
         <FormItem label='原料纱'>
-          <Button @click="outStockSelect">关联样纱出库单...</Button>
+          <Button @click="outStockSelect" >关联样纱出库单...</Button>
         </FormItem>
         </Col>
         <Col :xs="24" :sm="12" :md="12" :lg="8">
@@ -136,7 +136,7 @@
       </Form>
     </div>
     <div>
-      <outStockSelect ref="oss"></outStockSelect>
+      <outStockSelect ref="oss" @SelectedYarn="selectedYarn"></outStockSelect>
     </div>
   </div>
 </template>
@@ -236,8 +236,10 @@ export default {
   },
 
   methods: {
+    selectedYarn(yanrlist){
+      console.log(yanrlist);
+    },
     outStockSelect(){
-      
        this.$refs.oss.show();
     },
     filterMethod(value, option) {

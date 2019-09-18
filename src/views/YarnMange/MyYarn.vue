@@ -20,6 +20,9 @@
       <TabPane label="用纱记录" name="name2">
         <YarnOutStock :dept="dept" ref="yarnOut" action="/MyYarn/GetMyYarnOutStock"></YarnOutStock>
       </TabPane>
+      <TabPane label="用纱申请" name="name3">
+        <OutStockApplyView :dept="dept" ref="outApply" action="/YarnOutStock/GetYarnOutApplyList"></OutStockApplyView>
+      </TabPane>
     </Tabs>
     <OutStockApply></OutStockApply>
   </div>
@@ -30,13 +33,15 @@ import DeptSelect from "../commpent/deptSelect.vue"
 import YarnOutStock from "./commpent/YarnOutStock.vue";
 import YarnInStock from "./commpent/YarnInStock.vue";
 import OutStockApply from "./commpent/outStockApply";
+import OutStockApplyView from "./commpent/outStockApplyView";
 
 export default {
   components: {
     YarnInStock,
     YarnOutStock,
     DeptSelect,
-    OutStockApply
+    OutStockApply,
+    OutStockApplyView
   },
   data: function () {
     return {
@@ -47,6 +52,8 @@ export default {
     reload() {
       this.$refs.yarnIn.reload(this.dept);
       this.$refs.yarnOut.reload(this.dept);
+      this.$refs.outApply.reload(this.dept);
+
     },
 
   },

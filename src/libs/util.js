@@ -44,6 +44,16 @@ let util = {
     getID(length) {
         return Number(Math.random().toString().substr(3, length) + Date.now()).toString(36);
     },
+    getState(v) {
+        if (v == 0) return "<p style='color:#515a6e'>仓库退回</p>";
+        else if (v == 1) return "<p style='color:#19be6b'>草拟</p>";
+        else if (v == 2) return "<p style='color:#ff9900'>审批中</p>";
+        else if (v == 3) return "<p style='color:#2db7f5'>通过</p>";
+        else if (v == 4) return "<p style='color:#2d8cf0'>已出库</p>";
+        else if (v == 10) return "<p style='color:#ed4014'>拒绝|撤回</p>";
+        else if (v == 11) return "<p style='color:#ed4014'>出库失败</p>";
+        else return "";
+      },
 
     // 二维码生成方法
     qrcode(id, text, width, callBack) {
@@ -78,30 +88,17 @@ util.title = function (title) {
     title = title ? title + ' - 样衣管理' : '样衣管理系统';
     window.document.title = title;
 };
-// util.PrintUrl = env === 'development' ?
-//     'http://api.sungingroup.com:8081/sampleinfo/' : 'http://app.sungingroup.com:8081/sampleinfo/'
-// const ajaxUrl = env === 'development' ?
-//     'http://api.sungingroup.com:8082' : 'http://app.sungingroup.com:8082';
-//let isDevelopment= env === 'development';
-
-//debugger;
-
 let protocol = document.location.protocol;
 let port = document.location.port;
 let hostName = document.location.hostname;
-//let fullhost = protocol + "//" + hostName;
 
 util.PrintUrl = 'http:' + "//" + hostName + ":8081" + "/sampleinfo/";
 let ajaxUrl = protocol === "http:" ? "http://" + hostName + ":8082" : "https://" + hostName + ":8182";
 let dataBaseUrl = env === 'development' ? '/file' : '/file';
 
-
-
 util.dataUrl = dataBaseUrl + "/src/sample";
 util.proofDataUrl = dataBaseUrl;
 util.baseUrl = ajaxUrl + "/api";
-//util.baseUrl = "/api";
-//debugger;
 
 util.ajax = axios.create({
     baseURL: util.baseUrl,
