@@ -41,7 +41,7 @@
       <Button @click="exportAllData">导出全部数据</Button>
       </Col>
     </Row>
-    <YarnOutModel ref="yom"></YarnOutModel>
+    <YarnOutModel v-model="tableData" ref="yom"></YarnOutModel>
   </div>
 </template>
 <script>

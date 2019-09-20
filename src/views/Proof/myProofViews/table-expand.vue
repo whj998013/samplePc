@@ -62,19 +62,33 @@ img {
       <span class="expand-key">克重: </span>
       <span class="expand-value">{{ row.ProofStyle.Weight }}g</span>
       </Col>
-      <Col span="8">
-      <span class="expand-key">支数: </span>
-      <span class="expand-value">{{ row.ProofStyle.Counts }}</span>
-      </Col>
+
       <Col span="8">
       <span class="expand-key">针型: </span>
       <span class="expand-value">{{ row.ProofStyle.Gauge }}</span>
       </Col>
-      <Col span="8">
-      <span class="expand-key">成份: </span>
-      <span class="expand-value">{{ row.ProofStyle.Material }}</span>
+      </Row>
+      <Row>
+      <Divider />
+      <Col span="23" v-show="!row.YarnSelfProvide">
+       <span class="expand-key">原料信息: </span>
+      <Table border :columns="yarn.columns" :data="row.YarnApplys"></Table>
+
       </Col>
+      <div v-show="row.YarnSelfProvide">
+        <Col span="8">
+        <span class="expand-key">支数: </span>
+        <span class="expand-value">{{ row.ProofStyle.Counts }}</span>
+        </Col>
+        <Col span="8">
+        <span class="expand-key">成份: </span>
+        <span class="expand-value">{{ row.ProofStyle.Material }}</span>
+        </Col>
+
+      </div>
+
     </Row>
+    <Divider />
     <Row>
       <Col span="8">
       <span class="expand-key">指定工艺员: </span>
@@ -135,8 +149,9 @@ img {
       </span>
       </Col>
     </Row>
-    </br>
+
     <!-- <hr color=#e8eaec size=1> -->
+    <Divider />
     <Row>
       <Col span="22">
       <span class="expand-key">生产记录: </span>
@@ -190,6 +205,44 @@ export default {
         }
 
       ],
+      yarn: {
+        columns: [
+          {
+            title: "单号",
+            key: "NO",
+            minWidth: 110
+          },
+           {
+            title: "出库单号",
+            key: "OrderNum",
+            minWidth: 130
+          },
+          {
+            title: "纱名",
+            key: "ProductName",
+            minWidth: 130
+          },
+          {
+            title: "颜色",
+            key: "Color",
+            minWidth: 100
+          },
+          {
+            title: "出库数(KG)",
+            key: "Num",
+            minWidth: 120
+          },
+          {
+            title: "支数",
+            key: "Count",
+            minWidth: 80
+          }, {
+            title: "成份",
+            key: "Size",
+            minWidth: 200
+          },
+        ],
+      }
     };
   },
   methods: {
@@ -199,7 +252,7 @@ export default {
       //console.log("proofRecord", re);
     },
     applyDownLoad() {
-       this.$emit("applyDownloadFile",this.row);
+      this.$emit("applyDownloadFile", this.row);
     }
   },
   mounted: function () {

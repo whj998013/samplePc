@@ -106,6 +106,7 @@ export default {
     return {
       newOutStockApplyModel: false,
       row: {},
+      isApply: true,
       outStockOrder: {
         Num: 0,
         CusName: '',
@@ -126,7 +127,7 @@ export default {
         this.outStockOrder.Num = 0;
         this.outStockOrder.CusName = '';
         this.outStockOrder.CusAddress = '';
-        this.outStockOrder.ReceivingInfo='';
+        this.outStockOrder.ReceivingInfo = '';
         this.row = nso;
       }
       this.newOutStockApplyModel = true;
@@ -135,22 +136,31 @@ export default {
       this.newOutStockApplyModel = false;
     },
 
-   async  saveApply() {
-      if (this.outStockOrder.Num > 0 && this.outStockOrder.CusName != '') {
-        this.outStockOrder.BatchNum = this.row.BatchNum;
-        console.log(this.outStockOrder);
-        await this.$util.post('/YarnOutStock/NewYarnOutApply',this.outStockOrder);
-        this.$Notice.success({
-          title: '成功',
-          desc: '已发出出库申请，正在等待审批，请在钉钉查看审批进程及结果。'
-        });
-        this.newOutStockApplyModel=false;
-      } else {
-        this.$Notice.warning({
-          title: '输入错误',
-          desc: '请输入申请出库数量、收货单位'
-        });
+    async  saveApply() {
+      let _this=this;
+      if (this.isApply) {
+        this.isApply = false;
+        if (this.outStockOrder.Num > 0 && this.outStockOrder.CusName != '') {
+          this.outStockOrder.BatchNum = this.row.BatchNum;
+          console.log(this.outStockOrder);
+          await this.$util.post('/YarnOutStock/NewYarnOutApply', this.outStockOrder);
+          this.$Notice.success({
+            title: '成功',
+            desc: '已发出出库申请，正在等待审批，请在钉钉查看审批进程及结果。'
+          });
+          this.newOutStockApplyModel = false;
+        } else {
+          this.$Notice.warning({
+            title: '输入错误',
+            desc: '请输入申请出库数量、收货单位'
+          });
+        }
+        setTimeout(function () {
+          _this.isApply  = true;
+          console.log("apply is ture");
+        }, 1000);//一秒内不能重
       }
+
     },
 
 

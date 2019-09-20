@@ -64,24 +64,37 @@
         </FormItem>
         </Col>
         <Col :xs="24" :sm="12" :md="12" :lg="8">
-        <FormItem label='克重(g)' prop="Weight"  v-if="false">
+        <FormItem label='克重(g)' prop="Weight" v-if="false">
           <InputNumber :step=50 style="width:100%" v-model="proof.Weight "></InputNumber>
         </FormItem>
         </Col>
         <Divider>毛纱信息</Divider>
-        <Col :xs="24" :sm="24" :md="24" :lg="24">
-        <FormItem label='原料纱'>
-          <Button @click="outStockSelect" >关联样纱出库单...</Button>
+
+        <Col span="24">
+        <FormItem label='原料来源'>
+          <Checkbox v-model="proof.YarnSelfProvide">毛纱自供</Checkbox>
         </FormItem>
         </Col>
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <Col span="24" v-show="!proof.YarnSelfProvide">
+        <FormItem>
+          <Button @click="outStockSelect">关联样纱出库单...</Button>
+        </FormItem>
+        </Col>
+
+        <Col :xs="24" :sm="12" :md="12" :lg="8" v-show="proof.YarnSelfProvide">
         <FormItem label="纱支">
           <Input v-model="proof.Counts" placeholder="纱支"></Input>
         </FormItem>
         </Col>
-        <Col :xs="24" :sm="12" :md="12" :lg="8">
+        <Col :xs="24" :sm="12" :md="12" :lg="8" v-show="proof.YarnSelfProvide">
         <FormItem label="成份">
           <Input v-model="proof.Material" placeholder="成份"></Input>
+        </FormItem>
+        </Col>
+
+        <Col span="24" v-show="!proof.YarnSelfProvide">
+        <FormItem label="原料表">
+          <Table border :columns="yarn.columns" :data="proof.YarnApplys"></Table>
         </FormItem>
         </Col>
 
@@ -136,7 +149,7 @@
       </Form>
     </div>
     <div>
-      <outStockSelect ref="oss" @SelectedYarn="selectedYarn"></outStockSelect>
+      <outStockSelect ref="oss" v-model="yarn.list" @selected="selectedYarn"></outStockSelect>
     </div>
   </div>
 </template>
@@ -183,12 +196,14 @@ export default {
         Weight: 0,
         Gauge: "",
         FileList: [],
+        YarnApplys: [],
         FinshDate: "",
         ProofNum: 1,
         Urgency: "一般",
         DesignatedGY: "",
         DesignatedCX: "",
-        Remark: ""
+        Remark: "",
+        YarnSelfProvide: false,
       },
       proofRuleValidate: {
         ClentName: [
@@ -231,16 +246,58 @@ export default {
             trigger: "change"
           }
         ]
+      },
+
+      yarn: {
+        list: [],
+        columns: [
+          {
+            title: "单号",
+            key: "NO",
+            minWidth: 110
+          },
+           {
+            title: "出库单号",
+            key: "OrderNum",
+            minWidth: 130
+          },
+          {
+            title: "纱名",
+            key: "ProductName",
+            minWidth: 130
+          },
+          {
+            title: "颜色",
+            key: "Color",
+            minWidth: 100
+          },
+          {
+            title: "出库数(KG)",
+            key: "Num",
+            minWidth: 120
+          },
+          {
+            title: "支数",
+            key: "Count",
+            minWidth: 80
+          }, {
+            title: "成份",
+            key: "Size",
+            minWidth: 200
+          },
+        ],
       }
     };
   },
 
   methods: {
-    selectedYarn(yanrlist){
-      console.log(yanrlist);
+    selectedYarn(yanrlist) {
+      this.proof.YarnApplys = yanrlist.slice();
+      console.log("ok",yanrlist);
     },
-    outStockSelect(){
-       this.$refs.oss.show();
+    outStockSelect() {
+      this.yarn.list=this.proof.YarnApplys.slice();
+      this.$refs.oss.show();
     },
     filterMethod(value, option) {
       return option.toUpperCase().indexOf(value.toUpperCase()) !== -1;
@@ -278,6 +335,8 @@ export default {
     ///输入验证
     validate() {
       let _this = this;
+
+
       return new Promise((resolve, reject) => {
         _this.$refs.proof.validate(v => {
           resolve(v);
@@ -343,10 +402,12 @@ export default {
       this.proof.Gauge = "";
       this.proof.ProofNum = 1;
       this.proof.FileList.length = 0;
+      this.proof.YarnApplys.length=0;
       this.proof.DesignatedGY = "不指定";
       this.proof.DesignatedCX = "不指定";
       this.proof.Remark = "";
       this.proof.Urgency = "一般";
+      this.proof.YarnSelfProvide=false;
     },
     BeginEdit(proofobj) {
       console.log("obj", proofobj);
@@ -366,10 +427,12 @@ export default {
       this.proof.Gauge = proofobj.ProofStyle.Gauge;
       this.proof.FinshDate = proofobj.RequiredDate;
       this.proof.ProofNum = proofobj.ProofNum;
+      this.proof.YarnApplys=proofobj.YarnApplys.slice();;
       this.proof.Remark = proofobj.Remark;
       this.proof.Urgency = proofobj.Urgency;
       this.proof.DesignatedGY = proofobj.DesignatedGY;
       this.proof.DesignatedCX = proofobj.DesignatedCX;
+      this.proof.YarnSelfProvide=proofobj.YarnSelfProvide;
       this.proof.FileList = proofobj.ProofStyle.ProofFiles.slice();
       console.log("proof", this.proof);
     },

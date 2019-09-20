@@ -34,7 +34,7 @@
         </template>
       </Table>
       <Divider>已选择出库单</Divider>
-      <Table border :columns="columns" :data="selectYarn">
+      <Table border :columns="columns" :data="value">
         <template slot-scope="{ row }" slot="color">
           <span :style="'background-color:'+row.RGB">&emsp;&emsp;</span>{{ row.Color }}
         </template>
@@ -69,6 +69,7 @@ export default {
   components: {
 
   },
+  props: { value: Array },
   data: function () {
     return {
       modalShow: false,
@@ -157,20 +158,19 @@ export default {
       ],
       outStockList: [],
       selectYarn: []
-
     };
   },
   methods: {
     addYarn(row) {
       let ishave = false;
-      this.selectYarn.forEach(y => {
+      this.value.forEach(y => {
         if (y.NO == row.NO)
           ishave = true;
       });
-      if (!ishave) this.selectYarn.push(row);
+      if (!ishave) this.value.push(row);
     },
     removeYarn(row, index) {
-      this.selectYarn.splice(index, 1);
+      this.value.splice(index, 1);
     },
     pageChange(pageid) {
       this.page.pageId = pageid;
@@ -182,18 +182,21 @@ export default {
     },
     show() {
       console.log("showModel");
+      this.getData();
       this.modalShow = true;
+    
     },
     asyncOK() {
-      if (this.selectYarn.length <= 0) {
-        this.$Notice.warning({
-          title: '未关联任何出库单',
-          desc: '请选择要关联的出库单，或点取消关闭。'
-        });
-      } else {
-        this.$emit("SelectedYarn", this.selectYarn);
-        this.modalShow=false;
-      }
+      // if (this.value.length <= 0) {
+      //   this.$Notice.warning({
+      //     title: '未关联任何出库单',
+      //     desc: '请选择要关联的出库单，或点取消关闭。'
+      //   });
+      // } else {}
+        this.$emit("input", this.value);
+        this.$emit("selected", this.value);
+        this.modalShow = false;
+      
     },
     async getData() {
       let re = await this.$util.post("/YarnOutStock/GetMyYarnOutApplyList", this.page);
@@ -205,7 +208,7 @@ export default {
     }
   },
   mounted: function () {
-    this.getData();
+    
   }
 };
 </script>
