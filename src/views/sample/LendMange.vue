@@ -10,6 +10,9 @@
       <TabPane label="已借出样衣" name="name1">
         <LendOut></LendOut>
       </TabPane>
+      <TabPane label="历史记录" name="name2">
+        <LendOutRecord></LendOutRecord>
+      </TabPane>
     </Tabs>
   </div>
 </template>
@@ -17,16 +20,18 @@
 //import bus from "../bus.js";
 import Lend from "./Lend/Lend.vue";
 import LendOut from "./Lend/LendOut.vue";
+import LendOutRecord from "./Lend/LendOutRecord.vue";
 export default {
-    components: {
+  components: {
     Lend,
-    LendOut
+    LendOut,
+    LendOutRecord
   },
-  data: function() {
+  data: function () {
     return {};
   },
   methods: {},
-  mounted: function() {
+  mounted: function () {
     this.$bus.$emit("changeMenuItem", ["样衣管理", "借用管理"]);
   }
 };

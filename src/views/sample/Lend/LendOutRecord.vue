@@ -3,16 +3,14 @@
 <template>
   <div>
     <Row type="flex" justify="space-between" class="menuid">
-      <Col span='15'> 筛选：
+      <Col span='18'> 筛选：
       <Select v-model="seachObj.UserId" multiple style="width:260px" transfer>
         <Option v-for="item in userList" :value="item.DdId" :key="item.value">{{ item.Name }}</Option>
       </Select>
-      <Button>确定</Button>
+      <Button @click="getData">确定</Button>
       </Col>
-      <Col span='5' style="float:right">
+      <Col span='2'>
       <Button @click="getData">刷新</Button>
-
-      <Button type="primary" @click="selectReturnLend">归回选中样衣</Button>
       </Col>
     </Row>
     <br>
@@ -35,7 +33,7 @@ export default {
   components: {
     sampleInfo
   },
-  data: function() {
+  data: function () {
     return {
       modal: false,
       currentSmple: {},
@@ -67,12 +65,16 @@ export default {
 
         {
           title: "借出时间",
-          key: "date"
+          key: "bdate"
+        },
+          {
+          title: "还回时间",
+          key: "edate"
         },
         {
           title: "操作",
           key: "action",
-          width: 180,
+          width: 100,
           align: "center",
           render: (h, params) => {
             return h("div", [
@@ -93,24 +95,6 @@ export default {
                   }
                 },
                 "查看"
-              ),
-              h(
-                "Button",
-                {
-                  props: {
-                    type: "primary",
-                    size: "small"
-                  },
-                  style: {
-                    marginRight: "5px"
-                  },
-                  on: {
-                    click: () => {
-                      this.lendReturn(params.index);
-                    }
-                  }
-                },
-                "归还"
               )
             ]);
           }
@@ -158,27 +142,8 @@ export default {
         });
       }
     },
-    ///返回指定样衣
-    lendReturn(val) {
-      let styleId = this.dataLend[val].StyleId;
-      let lendId = this.dataLend[val].Id;
-      this.DoReturnLend([lendId]).then(result => {
-        this.$Notice.success({
-          title: "成功",
-          desc: "样衣：" + styleId + " 的已还回样衣库。",
-          duration: 4
-        });
-        this.getData();
-      });
-    },
-    ///指行还回操作
-    DoReturnLend(lendIdList) {
-      return new Promise(resolve => {
-        this.$util.post("/LendOut/DoReturnLend", lendIdList).then(result => {
-          resolve(result);
-        });
-      });
-    },
+
+
     ///表格选中项变更
     tableSelect(items) {
       this.selectItems = items;
@@ -197,11 +162,14 @@ export default {
     },
     getData() {
       this.$util
-        .post("/LendOut/GetAllLendOutList", this.seachObj)
+        .post("/LendOut/GetAllLendOutReturnList", this.seachObj)
         .then(result => {
+          console.log("return",result)
           this.dataLend = result.data.items;
           this.dataLend.map(item => {
-            item.date = new Date(item.CreateDate).toLocaleString();
+            item.bdate = new Date(item.CreateDate).toLocaleString();
+            item.edate = new Date(item.ReturnDate).toLocaleString();
+
           });
           this.seachObj.pageSize = result.data.pageSize;
           this.seachObj.current = result.data.current;
@@ -209,13 +177,14 @@ export default {
         });
     }
   },
-  mounted: function() {
+  mounted: function () {
     //取得有借用申请的用户清单
-    this.$util.get("/LendOut/GetLendUserList/2").then(result => {
-      result.data.map(item => {
-        this.userList.push(item);
-      });
-      this.getData();
+   
+    this.$util.get("/LendOut/GetLendUserList/4").then(result => {
+      
+       console.log("user",result);
+       this.userList=result.data;
+       this.getData();
     });
   }
 };

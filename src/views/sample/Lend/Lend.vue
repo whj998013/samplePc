@@ -4,10 +4,10 @@
   <div>
     <Row type="flex" justify="space-between" class="menuid">
       <Col span='15'> 筛选：
-      <Select v-model="seachObj.UserId" multiple style="width:260px">
+      <Select v-model="seachObj.UserId" multiple style="width:260px" transfer>
         <Option v-for="item in userList" :value="item.DdId" :key="item.value">{{ item.Name }}</Option>
       </Select>
-      <Button>确定</Button>
+      <Button @click="getData">确定</Button>
       </Col>
       <Col span='5' style="float:right">
       <Button  @click="getData">刷新</Button>
@@ -236,6 +236,7 @@ export default {
     },
     //从服务器取得需审批的样衣清单
     getData() {
+      console.log("getdata");
       this.$util.post("/LendOut/GetAllLendList", this.seachObj).then(result => {
         this.dataLend = result.data.items;
         this.dataLend.map(item => {
@@ -249,7 +250,7 @@ export default {
   },
   mounted: function() {
     //取得有借用申请的用户清单
-    this.$util.get("/LendOut/GetLendUserList").then(result => {
+    this.$util.get("/LendOut/GetLendUserList/1").then(result => {
       result.data.map(item => {
         this.userList.push(item);
       });
