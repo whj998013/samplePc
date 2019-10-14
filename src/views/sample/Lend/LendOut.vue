@@ -1,4 +1,12 @@
 <style scoped>
+img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+}
+.maxHeight {
+  max-height: 60px;
+}
 </style>
 <template>
   <div>
@@ -12,12 +20,16 @@
       <Col span='5' style="float:right">
       <Button @click="getData">刷新</Button>
 
-      <Button type="primary" @click="selectReturnLend">归回选中样衣</Button>
+      <Button type="primary" @click="selectReturnLend">归还选中样衣</Button>
       </Col>
     </Row>
     <br>
     <Row>
-      <Table border ref="selection" :columns="columnsLend" :data="dataLend" @on-selection-change="tableSelect"></Table>
+      <Table border ref="selection" :columns="columnsLend" :data="dataLend" @on-selection-change="tableSelect">
+        <template slot-scope="{ row,index }" slot="pic">
+          <img class="maxHeight" :src="'/file/src/sample/pic/minpic/'+row.baseinfo.Pic" @click="show(index)"></img>
+        </template>
+      </Table>
     </Row>
     <Row>
       <template>
@@ -35,7 +47,7 @@ export default {
   components: {
     sampleInfo
   },
-  data: function() {
+  data: function () {
     return {
       modal: false,
       currentSmple: {},
@@ -44,6 +56,12 @@ export default {
           type: "selection",
           width: 60,
           align: "center"
+        },
+        {
+          title: "样衣图",
+          width: 80,
+          slot: "pic",
+
         },
         {
           title: "样衣ID",
@@ -119,7 +137,7 @@ export default {
       dataLend: [],
       selectItems: [],
       seachObj: {
-        current: 1,
+        pageId: 1,
         total: 0,
         pageSize: 10,
         keyWord: "",
@@ -184,7 +202,7 @@ export default {
       this.selectItems = items;
     },
     pageChange(pageid) {
-      this.seachObj.current = pageid;
+      this.seachObj.pageId = pageid;
       this.getData();
     },
     pageSizeChange(pageSize) {
@@ -204,12 +222,12 @@ export default {
             item.date = new Date(item.CreateDate).toLocaleString();
           });
           this.seachObj.pageSize = result.data.pageSize;
-          this.seachObj.current = result.data.current;
+          this.seachObj.pageId = result.data.pageId;
           this.seachObj.total = result.data.total;
         });
     }
   },
-  mounted: function() {
+  mounted: function () {
     //取得有借用申请的用户清单
     this.$util.get("/LendOut/GetLendUserList/2").then(result => {
       result.data.map(item => {

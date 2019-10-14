@@ -234,6 +234,14 @@ export default {
     exportData() {
       this.$refs.table.exportCsv({ filename: "入库信息", separator: " , " });
     },
+    async exportAllData() {
+      let page = JSON.parse(JSON.stringify(this.page));
+      page.pageId = 1;
+      page.pageSize = 65535;
+      let re = await this.$util.post(this.action, page);
+      this.$refs.table.exportCsv({ filename: "入库信息", separator: " , ", columns: this.columns, data: re.data.Result });
+      console.log("导出完成");
+    },
     outStock(row) {
       if (row.InStorNum > 0) {
         let r = row;
@@ -245,15 +253,7 @@ export default {
         this.$Message.info('库存为0，无法出库');
       }
     },
-    async exportAllData() {
-      let page = JSON.parse(JSON.stringify(this.page));
-      page.pageId = 1;
-      page.pageSize = 65535;
-      let re = await this.$util.post(this.action, page);
-      await this.GetData();
-      this.$refs.table.exportCsv({ filename: "入库信息", separator: " , ", columns: this.columns, data: re.data.Result });
-      console.log("导出完成");
-    },
+    
 
     reload(v) {
       this.page.pageId = 1;

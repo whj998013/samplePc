@@ -11,13 +11,13 @@
       <!-- 显示时间段:  <DatePicker v-model="dateValue" format="yyyy/MM/dd" type="daterange" placement="bottom-end" placeholder="选择时间段" style="width: 250px"></DatePicker> -->
       </Col>
       <Col>
-       <Button @click="reload">&emsp;&emsp;刷新&emsp;&emsp;</Button>
+      <Button @click="reload">&emsp;&emsp;刷新&emsp;&emsp;</Button>
       <Button type="primary" v-if="$Auth('Sample_MySample_NewSample')" @click="newSample" span='8'>录入新样衣</Button>
       </Col>
     </Row>
 
     <Tabs value="name0">
-      
+
       <TabPane label="未入库样衣" name="name0">
         <sampleview ref="view1" action="/MySample/GetNotInStorageSample" @needUpData='handleUpdata' haveEdit havePrint haveDelete haveInStorage></sampleview>
       </TabPane>
@@ -34,31 +34,13 @@
 import sampleview from "../commpent/sampleView.vue";
 
 export default {
-    inject: ["reload"],
+  inject: ["reload"],
   components: {
     sampleview
   },
-  data: function() {
+  data: function () {
     return {
       InStrageAlowChange: this.$bus.Setting.InStrageAlowChange,
-      notInStorage: {
-        items: [],
-        currentPage: 1,
-        total: 0,
-        pageSize: 20
-      },
-      InStorage: {
-        items: [],
-        currentPage: 1,
-        total: 0,
-        pageSize: 20
-      },
-      myLend: {
-        items: [],
-        currentPage: 1,
-        total: 0,
-        pageSize: 20
-      },
       dateValue: [],
       isshow: false
     };
@@ -78,7 +60,7 @@ export default {
       this.$router.push("/sample/newSample");
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.$bus.$emit("changeMenuItem", ["样衣库", "我的样衣"]);
   }
 };

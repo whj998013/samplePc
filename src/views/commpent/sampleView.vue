@@ -89,10 +89,10 @@ export default {
       isLoading: false,
       items: [],
       pageobj: {
-        current: 1,
+        pageId: 1,
         total: 0,
         pageSize: 10,
-        keyWord: "", //关建词
+        key: "", //关建词
         dateValue: [], //日期区间
         State: 0, //状态,
         UserId: []
@@ -102,11 +102,11 @@ export default {
   methods: {
     Seach(obj) {
       console.log("seachobj:", obj);
-      this.pageobj.keyWord = obj.keyWord;
+      this.pageobj.key = obj.key;
       this.pageobj.dateValue = obj.dateValue;
       this.pageobj.State = obj.State;
       this.pageobj.UserId = obj.UserId;
-      this.pageobj.current = 1;
+      this.pageobj.pageId = 1;
       this.getData();
     },
     reload() {
@@ -114,7 +114,7 @@ export default {
       this.$nextTick(() => (this.show = true));
     },
     pageChange(pageid) {
-      this.pageobj.current = pageid;
+      this.pageobj.pageId = pageid;
       this.getData();
     },
     pageSizeChange(pageSize) {

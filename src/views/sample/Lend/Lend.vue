@@ -1,4 +1,12 @@
 <style scoped>
+img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+}
+.maxHeight {
+  max-height: 60px;
+}
 </style>
 <template>
   <div>
@@ -10,14 +18,18 @@
       <Button @click="getData">确定</Button>
       </Col>
       <Col span='5' style="float:right">
-      <Button  @click="getData">刷新</Button>
+      <Button @click="getData">刷新</Button>
 
       <Button type="primary" @click="AlowSelectInstroage">选中样衣通过借用</Button>
       </Col>
     </Row>
     <br>
     <Row>
-      <Table border ref="table" :columns="columnsLend" :data="dataLend" @on-selection-change="tableSelect"></Table>
+      <Table border ref="table" :columns="columnsLend" :data="dataLend" @on-selection-change="tableSelect">
+        <template slot-scope="{ row,index }" slot="pic">
+          <img class="maxHeight" :src="'/file/src/sample/pic/minpic/'+row.baseinfo.Pic" @click="show(index)"></img>
+        </template>
+      </Table>
     </Row>
     <Row>
       <template>
@@ -35,7 +47,7 @@ export default {
   components: {
     sampleInfo
   },
-  data: function() {
+  data: function () {
     return {
       modal: false,
       currentSmple: {},
@@ -44,6 +56,12 @@ export default {
           type: "selection",
           width: 60,
           align: "center"
+        },
+        {
+          title: "样衣图",
+          width: 80,
+          slot: "pic",
+
         },
         {
           title: "样衣ID",
@@ -134,7 +152,7 @@ export default {
       dataLend: [],
       selectItems: [],
       seachObj: {
-        current: 1,
+        pageId: 1,
         total: 0,
         pageSize: 10,
         keyWord: "",
@@ -154,14 +172,14 @@ export default {
     //退回借用申请
     backLend(val) {
       let styleId = this.dataLend[val].StyleId;
-      let lendId= this.dataLend[val].Id;
+      let lendId = this.dataLend[val].Id;
       this.doBackLend([lendId]).then(result => {
         this.$Notice.success({
           title: "成功",
           desc: "已退回样衣：" + styleId + " 的借用申请。",
           duration: 4
         });
-         this.getData();
+        this.getData();
       });
     },
     ///表格选中项变更
@@ -171,7 +189,7 @@ export default {
     ///执行单项借用申请通过
     AlowInstroage(val) {
       let styleId = this.dataLend[val].StyleId;
-      let lendId= this.dataLend[val].Id;
+      let lendId = this.dataLend[val].Id;
       this.doInstroage([lendId]).then(result => {
         this.$Notice.success({
           title: "成功",
@@ -209,7 +227,7 @@ export default {
         this.$util.post("/LendOut/DoBackLend", lendId).then(result => {
           resolve(result);
         });
-       
+
       });
     },
     //执行借出申请通过
@@ -222,7 +240,7 @@ export default {
     },
 
     pageChange(pageid) {
-      this.seachObj.current = pageid;
+      this.seachObj.pageId = pageid;
       this.getData();
     },
     pageSizeChange(pageSize) {
@@ -243,12 +261,12 @@ export default {
           item.date = new Date(item.CreateDate).toLocaleString();
         });
         this.seachObj.pageSize = result.data.pageSize;
-        this.seachObj.current = result.data.current;
+        this.seachObj.pageId = result.data.pageId;
         this.seachObj.total = result.data.total;
       });
     }
   },
-  mounted: function() {
+  mounted: function () {
     //取得有借用申请的用户清单
     this.$util.get("/LendOut/GetLendUserList/1").then(result => {
       result.data.map(item => {

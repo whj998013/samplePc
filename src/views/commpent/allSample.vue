@@ -17,7 +17,7 @@
   <div>
     <Row type="flex" class="menuid" justify="space-between">
       <Col span='8'>
-      <Input search enter-button  placeholder="输入搜索" v-model="seachObj.keyWord" @on-enter="beginSeach" @on-search="beginSeach" style="width: 100%" />
+      <Input search enter-button  placeholder="输入搜索" v-model="seachObj.key" @on-enter="beginSeach" @on-search="beginSeach" style="width: 100%" />
       </Col>
       <Col span='10'>
       <p class="box">&nbsp&nbsp&nbsp入库时间：</p>
@@ -115,7 +115,7 @@
         gaugeList: ["12G", "14G", "17G", "16G"],
         dateValue: [],
         seachObj: {
-          keyWord: "",
+          key: "",
           dateValue: ["", ""],
           State: "",
           UserId: []

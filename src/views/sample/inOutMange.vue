@@ -40,7 +40,7 @@ export default {
     return {
       checked: false,
       seachObj: {
-        keyWord: "",
+        key: "",
         dateValue: ["", ""],
         State: "",
         UserId: []

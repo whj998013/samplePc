@@ -3,6 +3,8 @@ img {
   width: auto;
   height: auto;
   max-width: 100%;
+}.maxHeight {
+  max-height: 100px;
 }
 p {
   word-wrap: break-word;
@@ -12,9 +14,7 @@ p {
 .sample {
   padding: 10px 0px 10px 0px;
 }
-.maxHeight {
-  max-height: 100px;
-}
+
 .modelwh {
   max-width: 800px;
   max-height: 800px;
