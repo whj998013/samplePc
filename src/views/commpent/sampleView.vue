@@ -103,7 +103,8 @@ export default {
     Seach(obj) {
       console.log("seachobj:", obj);
       this.pageobj.key = obj.key;
-      this.pageobj.dateValue = obj.dateValue;
+      this.pageobj.beginDate = obj.beginDate;
+      this.pageobj.endDate = obj.endDate;
       this.pageobj.State = obj.State;
       this.pageobj.UserId = obj.UserId;
       this.pageobj.pageId = 1;

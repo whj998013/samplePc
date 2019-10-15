@@ -125,10 +125,10 @@
     },
     methods: {
       handDateChange() {
-        console.log(this.dateValue);
-        this.seachObj.dateValue[0] = this.dateValue[0].toDateString();
-        this.seachObj.dateValue[1] = this.dateValue[1].toDateString();
-  
+        this.seachObj.beginDate = this.dateValue[0].toDateString();
+        this.seachObj.endDate = this.dateValue[1].toDateString();
+         console.log("date",this.seachObj);
+        
         this.beginSeach();
       },
   
@@ -137,7 +137,6 @@
       },
       getSampleList() {},
       beginSeach() {
-
         this.$refs.view.Seach(this.seachObj);
         
       }

@@ -10,45 +10,57 @@ img {
 </style>
 <template>
   <div>
-    <Row type="flex" justify="space-between" class="menuid">
-      <Col span='18'> 筛选：
-      <Select v-model="seachObj.UserId" multiple style="width:260px" transfer>
-        <Option v-for="item in userList" :value="item.DdId" :key="item.value">{{ item.Name }}</Option>
-      </Select>
-      <Button @click="getData">确定</Button>
-      </Col>
-      <Col span='2'>
-      <Button @click="getData">刷新</Button>
-      </Col>
-    </Row>
-    <br>
-    <Row>
-      <Table border ref="table" :columns="columnsLend" :data="dataLend" @on-selection-change="tableSelect">
+    <Form :label-width="80">
+      <Row type="flex" class="menuid">
+        <Col span='7'>
+        <FormItem label="借用人：">
+          <Select v-model="seachObj.UserId" multiple transfer>
+            <Option v-for="item in userList" :value="item.DdId" :key="item.value">{{ item.Name }}</Option>
+          </Select>
+        </FormItem>
+        </Col>
+        <Col span='7'>
+        <FormItem label="入库人：" span='7'>
+          <Select v-model="seachObj.InUserId" multiple transfer>
+            <Option v-for="item in inUserList" :value="item.DdId" :key="item.value">{{ item.Name }}</Option>
+          </Select>
+        </FormItem>
+        </Col>
+        <Col span='7'>
+        <FormItem label=" 时间：" span='7'>
+          <DatePicker @on-change="dateChange" :options="options1" v-model="dateRange" transfer type="daterange" placement="bottom-end" placeholder="选择显示日期范围" style="width: 200px"></DatePicker>
+        </FormItem>
+        </Col>
+        <Col span='2' offset='1'>
+        <Button @click="reGetData" type="primary">刷新</Button>
+        </Col>
+      </Row>
+      <Row>
+        <Table border ref="table" :columns="columnsLend" :data="dataLend" @on-selection-change="tableSelect">
 
-        <template slot-scope="{ row,index }" slot="pic">
-          <img class="maxHeight" :src="'/file/src/sample/pic/minpic/'+row.baseinfo.Pic" @click="show(index)"></img>
+          <template slot-scope="{ row,index }" slot="pic">
+            <img class="maxHeight" :src="'/file/src/sample/pic/minpic/'+row.StylePic" @click="show(index)"></img>
+          </template>
+          <template slot-scope="{ row }" slot="lendDayNum">
+            {{ row.daySpan}}
+          </template>
+        </Table>
+      </Row>
+      <Row>
+        <template>
+          <br>
+          <Row type="flex" :gutter="16">
+            <Col>
+            <Page show-total show-sizer placement='top' :current=1 :total='seachObj.total' :page-size='seachObj.pageSize' @on-change='pageChange' @on-page-size-change='pageSizeChange' />
+            </Col>
+            <Col>
+            <Button @click="exportData">导出本页数据</Button>
+            <Button @click="exportAllData">导出全部数据</Button>
+            </Col>
+          </Row>
         </template>
-        <template slot-scope="{ row }" slot="lendDayNum">
-          {{ row.daySpan}}
-        </template>
-      </Table>
-    </Row>
-    <Row>
-      <template>
-        <br>
-        <Row type="flex" :gutter="16">
-          <Col>
-          <Page show-total show-sizer placement='top' :current=1 :total='seachObj.total' :page-size='seachObj.pageSize' @on-change='pageChange' @on-page-size-change='pageSizeChange' />
-          </Col>
-          <Col> 时间：<DatePicker @on-change="dateChange" :options="options1" v-model="dateRange" transfer type="daterange" placement="bottom-end" placeholder="选择显示日期范围" style="width: 200px"></DatePicker>
-          </Col>
-          <Col> <Button @click="exportData">导出本页数据</Button>
-          <Button @click="exportAllData">导出全部数据</Button>
-          </Col>
-        </Row>
-
-      </template>
-    </Row>
+      </Row>
+    </Form>
     <Modal v-model="modal" cancel-text="" width="430px" title="详情页">
       <sampleInfo v-if="modal" width="400px" :haveAction='false' v-model="currentSmple"></sampleInfo>
     </Modal>
@@ -123,7 +135,13 @@ export default {
         },
         {
           title: "样衣款号",
-          key: "StyleNo"
+          key: "StyleNo",
+          width: 120,
+        },
+        {
+          title: "入库人",
+          width: 80,
+          key: "InUserName"
         },
         {
           title: "借用人",
@@ -146,12 +164,13 @@ export default {
         {
           title: "借用天数",
           key: "daySpan",
-          slot: "lendDayNum"
+          slot: "lendDayNum",
+          width: 90,
         },
         {
           title: "操作",
           key: "action",
-          width: 100,
+          width: 80,
           align: "center",
           render: (h, params) => {
             return h("div", [
@@ -184,16 +203,17 @@ export default {
         total: 0,
         pageSize: 10,
         keyWord: "",
-        dateValue: ["", ""],
         State: "",
-        UserId: []
+        UserId: [],
+        InUserId: []
       },
       userList: [
         // {
         //   DdId: "AAA",
         //   Name: "BBB"
         // }
-      ]
+      ],
+      inUserList: []
     };
   },
   methods: {
@@ -221,7 +241,6 @@ export default {
     dateChange() {
       this.seachObj.beginDate = this.$util.getGmtDate(this.dateRange[0]);
       this.seachObj.endDate = this.$util.getGmtDate(this.dateRange[1]);
-      this.getData();
     },
 
     ///表格选中项变更
@@ -236,8 +255,10 @@ export default {
       this.seachObj.pageSize = pageSize;
       this.getData();
     },
-    show(val) {
-      this.currentSmple = this.dataLend[val].baseinfo;
+    async show(val) {
+      let id=this.dataLend[val].StyleId;
+      let re=await this.$util.get("Sample/GetSampleInfo/"+id);
+      this.currentSmple = re.data;
       this.modal = true;
     },
     DateMinus(date1, date2) {
@@ -247,34 +268,42 @@ export default {
       var day = parseInt(days / (1000 * 60 * 60 * 24));
       return day == 0 ? 1 : day;
     },
+    async getData() {
+      this.$bus.BeginLoading();
+      let re = await this.$util.post(this.action, this.seachObj);
+      this.seachObj.total = re.data.count;
+      this.dataLend = re.data.list;
+      this.dataLend.map(item => {
+        item.UserDept = item.UserDept.replace(",", "|");
+        item.bdate = new Date(item.LendOutDate).toLocaleString();
+        item.edate = new Date(item.ReturnDate).toLocaleString();
+        item.daySpan = this.DateMinus(item.LendOutDate, item.ReturnDate);
+      });
+      this.$bus.EndLoading();
+    },
 
-    getData() {
-      this.$util
-        .post(this.action, this.seachObj)
-        .then(result => {
-          console.log("return", result)
-          this.dataLend = result.data.items;
-          this.dataLend.map(item => {
-            item.UserDept = item.UserDept.replace(",", "|");
-            item.bdate = new Date(item.CreateDate).toLocaleString();
-            item.edate = new Date(item.ReturnDate).toLocaleString();
-            item.daySpan = this.DateMinus(item.CreateDate, item.ReturnDate);
-          });
-          this.seachObj.pageSize = result.data.pageSize;
-          this.seachObj.pageId = result.data.pageId;
-          this.seachObj.total = result.data.total;
-        });
+    reGetData() {
+      this.seachObj.pageId = 1;
+      this.getData();
     }
   },
   mounted: function () {
     //取得有借用申请的用户清单
 
     this.$util.get("/LendOut/GetLendUserList/4").then(result => {
-
       console.log("user", result);
       this.userList = result.data;
       this.getData();
     });
+
+    this.$util.get("/LendOut/GetInUserList").then(result => {
+      console.log("InUser", result);
+      this.inUserList = result.data;
+      this.getData();
+    });
+    //取得有入库的用户清单
+
+
   }
 };
 </script>
