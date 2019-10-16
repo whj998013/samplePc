@@ -125,7 +125,7 @@ export default {
           slot: "num",
           fixed: "left",
           sortable: true,
-          minWidth: 120
+          minWidth: 130
         },
         {
           title: "库存数(KG)",
@@ -133,7 +133,7 @@ export default {
           slot: "inStorNum",
           fixed: "left",
           sortable: true,
-          minWidth: 120
+          minWidth: 130
         },
         {
           title: "支数",
@@ -190,7 +190,7 @@ export default {
           title: "入库部门",
           key: "DeptName",
           sortable: true,
-          minWidth: 100
+          minWidth: 115
         },
         {
           title: "供应商",

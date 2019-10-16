@@ -8,7 +8,7 @@
 <template>
   <div>
     <div>
-      <Form ref="proof" :model="proof" :label-width="75" label-position="right" :rules="proofRuleValidate">
+      <Form ref="proof" :model="proof" :label-width="80" label-position="right" :rules="proofRuleValidate">
         <Col :xs="24" :sm="12" :md="12" :lg="8">
         <FormItem label="打样单号">
           <Input v-model="proof.ProofOrderId" readonly></Input>

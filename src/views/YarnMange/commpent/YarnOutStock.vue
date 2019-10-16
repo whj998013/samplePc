@@ -109,7 +109,7 @@ export default {
           slot: "num",
           fixed: "left",
           sortable: true,
-          minWidth: 110
+          minWidth: 120
         },
         {
           title: "支数",
@@ -148,7 +148,7 @@ export default {
         {
           title: "查询码",
           key: "BarCode",
-          minWidth: 80
+          minWidth: 90
 
         },
         {
@@ -178,7 +178,7 @@ export default {
           title: "入库部门",
           key: "InDName",
           sortable: true,
-          minWidth: 110
+          minWidth: 120
         },
       ]
     };

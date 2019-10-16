@@ -136,7 +136,7 @@ export default {
         {
           title: "样衣款号",
           key: "StyleNo",
-          width: 120,
+          width: 125,
         },
         {
           title: "入库人",

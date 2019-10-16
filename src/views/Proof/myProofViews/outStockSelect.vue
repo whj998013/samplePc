@@ -83,7 +83,7 @@ export default {
         {
           title: "单号",
           key: "NO",
-          minWidth: 110
+          minWidth: 120
         },
         {
           title: "纱名",
@@ -137,7 +137,7 @@ export default {
         {
           title: "查询码",
           key: "BarCode",
-          minWidth: 80
+          minWidth: 85
 
         },
         {

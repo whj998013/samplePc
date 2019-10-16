@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import iView from 'iview';
+import iView from 'view-design';
 import VueRouter from 'vue-router';
 import Routers from './router';
 import bus from "./bus.js";
@@ -7,7 +7,8 @@ import Util from './libs/util';
 import App from './app.vue';
 import dd from './libs/ddapi.js';
 import loginApi from "./libs/loginApi.js";
-import 'iview/dist/styles/iview.css';
+import 'view-design/dist/styles/iview.css';
+
 
 Vue.prototype.$bus = bus;
 Vue.prototype.$Auth = bus.Auth;

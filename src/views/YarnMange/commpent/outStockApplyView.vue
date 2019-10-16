@@ -136,7 +136,7 @@ export default {
           slot: "minNum",
           fixed: "left",
           sortable: true,
-          minWidth: 120
+          minWidth: 130
         },
         {
           title: "出库数(KG)",
@@ -144,7 +144,7 @@ export default {
           slot: "num",
           fixed: "left",
           sortable: true,
-          minWidth: 120
+          minWidth: 130
         },
         {
           title: "状态",
@@ -210,13 +210,13 @@ export default {
           title: "入库部门",
           key: "YarnOwerDeptName",
           sortable: true,
-          minWidth: 100
+          minWidth: 120
         },
         {
           title: "申请部门",
           key: "ApplyDeptName",
           sortable: true,
-          minWidth: 100
+          minWidth: 120
         },
         {
           title: "申请时间",
