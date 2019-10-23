@@ -53,9 +53,7 @@ export default {
       this.$refs.yarnIn.reload(this.dept);
       this.$refs.yarnOut.reload(this.dept);
       this.$refs.outApply.reload(this.dept);
-
     },
-
   },
   mounted: function () {
     this.$bus.$emit('changeMenuItem', ['样纱管理', '我的样纱']);

@@ -12,9 +12,9 @@ import 'view-design/dist/styles/iview.css';
 
 Vue.prototype.$bus = bus;
 Vue.prototype.$Auth = bus.Auth;
-Vue.prototype.$Auth = bus.Auth;
 Vue.prototype.$util = Util;
 Vue.prototype.$dd = dd;
+//Vue.prototype.$action=action;
 Vue.use(VueRouter);
 Vue.use(iView);
 

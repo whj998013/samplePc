@@ -7,11 +7,14 @@
       <TabPane label="借用审批" name="name0">
         <Lend></Lend>
       </TabPane>
-      <TabPane label="已借出样衣" name="name1">
+      <TabPane label="借出归还" name="name1">
         <LendOut></LendOut>
       </TabPane>
       <TabPane label="历史记录" name="name2">
         <LendOutRecord></LendOutRecord>
+      </TabPane>
+      <TabPane label="借样排行" name="name3">
+        <LendChart></LendChart>
       </TabPane>
     </Tabs>
   </div>
@@ -21,10 +24,12 @@
 import Lend from "./Lend/Lend.vue";
 import LendOut from "./Lend/LendOut.vue";
 import LendOutRecord from "./Lend/LendOutRecord.vue";
+import LendChart from "./Lend/LendChart.vue";
 export default {
   components: {
     Lend,
     LendOut,
+    LendChart,
     LendOutRecord
   },
   data: function () {

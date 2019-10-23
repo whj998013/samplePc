@@ -3,7 +3,8 @@ img {
   width: auto;
   height: auto;
   max-width: 100%;
-}.maxHeight {
+}
+.maxHeight {
   max-height: 100px;
 }
 p {
@@ -67,7 +68,7 @@ p {
           <p>种类:{{value.Kinds}}</p>
           <p>允许借用:{{canlendout}}</p>
           <p>现货:{{haveStock}}</p>
-
+          <p>借用次数:{{value.LendNum}}</p>
         </div>
         </Col>
       </Row>
@@ -82,7 +83,7 @@ p {
             <p>尺码:{{value.Size}}</p>
             <p>针型:{{value.Gauge}}</p>
             <p>克重:{{value.Weight}}K</p>
-            <p>成份:<span v-for="item in mList" :key="item.yranId">{{item.yarnId}}、{{item.counts==""?"":"支数："+item.counts+" "}}{{item.Material}}<br/></span></p>
+            <p>成份:<span v-for="item in mList" :key="item.yranId">{{item.yarnId}}、{{item.counts==""?"":"支数："+item.counts+" "}}{{item.Material}}<br /></span></p>
             <p v-if="value.Counts!=''">支数:{{value.Counts}}</p>
             <p>录入人:{{value.User}}</p>
             <p>部门:{{value.DeptName}}</p>
@@ -260,6 +261,9 @@ export default {
     handleView(name) {
       this.imgName = name;
       this.modalVisible = true;
+    },
+    getLendNum() {
+
     }
   },
   mounted() {

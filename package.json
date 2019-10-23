@@ -15,7 +15,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "view-design": "^4.0.0",
     "@riophae/vue-treeselect": "0.0.38",
     "axios": "^0.18.1",
     "babel-preset-stage-3": "^6.24.1",
@@ -27,6 +26,7 @@
     "qs": "^6.5.2",
     "regenerator": "^0.13.3",
     "v-charts": "^1.19.0",
+    "view-design": "^4.0.2",
     "vue": "^2.5.17",
     "vue-axios": "^2.1.4",
     "vue-router": "^3.0.1"

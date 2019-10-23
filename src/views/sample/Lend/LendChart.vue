@@ -5,7 +5,7 @@ img {
   max-width: 100%;
 }
 .maxHeight {
-  max-height: 60px;
+  max-height: 80px;
 }
 </style>
 <template>
@@ -13,15 +13,8 @@ img {
     <Form :label-width="80">
       <Row type="flex" class="menuid">
         <Col span='7'>
-        <FormItem label="借用人：">
-          <Select v-model="seachObj.UserId" multiple transfer :max-tag-count='2'>
-            <Option v-for="item in userList" :value="item.DdId" :key="item.value">{{ item.Name }}</Option>
-          </Select>
-        </FormItem>
-        </Col>
-        <Col span='7'>
         <FormItem label="入库人：" span='7'>
-          <Select v-model="seachObj.InUserId" multiple transfer :max-tag-count='2' >
+          <Select v-model="seachObj.InUserId" multiple transfer>
             <Option v-for="item in inUserList" :value="item.DdId" :key="item.value">{{ item.Name }}</Option>
           </Select>
         </FormItem>
@@ -115,6 +108,15 @@ export default {
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
               return [start, end];
             }
+          },
+          {
+            text: '全部',
+            value() {
+              const end = new Date();
+              const start = new Date("1900-1-1");
+              // start.setTime(start.getTime() - 3600 * 1000 * 24 * 365*20);
+              return [start, end];
+            }
           }
 
         ]
@@ -123,49 +125,30 @@ export default {
 
         {
           title: "样衣图",
-          width: 80,
+          width: 180,
           slot: "pic",
 
         },
         {
           title: "样衣ID",
-          width: 120,
+
           key: "StyleId",
           align: "center"
         },
         {
           title: "样衣款号",
           key: "StyleNo",
-          width: 125,
         },
         {
           title: "入库人",
-          width: 80,
+
           key: "InUserName"
         },
         {
-          title: "借用人",
-          width: 80,
-          key: "UserName"
-        },
-        {
-          title: "借用部门",
-          key: "UserDept"
-        },
-
-        {
-          title: "借出时间",
-          key: "bdate"
-        },
-        {
-          title: "还回时间",
-          key: "edate"
-        },
-        {
-          title: "借用天数",
+          title: "外借次数",
           key: "daySpan",
           slot: "lendDayNum",
-          width: 90,
+
         },
         {
           title: "操作",
@@ -256,8 +239,8 @@ export default {
       this.getData();
     },
     async show(val) {
-      let id=this.dataLend[val].StyleId;
-      let re=await this.$util.get("Sample/GetSampleInfo/"+id);
+      let id = this.dataLend[val].StyleId;
+      let re = await this.$util.get("Sample/GetSampleInfo/" + id);
       this.currentSmple = re.data;
       this.modal = true;
     },
