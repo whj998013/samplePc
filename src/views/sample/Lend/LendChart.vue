@@ -34,9 +34,6 @@ img {
           <template slot-scope="{ row,index }" slot="pic">
             <img class="maxHeight" :src="'/file/src/sample/pic/minpic/'+row.StylePic" @click="show(index)"></img>
           </template>
-          <template slot-scope="{ row }" slot="lendDayNum">
-            {{ row.daySpan}}
-          </template>
         </Table>
       </Row>
       <Row>
@@ -67,7 +64,7 @@ export default {
   },
   data: function () {
     return {
-      action: "/LendOut/GetAllLendOutReturnList",
+      action: "/LendOut/GetLendChart",
       dateRange: [],
       modal: false,
       currentSmple: {},
@@ -127,11 +124,10 @@ export default {
           title: "样衣图",
           width: 180,
           slot: "pic",
-
+          key: "StylePic"
         },
         {
           title: "样衣ID",
-
           key: "StyleId",
           align: "center"
         },
@@ -140,14 +136,17 @@ export default {
           key: "StyleNo",
         },
         {
+          title: "种类",
+          key: "Kinds",
+        },
+        {
           title: "入库人",
 
           key: "InUserName"
         },
         {
           title: "外借次数",
-          key: "daySpan",
-          slot: "lendDayNum",
+          key: "LendCount",
 
         },
         {
@@ -202,22 +201,15 @@ export default {
   methods: {
     ///还回选中样衣
     exportData() {
-      this.$refs.table.exportCsv({ filename: "借用记录", separator: " , " });
+      this.$refs.table.exportCsv({ filename: "借样排行", separator: " , " });
     },
     async exportAllData() {
       let seachObj = JSON.parse(JSON.stringify(this.seachObj));
       seachObj.pageId = 1;
       seachObj.pageSize = 65535;
       let re = await this.$util.post(this.action, seachObj);
-
-      let lendList = re.data.items;
-      lendList.map(item => {
-        item.UserDept = item.UserDept.replace(",", "|");
-        item.bdate = new Date(item.CreateDate).toLocaleString();
-        item.edate = new Date(item.ReturnDate).toLocaleString();
-        item.daySpan = this.DateMinus(item.CreateDate, item.ReturnDate);
-      });
-      this.$refs.table.exportCsv({ filename: "借用记录2", separator: " , ", columns: this.columnsLend, data: lendList });
+      let lendList = re.data.list;
+      this.$refs.table.exportCsv({ filename: "借样排行", separator: " , ", columns: this.columnsLend, data: lendList });
       console.log("导出完成");
     },
 
@@ -244,24 +236,11 @@ export default {
       this.currentSmple = re.data;
       this.modal = true;
     },
-    DateMinus(date1, date2) {
-      var sdate = new Date(date1);
-      var now = new Date(date2);
-      var days = now.getTime() - sdate.getTime();
-      var day = parseInt(days / (1000 * 60 * 60 * 24));
-      return day == 0 ? 1 : day;
-    },
     async getData() {
       this.$bus.BeginLoading();
       let re = await this.$util.post(this.action, this.seachObj);
       this.seachObj.total = re.data.count;
       this.dataLend = re.data.list;
-      this.dataLend.map(item => {
-        item.UserDept = item.UserDept.replace(",", "|");
-        item.bdate = new Date(item.LendOutDate).toLocaleString();
-        item.edate = new Date(item.ReturnDate).toLocaleString();
-        item.daySpan = this.DateMinus(item.LendOutDate, item.ReturnDate);
-      });
       this.$bus.EndLoading();
     },
 
@@ -274,18 +253,15 @@ export default {
     //取得有借用申请的用户清单
 
     this.$util.get("/LendOut/GetLendUserList/4").then(result => {
-      console.log("user", result);
       this.userList = result.data;
-      this.getData();
+
     });
 
     this.$util.get("/LendOut/GetInUserList").then(result => {
-      console.log("InUser", result);
       this.inUserList = result.data;
-      this.getData();
     });
     //取得有入库的用户清单
-
+    this.getData();
 
   }
 };

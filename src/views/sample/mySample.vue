@@ -22,7 +22,7 @@
         <sampleview ref="view1" action="/MySample/GetNotInStorageSample" @needUpData='handleUpdata' haveEdit havePrint haveDelete haveInStorage></sampleview>
       </TabPane>
       <TabPane label="已入库样衣" name="name1">
-        <sampleview ref="view2" action="/MySample/GetInStorageSample" @needUpData='handleUpdata' :haveEdit="InStrageAlowChange" havePrint></sampleview>
+        <sampleview ref="view2" action="/MySample/GetInStorageSample" @needUpData='handleUpdata' :haveEdit="InStrageAlowChange" havePrint showImport></sampleview>
       </TabPane>
       <TabPane label="我借用的样衣" name="name2">
         <sampleview ref="view3" action="/MySample/GetLendOutSample" @needUpData='handleUpdata' ba havePrint :havePage="false"></sampleview>

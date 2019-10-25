@@ -21,7 +21,7 @@ img {
         </Col>
         <Col span='7'>
         <FormItem label="入库人：" span='7'>
-          <Select v-model="seachObj.InUserId" multiple transfer :max-tag-count='2' >
+          <Select v-model="seachObj.InUserId" multiple transfer :max-tag-count='2'>
             <Option v-for="item in inUserList" :value="item.DdId" :key="item.value">{{ item.Name }}</Option>
           </Select>
         </FormItem>
@@ -125,6 +125,7 @@ export default {
           title: "样衣图",
           width: 80,
           slot: "pic",
+          key: "StylePic"
 
         },
         {
@@ -137,6 +138,10 @@ export default {
           title: "样衣款号",
           key: "StyleNo",
           width: 125,
+        },
+         {
+          title: "种类",
+          key: "Kinds",
         },
         {
           title: "入库人",
@@ -226,15 +231,14 @@ export default {
       seachObj.pageId = 1;
       seachObj.pageSize = 65535;
       let re = await this.$util.post(this.action, seachObj);
-
-      let lendList = re.data.items;
+      let lendList = re.data.list;
       lendList.map(item => {
         item.UserDept = item.UserDept.replace(",", "|");
-        item.bdate = new Date(item.CreateDate).toLocaleString();
+        item.bdate = new Date(item.LendOutDate).toLocaleString();
         item.edate = new Date(item.ReturnDate).toLocaleString();
-        item.daySpan = this.DateMinus(item.CreateDate, item.ReturnDate);
+        item.daySpan = this.DateMinus(item.LendOutDate, item.ReturnDate);
       });
-      this.$refs.table.exportCsv({ filename: "借用记录2", separator: " , ", columns: this.columnsLend, data: lendList });
+      this.$refs.table.exportCsv({ filename: "全部借用记录", separator: " , ", columns: this.columnsLend, data: lendList });
       console.log("导出完成");
     },
 
@@ -256,8 +260,8 @@ export default {
       this.getData();
     },
     async show(val) {
-      let id=this.dataLend[val].StyleId;
-      let re=await this.$util.get("Sample/GetSampleInfo/"+id);
+      let id = this.dataLend[val].StyleId;
+      let re = await this.$util.get("Sample/GetSampleInfo/" + id);
       this.currentSmple = re.data;
       this.modal = true;
     },
@@ -273,6 +277,7 @@ export default {
       let re = await this.$util.post(this.action, this.seachObj);
       this.seachObj.total = re.data.count;
       this.dataLend = re.data.list;
+      console.log("lend", this.dataLend);
       this.dataLend.map(item => {
         item.UserDept = item.UserDept.replace(",", "|");
         item.bdate = new Date(item.LendOutDate).toLocaleString();
@@ -291,18 +296,15 @@ export default {
     //取得有借用申请的用户清单
 
     this.$util.get("/LendOut/GetLendUserList/4").then(result => {
-      console.log("user", result);
       this.userList = result.data;
-      this.getData();
     });
 
     this.$util.get("/LendOut/GetInUserList").then(result => {
-      console.log("InUser", result);
       this.inUserList = result.data;
-      this.getData();
+
     });
     //取得有入库的用户清单
-
+    this.getData();
 
   }
 };
