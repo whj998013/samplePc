@@ -18,6 +18,12 @@
       <FormItem label='所有样衣可外借：'>
         <Switch v-model="Setting.AllSampleCanLend" />
       </FormItem>
+      <FormItem label='最大样衣外借天数：'>
+        <InputNumber  v-model="Setting.SampleLendOutDay"></InputNumber>
+      </FormItem>
+      <FormItem label='样衣自动催还天数：'>
+        <InputNumber v-model="Setting.SampleRemindBackDay"></InputNumber>
+      </FormItem>
       <Button type="primary" @click="saveSetting">保存</Button>
       <Divider>毛纱系统配置</Divider>
       <Button type="primary" @click="YarnStockCorrect">毛纱库存小数位修正</Button>
@@ -36,7 +42,9 @@ export default {
         IsInputStrageNeedAlow: false,
         InStrageAlowChange: false,
         EnableLimtView: false,
-        AllSampleCanLend: false
+        AllSampleCanLend: false,
+        SampleLendOutDay: 0,
+        SampleRemindBackDay:0,
       }
     };
   },

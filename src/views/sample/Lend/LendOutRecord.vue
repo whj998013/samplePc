@@ -47,7 +47,7 @@ img {
         </Table>
       </Row>
       <Row>
-        <template>
+    
           <br>
           <Row type="flex" :gutter="16">
             <Col>
@@ -58,7 +58,7 @@ img {
             <Button @click="exportAllData">导出全部数据</Button>
             </Col>
           </Row>
-        </template>
+        
       </Row>
     </Form>
     <Modal v-model="modal" cancel-text="" width="430px" title="详情页">
@@ -156,6 +156,10 @@ export default {
         {
           title: "借用部门",
           key: "UserDept"
+        },
+        {
+          title: "用途",
+          key: "LendPurpose"
         },
 
         {
@@ -277,7 +281,7 @@ export default {
       let re = await this.$util.post(this.action, this.seachObj);
       this.seachObj.total = re.data.count;
       this.dataLend = re.data.list;
-      console.log("lend", this.dataLend);
+ 
       this.dataLend.map(item => {
         item.UserDept = item.UserDept.replace(",", "|");
         item.bdate = new Date(item.LendOutDate).toLocaleString();

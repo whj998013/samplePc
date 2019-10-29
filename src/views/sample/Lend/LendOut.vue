@@ -8,34 +8,50 @@ img {
   max-height: 60px;
 }
 </style>
+<style>
+
+.ivu-table .demo-table-error-row td {
+  background-color: #ff9900;
+  color: #fff;
+}
+</style>
 <template>
   <div>
-    <Row type="flex" justify="space-between" class="menuid">
-      <Col span='15'> 筛选：
-      <Select v-model="seachObj.UserId" multiple style="width:260px" transfer>
-        <Option v-for="item in userList" :value="item.DdId" :key="item.value">{{ item.Name }}</Option>
-      </Select>
-      <Button>确定</Button>
-      </Col>
-      <Col span='5' style="float:right">
-      <Button @click="getData">刷新</Button>
+    <Form :label-width="80">
+      <Row type="flex" justify="space-between" class="menuid">
+        <Col span='7'>
+        <FormItem label="借用人：">
+          <Select v-model="seachObj.UserId" multiple transfer :max-tag-count='2'>
+            <Option v-for="item in userList" :value="item.DdId" :key="item.value">{{ item.Name }}</Option>
+          </Select>
+        </FormItem>
+        </Col>
+        <Col span='7'>
+        <FormItem label="入库人：" span='7'>
+          <Select v-model="seachObj.InUserId" multiple transfer :max-tag-count='2'>
+            <Option v-for="item in inUserList" :value="item.DdId" :key="item.value">{{ item.Name }}</Option>
+          </Select>
+        </FormItem>
+        </Col>
+        <Col span='7' style="float:right">
+        <Button @click="reGetData">刷新</Button>
+        <Button type="primary" @click="selectReturnLend">归还选中样衣</Button>
+        </Col>
+      </Row>
+      <Row>
+        <Table :row-class-name="rowClassName"  border ref="selection" :columns="columnsLend" :data="dataLend" @on-selection-change="tableSelect">
+          <template slot-scope="{ row,index }" slot="pic">
+            <img class="maxHeight" :src="'/file/src/sample/pic/minpic/'+row.StylePic" @click="show(index)"></img>
+          </template>
 
-      <Button type="primary" @click="selectReturnLend">归还选中样衣</Button>
-      </Col>
-    </Row>
-    <br>
-    <Row>
-      <Table border ref="selection" :columns="columnsLend" :data="dataLend" @on-selection-change="tableSelect">
-        <template slot-scope="{ row,index }" slot="pic">
-          <img class="maxHeight" :src="'/file/src/sample/pic/minpic/'+row.baseinfo.Pic" @click="show(index)"></img>
-        </template>
-      </Table>
-    </Row>
-    <Row>
-      <template>
-        <Page show-total show-sizer placement='top' :current=1 :total='seachObj.total' :page-size='seachObj.pageSize' @on-change='pageChange' @on-page-size-change='pageSizeChange' />
-      </template>
-    </Row>
+        </Table>
+      </Row>
+      <Row>
+        <br>
+        <Page show-total show-sizer placement='top' :current='seachObj.pageId' :total='seachObj.total' :page-size='seachObj.pageSize' @on-change='pageChange' @on-page-size-change='pageSizeChange' />
+
+      </Row>
+    </Form>
     <Modal v-model="modal" cancel-text="" width="430px" title="详情页">
       <sampleInfo v-if="modal" width="400px" :haveAction='false' v-model="currentSmple"></sampleInfo>
     </Modal>
@@ -74,6 +90,15 @@ export default {
           key: "StyleNo"
         },
         {
+          title: "种类",
+          key: "Kinds",
+        },
+        {
+          title: "入库人",
+          width: 80,
+          key: "InUserName"
+        },
+        {
           title: "借用人",
           width: 80,
           key: "UserName"
@@ -82,15 +107,27 @@ export default {
           title: "借用部门",
           key: "UserDept"
         },
-
+        {
+          title: "用途",
+          key: "LendPurpose"
+        },
         {
           title: "借出时间",
-          key: "date"
+          key: "date",
+          width: 120,
+        }, {
+          title: "申请天数",
+          key: "LendDay"
+        },
+        {
+          title: "已借天数",
+          key: "daySpan",
+          width: 90,
         },
         {
           title: "操作",
           key: "action",
-          width: 180,
+          width: 140,
           align: "center",
           render: (h, params) => {
             return h("div", [
@@ -143,8 +180,10 @@ export default {
         keyWord: "",
         dateValue: ["", ""],
         State: "",
-        UserId: []
+        UserId: [],
+        InUserId: []
       },
+      inUserList: [],
       userList: [
         // {
         //   DdId: "AAA",
@@ -154,6 +193,18 @@ export default {
     };
   },
   methods: {
+    rowClassName(row, index) {
+      let d=row.daySpan-row.LendDay;
+      if (d>0) {
+        return 'demo-table-error-row';
+      } 
+      return '';
+    },
+
+    reGetData() {
+      this.seachObj.pageId = 1;
+      this.getData();
+    },
     ///还回选中样衣
     selectReturnLend() {
       if (this.selectItems.length > 0) {
@@ -209,23 +260,36 @@ export default {
       this.seachObj.pageSize = pageSize;
       this.getData();
     },
-    show(val) {
-      this.currentSmple = this.dataLend[val].baseinfo;
+    async show(val) {
+      let id = this.dataLend[val].StyleId;
+      let re = await this.$util.get("Sample/GetSampleInfo/" + id);
+      this.currentSmple = re.data;
       this.modal = true;
+
     },
     getData() {
+      this.$bus.BeginLoading();
       this.$util
         .post("/LendOut/GetAllLendOutList", this.seachObj)
         .then(result => {
-          this.dataLend = result.data.items;
+          let today = new Date();
+          this.dataLend = result.data.list;
           this.dataLend.map(item => {
-            item.date = new Date(item.CreateDate).toLocaleString();
+            item.date = new Date(item.LendOutDate).toLocaleString();
+            item.daySpan = this.DateMinus(item.LendOutDate, today);
           });
-          this.seachObj.pageSize = result.data.pageSize;
-          this.seachObj.pageId = result.data.pageId;
-          this.seachObj.total = result.data.total;
+          this.seachObj.total = result.data.count;
+          this.$bus.EndLoading();
         });
-    }
+
+    },
+    DateMinus(date1, date2) {
+      var sdate = new Date(date1);
+      var now = new Date(date2);
+      var days = now.getTime() - sdate.getTime();
+      var day = parseInt(days / (1000 * 60 * 60 * 24));
+      return day == 0 ? 1 : day;
+    },
   },
   mounted: function () {
     //取得有借用申请的用户清单
@@ -234,6 +298,9 @@ export default {
         this.userList.push(item);
       });
       this.getData();
+    });
+    this.$util.get("/LendOut/GetInUserList").then(result => {
+      this.inUserList = result.data;
     });
   }
 };

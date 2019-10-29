@@ -15,9 +15,8 @@ img {
       <Select v-model="seachObj.UserId" multiple style="width:260px" transfer>
         <Option v-for="item in userList" :value="item.DdId" :key="item.value">{{ item.Name }}</Option>
       </Select>
-      <Button @click="getData">确定</Button>
       </Col>
-      <Col span='5' style="float:right">
+      <Col span='8' style="float:right">
       <Button @click="getData">刷新</Button>
 
       <Button type="primary" @click="AlowSelectInstroage">选中样衣通过借用</Button>
@@ -27,14 +26,14 @@ img {
     <Row>
       <Table border ref="table" :columns="columnsLend" :data="dataLend" @on-selection-change="tableSelect">
         <template slot-scope="{ row,index }" slot="pic">
-          <img class="maxHeight" :src="'/file/src/sample/pic/minpic/'+row.baseinfo.Pic" @click="show(index)"></img>
+          <img class="maxHeight" :src="'/file/src/sample/pic/minpic/'+row.StylePic" @click="show(index)"></img>
         </template>
       </Table>
     </Row>
     <Row>
-      <template>
-        <Page show-total show-sizer placement='top' :current=1 :total='seachObj.total' :page-size='seachObj.pageSize' @on-change='pageChange' @on-page-size-change='pageSizeChange' />
-      </template>
+      <br>
+      <Page show-total show-sizer placement='top' :current=1 :total='seachObj.total' :page-size='seachObj.pageSize' @on-change='pageChange' @on-page-size-change='pageSizeChange' />
+
     </Row>
     <Modal v-model="modal" cancel-text="" width="430px" title="详情页">
       <sampleInfo v-if="modal" width="400px" :haveAction='false' v-model="currentSmple"></sampleInfo>
@@ -74,15 +73,28 @@ export default {
           key: "StyleNo"
         },
         {
+          title: "入库人",
+          width: 80,
+          key: "InUserName"
+        },
+        {
           title: "借用人",
           width: 80,
           key: "UserName"
         },
         {
           title: "借用部门",
-          key: "UserDept"
+          key: "UserDept",
+          width: 120,
         },
-
+        {
+          title: "用途",
+          key: "LendPurpose"
+        },
+        {
+          title: "申请天数",
+          key: "LendDay"
+        },
         {
           title: "申请时间",
           key: "date"
@@ -248,21 +260,22 @@ export default {
       this.getData();
     },
     //显示指定样定详请
-    show(val) {
-      this.currentSmple = this.dataLend[val].baseinfo;
+    async show(val) {
+      let id = this.dataLend[val].StyleId;
+      let re = await this.$util.get("Sample/GetSampleInfo/" + id);
+      this.currentSmple = re.data;
       this.modal = true;
     },
     //从服务器取得需审批的样衣清单
     getData() {
       console.log("getdata");
       this.$util.post("/LendOut/GetAllLendList", this.seachObj).then(result => {
-        this.dataLend = result.data.items;
+        this.dataLend = result.data.list;
+        console.log("datalend", result);
         this.dataLend.map(item => {
           item.date = new Date(item.CreateDate).toLocaleString();
         });
-        this.seachObj.pageSize = result.data.pageSize;
-        this.seachObj.pageId = result.data.pageId;
-        this.seachObj.total = result.data.total;
+        this.seachObj.total = result.data.count;
       });
     }
   },
