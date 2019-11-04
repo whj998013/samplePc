@@ -47,6 +47,11 @@ let menuObj = [
                 text: '我的样纱',
                 authKey: 'Yarn_MyYarn',
             },
+            {
+                name: '/YarnMange/Mange',
+                text: '样纱管理',
+                authKey: 'Yarn_Mange',
+            },
         ]
     },
 

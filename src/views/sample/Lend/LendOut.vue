@@ -9,10 +9,9 @@ img {
 }
 </style>
 <style>
-
 .ivu-table .demo-table-error-row td {
-  background-color: #ff9900;
-  color: #fff;
+  color: #ed4014;
+  /* color: #fff; */
 }
 </style>
 <template>
@@ -39,11 +38,10 @@ img {
         </Col>
       </Row>
       <Row>
-        <Table :row-class-name="rowClassName"  border ref="selection" :columns="columnsLend" :data="dataLend" @on-selection-change="tableSelect">
+        <Table :row-class-name="rowClassName" border ref="selection" :columns="columnsLend" :data="dataLend" @on-selection-change="tableSelect">
           <template slot-scope="{ row,index }" slot="pic">
             <img class="maxHeight" :src="'/file/src/sample/pic/minpic/'+row.StylePic" @click="show(index)"></img>
           </template>
-
         </Table>
       </Row>
       <Row>
@@ -194,10 +192,10 @@ export default {
   },
   methods: {
     rowClassName(row, index) {
-      let d=row.daySpan-row.LendDay;
-      if (d>0) {
+      let d = row.daySpan - row.LendDay;
+      if (d > 0) {
         return 'demo-table-error-row';
-      } 
+      }
       return '';
     },
 

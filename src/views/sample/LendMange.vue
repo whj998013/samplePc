@@ -13,7 +13,7 @@
       <TabPane label="历史记录" name="name2">
         <LendOutRecord></LendOutRecord>
       </TabPane>
-      <TabPane label="借样排行" name="name3">
+      <TabPane  label="借样排行" name="name3">
         <LendChart></LendChart>
       </TabPane>
     </Tabs>
