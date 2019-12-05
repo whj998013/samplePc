@@ -111,15 +111,15 @@ util.ajax.interceptors.response.use(function (response) {
     //对返回的错误进行一些处理
     console.log("axios Error", error);
     if (true) {
-
+       
         bus.EndLoading();
         console.log('ajax出错:', error, "config:", error.config);
         let config = error.config;
         let str = error + '';
         if (str.search('timeout') !== -1 || str.search('Network Error') !== -1) { // 超时error捕获
-            window.location.href = '/login/0';
             console.log("error", error);
             debugger;
+            window.location.href = '/login/0';
             return;
         };
 
@@ -133,12 +133,16 @@ util.ajax.interceptors.response.use(function (response) {
                 bus.EndLoading();
                 return axios(config);
             }).catch(error => {
+
                 //window.location.href = '/login/401';
+
             });
 
         } else if (error.response.status == 404) {
+           
             console.log("服务器没有找到相应数据：", error.response);
         } else if (error.response.status == 400) {
+           
             bus.alert(error.response.data.Message);
         };
         return Promise.reject(error);

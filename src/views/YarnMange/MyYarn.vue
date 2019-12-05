@@ -14,15 +14,16 @@
       </Col>
     </Row>
     <Tabs value="name0">
-      <TabPane label="入库记录" name="name0">
+      <TabPane label="用纱申请" name="name0">
+        <OutStockApplyView :dept="dept" ref="outApply" action="/YarnOutStock/GetYarnOutApplyList"></OutStockApplyView>
+      </TabPane>
+      <TabPane label="入库记录" name="name1">
         <YarnInStock :dept="dept" ref="yarnIn" action="/MyYarn/GetMyYarnInStock"></YarnInStock>
       </TabPane>
       <TabPane label="用纱记录" name="name2">
         <YarnOutStock :dept="dept" ref="yarnOut" action="/MyYarn/GetMyYarnOutStock"></YarnOutStock>
       </TabPane>
-      <TabPane label="用纱申请" name="name3">
-        <OutStockApplyView :dept="dept" ref="outApply" action="/YarnOutStock/GetYarnOutApplyList"></OutStockApplyView>
-      </TabPane>
+
     </Tabs>
     <OutStockApply></OutStockApply>
   </div>

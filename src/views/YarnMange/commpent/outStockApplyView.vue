@@ -28,6 +28,9 @@
 
           <div v-html="$util.getState(row.Stats)"></div>
         </template>
+        <template slot-scope="{ row }" slot="action">
+          <Button @click="deleteStock(row)" :disabled="row.Stats!=2&&row.Stats!=10" type="error" size="small">删除</Button>
+        </template>
       </Table>
     </Row>
     <br>
@@ -225,6 +228,12 @@ export default {
           minWidth: 160,
           slot: "date",
         },
+        {
+          title: "操作",
+          slot: "action",
+          minWidth: 80,
+          fixed: "right",
+        }
 
 
       ]
@@ -242,6 +251,20 @@ export default {
       this.$refs.table.exportCsv({ filename: "入库信息", separator: " , ", columns: this.columns, data: re.data.Result });
       console.log("导出完成");
     },
+    deleteStock(row) {
+      console.log(row);
+      this.$Modal.confirm({
+        title: '确定吗',
+        content: '<p>确定撤回并删除单号为"' + row.NO + '"的申请单吗？</p>',
+        onOk: async () => {
+          let re = await this.$util.get("/YarnOutStock/YarnOutStock/" + row.NO);
+          this.GetData();
+          this.$Message.info('删除成功');
+        },
+        onCancel: () => {
+        }
+      });
+    },
     outStock(row) {
       if (row.InStorNum > 0) {
         let r = row;
@@ -253,7 +276,7 @@ export default {
         this.$Message.info('库存为0，无法出库');
       }
     },
-    
+
 
     reload(v) {
       this.page.pageId = 1;
