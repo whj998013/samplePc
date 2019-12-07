@@ -3,11 +3,11 @@ import cookie from "./cookie.js";
 import vue from "vue";
 import bus from "../bus.js";
 import Util from './util';
-
 let loginApi = {
     beginLogin() {
         let _this = this;
         return new Promise(function (resolve, reject) {
+
             _this.cookieLogin().then(re => {
                 _this.loginFinsh(re);
                 resolve(re);
@@ -30,6 +30,7 @@ let loginApi = {
         bus.setCookieUser(user);
         bus.getSystemSetting();
 
+
     },
 
     cookieLogin() {
@@ -38,8 +39,8 @@ let loginApi = {
             console.log("cookid:" + cookiestr);
             if (cookiestr != null) {
                 Util.post("/login/CookieLogin", {
-                        cookie: cookiestr
-                    })
+                    cookie: cookiestr
+                })
                     .then(re => {
                         if (re.data != null) {
                             console.log("cookie登录成功", re);
@@ -60,10 +61,10 @@ let loginApi = {
     },
 
     ddLogin() {
-        let _this=this;
+        let _this = this;
         return new Promise(function (resolve, reject) {
             ///钉钉登录
-          
+
             dd.ready(function () {
                 dd.runtime.permission.requestAuthCode({
                     corpId: "ding99dd341fc99a25eb", // 企业id
@@ -76,7 +77,7 @@ let loginApi = {
                         }).catch(errorInfo => {
                             console.log("再次钉钉登录")
                             _this.ddLogin();
-                            
+
                             reject(errorInfo);
                         });
                     }

@@ -7,10 +7,11 @@
   </div>
 </template>
 <script>
-import weblogin from "./login/weblogin.vue";
+import weblogin from "./Login/weblogin";
 import dd from "dingtalk-jsapi";
 import cookie from "../libs/cookie.js";
 import loginApi from "../libs/loginApi.js";
+var IsLoging = false;
 export default {
   components: {
     weblogin
@@ -74,12 +75,20 @@ export default {
 
     pcLogin(data) {
       console.log("开始Web登录");
-      this.$util.post("/login/Weblogin", data).then(re => {
-        if (re.data != null) {
-          this.$Message.success("登录成功！");
-          this.loginFinsh(re.data);
-        }
-      });
+      if (!IsLoging) {
+        IsLoging = true;
+        setTimeout(() => {
+          IsLoging=false;
+        }, 5000);
+        this.$util.post("/login/Weblogin", data).then(re => {
+          if (re.data != null) {
+            this.$Message.success("登录成功！");
+            this.loginFinsh(re.data);
+            IsLoging=false;
+          }
+        });
+      }
+
     }
   }
 };
