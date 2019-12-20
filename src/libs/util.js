@@ -45,7 +45,7 @@ let util = {
         return Number(Math.random().toString().substr(3, length) + Date.now()).toString(36);
     },
     getState(v) {
-        if (v == 0) return "<p style='color:#515a6e'>仓库退回</p>";
+        if (v == 12) return "<p style='color:#515a6e'>仓库退回</p>";
         else if (v == 1) return "<p style='color:#19be6b'>草拟</p>";
         else if (v == 2) return "<p style='color:#ff9900'>审批中</p>";
         else if (v == 3) return "<p style='color:#2db7f5'>通过</p>";
@@ -53,8 +53,7 @@ let util = {
         else if (v == 10) return "<p style='color:#ed4014'>拒绝|撤回</p>";
         else if (v == 11) return "<p style='color:#ed4014'>出库失败</p>";
         else return "";
-      },
-
+    },
     // 二维码生成方法
     qrcode(id, text, width, callBack) {
         if (text != null) {
@@ -111,7 +110,7 @@ util.ajax.interceptors.response.use(function (response) {
     //对返回的错误进行一些处理
     console.log("axios Error", error);
     if (true) {
-       
+
         bus.EndLoading();
         console.log('ajax出错:', error, "config:", error.config);
         let config = error.config;
@@ -139,10 +138,10 @@ util.ajax.interceptors.response.use(function (response) {
             });
 
         } else if (error.response.status == 404) {
-           
+
             console.log("服务器没有找到相应数据：", error.response);
         } else if (error.response.status == 400) {
-           
+
             bus.alert(error.response.data.Message);
         };
         return Promise.reject(error);

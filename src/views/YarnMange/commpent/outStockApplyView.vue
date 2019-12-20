@@ -3,7 +3,7 @@
 <template>
   <div>
     <Row>
-      <Table ref="table" border :columns="columns" :data="tableData" max-height="550">
+      <Table ref="table" border :columns="columns" :data="tableData" max-height="550" @on-filter-change="filterChange">
         <template slot-scope="{ row }" slot="color">
           <span :style="'background-color:'+row.RGB">&emsp;&emsp;</span>{{ row.Color }}
         </template>
@@ -26,10 +26,16 @@
         </template>
         <template slot-scope="{ row }" slot="stats">
 
-          <div v-html="$util.getState(row.Stats)"></div>
+          <div v-html="getState(row.Stats)"></div>
         </template>
         <template slot-scope="{ row }" slot="action">
-          <Button @click="deleteStock(row)" :disabled="row.Stats!=2&&row.Stats!=10" type="error" size="small">删除</Button>
+          <ButtonGroup>
+            <Button v-if="HaveAlowButton"  icon="md-checkmark" @click="alowStock(row)" :disabled="!(row.Stats==2)" type="success" size="small">
+            </Button>
+            <Button icon="md-close" @click="deleteStock(row)" :disabled="!(row.Stats<2||row.Stats>=10)" type="error" size="small">
+            </Button>
+          </ButtonGroup>
+
         </template>
       </Table>
     </Row>
@@ -58,6 +64,8 @@ export default {
   props: {
     action: String,
     dept: Array,
+    GetAllDept: Boolean,
+    HaveAlowButton:Boolean,
   },
   data: function () {
     return {
@@ -108,7 +116,9 @@ export default {
         pageId: 1,
         pageSize: 10,
         total: 0,
+
       },
+      state: 0,
       tableData: [],
       columns: [
         {
@@ -116,7 +126,6 @@ export default {
           key: "ApplyEmpName",
           sortable: true,
           minWidth: 130
-
         },
         {
           title: "纱名",
@@ -124,7 +133,6 @@ export default {
           sortable: true,
           fixed: "left",
           minWidth: 130
-
         },
         {
           title: "颜色",
@@ -154,8 +162,40 @@ export default {
           key: "Stats",
           slot: "stats",
           fixed: "left",
+          minWidth: 120,
           sortable: true,
-          minWidth: 100
+          filters: [
+            {
+              label: '草拟',
+              value: 1
+            },
+            {
+              label: '审批中',
+              value: 2
+            },
+            {
+              label: '通过',
+              value: 3
+            },
+            {
+              label: '已出库',
+              value: 4
+            },
+            {
+              label: '拒绝|撤回',
+              value: 10
+            }
+            ,
+            {
+              label: '出库失败',
+              value: 11
+            }
+          ],
+          filterMultiple: false,
+          filterMethod(value, row) {
+            return true;
+          },
+
         },
         {
           title: "支数",
@@ -231,7 +271,7 @@ export default {
         {
           title: "操作",
           slot: "action",
-          minWidth: 80,
+          minWidth: 84,
           fixed: "right",
         }
 
@@ -240,6 +280,13 @@ export default {
     };
   },
   methods: {
+    filterChange(v) {
+      if (v._filterChecked[0]) this.state = v._filterChecked[0];
+      else this.state = 0;
+      this.GetData();
+      console.log("getAllDept:", this.GetAllDept);
+
+    },
     exportData() {
       this.$refs.table.exportCsv({ filename: "入库信息", separator: " , " });
     },
@@ -251,13 +298,27 @@ export default {
       this.$refs.table.exportCsv({ filename: "入库信息", separator: " , ", columns: this.columns, data: re.data.Result });
       console.log("导出完成");
     },
+    alowStock(row) {
+      console.log("alow", row);
+       this.$Modal.confirm({
+        title: '确定吗',
+        content: '<p>确定强制通过单号为"' + row.NO + '"的申请单吗？</p>',
+        onOk: async () => {
+          let re = await this.$util.get("/YarnOutStock/AlowYarnOutStock/" + row.NO);
+          this.GetData();
+          this.$Message.info('已通过');
+        },
+        onCancel: () => {
+        }
+      });
+    },
     deleteStock(row) {
       console.log(row);
       this.$Modal.confirm({
         title: '确定吗',
         content: '<p>确定撤回并删除单号为"' + row.NO + '"的申请单吗？</p>',
         onOk: async () => {
-          let re = await this.$util.get("/YarnOutStock/YarnOutStock/" + row.NO);
+          let re = await this.$util.get("/YarnOutStock/DeleteYarnOutStock/" + row.NO);
           this.GetData();
           this.$Message.info('删除成功');
         },
@@ -265,6 +326,17 @@ export default {
         }
       });
     },
+    getState(v) {
+      if (v == 12) return "<p style='color:#515a6e'>仓库退回</p>";
+      else if (v == 1) return "<p style='color:#19be6b'>草拟</p>";
+      else if (v == 2) return "<p style='color:#ff9900'>审批中</p>";
+      else if (v == 3) return "<p style='color:#2db7f5'>通过</p>";
+      else if (v == 4) return "<p style='color:#2d8cf0'>已出库</p>";
+      else if (v == 10) return "<p style='color:#ed4014'>拒绝|撤回</p>";
+      else if (v == 11) return "<p style='color:#ed4014'>出库失败</p>";
+      else return "";
+    },
+
     outStock(row) {
       if (row.InStorNum > 0) {
         let r = row;
@@ -304,6 +376,8 @@ export default {
       this.$bus.BeginLoading();
       if (dept != undefined) this.page.deptIdList = dept;
       else this.page.deptIdList = this.dept;
+      this.page.state = this.state;
+      this.page.GetAllDept = this.GetAllDept;
       let re = await this.$util.post(this.action, this.page);
       console.log(re);
       this.page.pageId = re.data.SeachObj.PageId;

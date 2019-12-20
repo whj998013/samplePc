@@ -13,15 +13,15 @@
       <Button @click="reload">&emsp;&emsp;刷新&emsp;&emsp;</Button>
       </Col>
     </Row>
-    <Tabs value="name0">
-      <TabPane label="用纱申请" name="name0">
-        <OutStockApplyView :dept="dept" ref="outApply" action="/YarnOutStock/GetYarnOutApplyList"></OutStockApplyView>
+    <Tabs @on-click="tabClick" v-model="currentTab">
+      <TabPane label="用纱申请" name="outApply">
+        <OutStockApplyView v-if="tabPane.outApply" :dept="dept" ref="outApply" action="/YarnOutStock/GetYarnOutApplyList"></OutStockApplyView>
       </TabPane>
-      <TabPane label="入库记录" name="name1">
-        <YarnInStock :dept="dept" ref="yarnIn" action="/MyYarn/GetMyYarnInStock"></YarnInStock>
+      <TabPane label="入库记录" name="yarnIn">
+        <YarnInStock v-if="tabPane.yarnIn" :dept="dept" ref="yarnIn" action="/MyYarn/GetMyYarnInStock"></YarnInStock>
       </TabPane>
-      <TabPane label="用纱记录" name="name2">
-        <YarnOutStock :dept="dept" ref="yarnOut" action="/MyYarn/GetMyYarnOutStock"></YarnOutStock>
+      <TabPane label="用纱记录" name="yarnOut">
+        <YarnOutStock v-if="tabPane.yarnOut" :dept="dept" ref="yarnOut" action="/MyYarn/GetMyYarnOutStock"></YarnOutStock>
       </TabPane>
 
     </Tabs>
@@ -46,14 +46,24 @@ export default {
   },
   data: function () {
     return {
-      dept: []
+      currentTab: 'outApply',
+      dept: [],
+      tabPane: {
+        outApply: true,
+        yarnIn: false,
+        yarnOut: false
+      },
     };
   },
   methods: {
+    tabClick(v) {
+      eval("this.tabPane." + v + "=true");
+      console.log(this.currentTab);
+    },
     reload() {
-      this.$refs.yarnIn.reload(this.dept);
-      this.$refs.yarnOut.reload(this.dept);
-      this.$refs.outApply.reload(this.dept);
+       if (this.tabPane.yarnIn) this.$refs.yarnIn.reload(this.dept);
+       if (this.tabPane.yarnOut) this.$refs.yarnOut.reload(this.dept);
+       if (this.tabPane.outApply) this.$refs.outApply.reload(this.dept);
     },
   },
   mounted: function () {
