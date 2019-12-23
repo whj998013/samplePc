@@ -54,7 +54,7 @@
 //import bus from "../bus.js";
 import LocalStockView from "./commpent/LocalStockView.vue";
 import OutStockApply from "./commpent/outStockApply";
-import ColorHelp from "../../../libs/ColorHelp";
+import ColorHelp from "@/libs/ColorHelp";
 
 
 export default {

@@ -26,7 +26,7 @@
   </div>
 </template>
 <script>
-import color from "../../../../libs/ColorHelp.js";
+import color from "@/libs/ColorHelp.js";
 export default {
   data: function () {
     return {

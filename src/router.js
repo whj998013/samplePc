@@ -28,7 +28,7 @@ const routers = [
         meta: {
             title: '',
         },
-        component: (resolve) => require(['./views/layout.vue'], resolve),
+        component: (resolve) => require(['./views/sungin/layout.vue'], resolve),
         children: [
             {
                 path: '/',

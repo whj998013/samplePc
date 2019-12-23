@@ -16,7 +16,7 @@
   <div class="layout">
 
     <Sider :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
-      <a @click="routeGoto('/')"><img src="../pic/logo.jpg" height="64"></img>
+      <a @click="routeGoto('/')"><img src="@/pic/logo.jpg" height="64"></img>
       </a>
       <Menu :active-name="menuActiveName" theme="dark" width="auto" :open-names="openNames" @on-select="routeGoto">
         <Submenu :name="m.subMenuName" v-for="m in menuItem" :key="m.subMenuName" v-if="$Auth(m.authKey)">
@@ -58,7 +58,7 @@
   </div>
 </template>
 <script>
-import mItem from "../template/menuItem.js";
+import mItem from "./menuItem.js";
 export default {
   provide() {
     return {
@@ -75,7 +75,7 @@ export default {
       BreadArr: ["首页"],
       menuActiveName: "",
       isMange: false,
-      openNames: ["stockMenu", "YarnMenu","ProofMenu"]
+      openNames: ["stockMenu", "YarnMenu", "ProofMenu"]
     };
   },
   computed: {
@@ -98,12 +98,12 @@ export default {
   methods: {
     reload() {
       this.isRouterAlive = false;
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         this.isRouterAlive = true;
       });
     },
     //执行路由跳转
-    routeGoto: function(url) {
+    routeGoto: function (url) {
       this.currentUrl = url;
       this.$router.push(url);
     },
