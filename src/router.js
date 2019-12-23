@@ -20,7 +20,7 @@ const routers = [
             title: '打印二维码',
             requireAuth: false,
         },
-        component: (resolve) => require(['./views/print/print.vue'], resolve)
+        component: (resolve) => require(['./views/sungin/print/print.vue'], resolve)
     },
 
     {
@@ -36,7 +36,7 @@ const routers = [
                     title: '样衣管理',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/sample/findSample.vue'], resolve)
+                component: (resolve) => require(['./views/sungin/sample/findSample.vue'], resolve)
             },
 
             {
@@ -45,7 +45,7 @@ const routers = [
                     title: '样衣信息',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/sample/findSample.vue'], resolve)
+                component: (resolve) => require(['./views/sungin/sample/findSample.vue'], resolve)
             },
             {
                 path: '/sample/mySample',
@@ -53,7 +53,7 @@ const routers = [
                     title: '我的样衣',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/sample/mySample.vue'], resolve)
+                component: (resolve) => require(['./views/sungin/sample/mySample.vue'], resolve)
             },
             
             {
@@ -62,7 +62,7 @@ const routers = [
                     title: '样衣录入',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/sample/addSample.vue'], resolve)
+                component: (resolve) => require(['./views/sungin/sample/addSample.vue'], resolve)
             },
             {
                 path: '/sample/editSample/:id',
@@ -70,7 +70,7 @@ const routers = [
                     title: '样衣编辑',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/sample/addSample.vue'], resolve)
+                component: (resolve) => require(['./views/sungin/sample/addSample.vue'], resolve)
             },
             {
                 path: '/sample/inOutmange',
@@ -78,7 +78,7 @@ const routers = [
                     title: '入库管理',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/sample/inOutmange.vue'], resolve)
+                component: (resolve) => require(['./views/sungin/sample/inOutmange.vue'], resolve)
             },
             {
                 path: '/sample/LendMange',
@@ -86,7 +86,7 @@ const routers = [
                     title: '借样管理',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/sample/LendMange.vue'], resolve)
+                component: (resolve) => require(['./views/sungin/sample/LendMange.vue'], resolve)
             },
             {
                 path: '/Proof/MyProof',
@@ -94,7 +94,7 @@ const routers = [
                     title: '我的打样',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/Proof/MyProof.vue'], resolve)
+                component: (resolve) => require(['./views/sungin/Proof/MyProof.vue'], resolve)
             },
             {
                 path: '/Proof/MyTask',
@@ -102,7 +102,7 @@ const routers = [
                     title: '我的打样',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/Proof/MyTask.vue'], resolve)
+                component: (resolve) => require(['./views/sungin/Proof/MyTask.vue'], resolve)
             },
            
             {
@@ -111,7 +111,7 @@ const routers = [
                     title: '打样管理',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/Proof/ProofMange.vue'], resolve)
+                component: (resolve) => require(['./views/sungin/Proof/ProofMange.vue'], resolve)
             },
             
             {
@@ -120,7 +120,7 @@ const routers = [
                     title: '我的样纱',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/YarnMange/MyYarn.vue'], resolve)
+                component: (resolve) => require(['./views/sungin/YarnMange/MyYarn.vue'], resolve)
             },
             {
                 path: '/YarnMange/YarnSeach',
@@ -128,7 +128,7 @@ const routers = [
                     title: '样纱查询',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/YarnMange/YarnSeach.vue'], resolve)
+                component: (resolve) => require(['./views/sungin/YarnMange/YarnSeach.vue'], resolve)
             },
             {
                 path: '/YarnMange/Mange',
@@ -136,7 +136,7 @@ const routers = [
                     title: '样纱管理',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/YarnMange/YarnMange.vue'], resolve)
+                component: (resolve) => require(['./views/sungin/YarnMange/YarnMange.vue'], resolve)
             },
 
             {
@@ -145,7 +145,7 @@ const routers = [
                     title: '系统设置',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/system/RoleSetting.vue'], resolve)
+                component: (resolve) => require(['./views/sungin/system/RoleSetting.vue'], resolve)
             },
             {
                 path: '/system/SampleSetting',
@@ -153,7 +153,7 @@ const routers = [
                     title: '样衣设置',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/system/SampleSetting.vue'], resolve)
+                component: (resolve) => require(['./views/sungin/system/SampleSetting.vue'], resolve)
             }
            
         ]

@@ -26,10 +26,7 @@
   </div>
 </template>
 <script>
-//import bus from "../bus.js";
-import color from "../../../libs/ColorHelp.js";
-//import LabToRGB from "../../../libs/LabToRGB.js";
-
+import color from "../../../../libs/ColorHelp.js";
 export default {
   data: function () {
     return {
