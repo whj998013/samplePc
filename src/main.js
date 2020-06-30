@@ -13,7 +13,7 @@ Vue.prototype.$util = Util;
 Vue.prototype.$dd = dd;
 Vue.use(VueRouter);
 Vue.use(iView);
-bus.getMenuItem();
+bus.upDateMenuItem();
 bus.getUserBycookie();
 
 // 路由配置

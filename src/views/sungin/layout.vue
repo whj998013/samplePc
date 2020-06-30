@@ -75,7 +75,7 @@ export default {
       menuActiveName: "",
       isMange: false,
       openNames: ["Sample"]
-      
+
     };
   },
   computed: {
@@ -96,7 +96,7 @@ export default {
       this.changemenuItem(msg);
     });
     if (this.currentUser.Role >= 2) this.isMange = true;
-
+    console.log("menubus",this.$bus.menuItem[0]);
   },
 
   methods: {

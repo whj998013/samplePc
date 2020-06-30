@@ -27,12 +27,12 @@ export default new Vue({
         },
         isLimt() {
             return this.Auth('Sample_Dd_ViewAllInfo');
-        },
+        }
     },
-    methods: {
-        
-        Auth(value) {
 
+    methods: {
+
+        Auth(value) {
             if (value) {
                 let v = this.currentUser.plist.find(p => p == value);
                 if (v != undefined) {
@@ -41,11 +41,14 @@ export default new Vue({
             }
             return false;
         },
-        async getMenuItem() {
-            
+        async upDateMenuItem() {
+            let lmi = localStorage.getItem('menuItem');
+            if (lmi != null) {
+                this.menuItem = JSON.parse(localStorage.getItem('menuItem'));
+            }
             let re = await this.$util.get('/public/GetMenuItem');
+            localStorage.setItem('menuItem', JSON.stringify(re.data));
             this.menuItem = re.data;
-            console.log("busmen", this.menuItem);
         },
         setCookieUser(user) {
             this.currentUser = user;
