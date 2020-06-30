@@ -18,15 +18,16 @@
     <Sider :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
       <a @click="routeGoto('/')"><img src="@/pic/logo.jpg" height="64"></img>
       </a>
-      <Menu :active-name="menuActiveName" theme="dark" width="auto" :open-names="openNames" @on-select="routeGoto">
-        <Submenu :name="m.subMenuName" v-for="m in menuItem" :key="m.subMenuName" v-if="$Auth(m.authKey)">
+      <Menu :active-name="menuActiveName" accordion theme="dark" width="auto" :open-names="openNames">
+        <Submenu v-for="m in $bus.menuItem" :name="m.Name" :key="m.Key" v-if="$Auth(m.Name)">
           <template slot="title">
-            <Icon :type="m.iconType"></Icon>
-            {{ m.subMenuText}}
+            <Icon :type="m.Icon"></Icon>
+            {{ m.Cname}}
           </template>
-          <MenuItem :name="item.name" v-for="item in m.menuItem" :key="item.name" v-if="$Auth(item.authKey)">{{item.text}}</MenuItem>
+          <MenuItem :name="item.Name" v-for="item in m.Items" :key="item.Key" :to="item.Url" v-if="$Auth(item.Name)">{{item.Cname}}</MenuItem>
         </Submenu>
       </Menu>
+
     </Sider>
     <Layout :style="{marginLeft: '200px'}">
       <Header :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)'}">
@@ -58,7 +59,6 @@
   </div>
 </template>
 <script>
-import mItem from "./menuItem.js";
 export default {
   provide() {
     return {
@@ -70,12 +70,12 @@ export default {
       isRouterAlive: true,
       isLoading: false,
       minheight: window.innerHeight - 200,
-      menuItem: mItem,
       currentUrl: "",
       BreadArr: ["首页"],
       menuActiveName: "",
       isMange: false,
-      openNames: ["stockMenu", "YarnMenu", "ProofMenu"]
+      openNames: ["Sample"]
+      
     };
   },
   computed: {
@@ -83,7 +83,9 @@ export default {
       return this.$bus.currentUser;
     }
   },
+
   mounted() {
+
     this.$bus.$on("BeginLoading", () => {
       this.isLoading = true;
     });
@@ -94,7 +96,9 @@ export default {
       this.changemenuItem(msg);
     });
     if (this.currentUser.Role >= 2) this.isMange = true;
+
   },
+
   methods: {
     reload() {
       this.isRouterAlive = false;

@@ -1,9 +1,10 @@
 import Vue from 'vue';
-import cookie from "./libs/cookie.js";
+import cookie from './libs/cookie.js';
 
 export default new Vue({
     data() {
         return {
+            menuItem: [],
             client: {
                 IsPc: false,
                 IsDd: false
@@ -20,16 +21,16 @@ export default new Vue({
         };
     },
     computed: {
-
         isLogin() {
-            console.log("user:", this.currentUser, "islogin:", this.currentUser == undefined ? false : true);
+            console.log('user:', this.currentUser, 'islogin:', this.currentUser == undefined ? false : true);
             return this.currentUser == undefined ? false : true;
         },
         isLimt() {
-            return this.Auth("Sample_Dd_ViewAllInfo");
+            return this.Auth('Sample_Dd_ViewAllInfo');
         },
     },
     methods: {
+        
         Auth(value) {
 
             if (value) {
@@ -40,13 +41,19 @@ export default new Vue({
             }
             return false;
         },
+        async getMenuItem() {
+            
+            let re = await this.$util.get('/public/GetMenuItem');
+            this.menuItem = re.data;
+            console.log("busmen", this.menuItem);
+        },
         setCookieUser(user) {
             this.currentUser = user;
-            cookie.setSessionCookie('sgud', JSON.stringify(user), "/");
+            cookie.setSessionCookie('sgud', JSON.stringify(user), '/');
         },
         getSystemSetting() {
             return new Promise((resolve, reject) => {
-                this.$util.get("/SampleSetting/GetSampleSetting").then(result => {
+                this.$util.get('/SampleSetting/GetSampleSetting').then(result => {
                     this.Setting = result.data;
                     resolve(result.data);
                 }).catch(re => {
@@ -57,19 +64,19 @@ export default new Vue({
         getSelectList() {
             return new Promise((resolve, reject) => {
                 if (this.selectData == null) {
-                    this.$util.get("/Public/GetSelectList").then(result => {
-                        this.selectData=result.data;
+                    this.$util.get('/Public/GetSelectList').then(result => {
+                        this.selectData = result.data;
                         resolve(result.data);
                     }).catch(re => {
                         reject(re);
                     });
-                }else resolve(this.selectData);
+                } else resolve(this.selectData);
             });
         },
         alert(alertstr) {
             this.$Notice.warning({
-                title: "警告",
-                desc:  alertstr,
+                title: '警告',
+                desc: alertstr,
                 duration: 4
             });
         },
@@ -85,16 +92,16 @@ export default new Vue({
             }
         },
         BeginLoading() {
-            this.$bus.$emit("BeginLoading", "");
+            this.$bus.$emit('BeginLoading', '');
         },
         EndLoading() {
-            this.$bus.$emit("EndLoading", "");
+            this.$bus.$emit('EndLoading', '');
         }
     },
-    created(){
-        
+    created() {
 
 
-        
+
+
     }
 });

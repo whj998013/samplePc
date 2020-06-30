@@ -88,7 +88,7 @@ let menuObj = [
         subMenuName: 'setting',
         iconType: 'md-construct',
         subMenuText: '系统设置',
-        authKey: 'SystemMange', 
+        authKey: 'SystemMange',
         menuItem: [{
             name: '/system/RoleSetting',
             text: '角色权限配置',

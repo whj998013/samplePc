@@ -1,3 +1,7 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable quotes */
+/* eslint-disable no-console */
+/* eslint-disable no-undef */
 import dd from "dingtalk-jsapi";
 import cookie from "./cookie.js";
 import vue from "vue";
@@ -62,6 +66,7 @@ let loginApi = {
 
     ddLogin() {
         let _this = this;
+       
         return new Promise(function (resolve, reject) {
             ///钉钉登录
 
@@ -75,7 +80,7 @@ let loginApi = {
                             // vue.$Message.success("钉钉登录成功！");
                             resolve(re.data);
                         }).catch(errorInfo => {
-                            console.log("再次钉钉登录")
+                            console.log("再次钉钉登录");
                             _this.ddLogin();
 
                             reject(errorInfo);

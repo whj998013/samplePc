@@ -173,7 +173,7 @@ export default {
     },
     //打开任务编辑
     EditTask(row) {
-      console.log(row);
+      //console.log(row);
      // debugger;
       this.currentTask.ProofOrderId = this.ProofOrderId;
       this.currentTask.ProcessId = row.ProcessId;
@@ -247,21 +247,21 @@ export default {
       let pList = [];
       this.proof.ProofTasks.forEach(p => {
         if (p.status == "deleted") {
-          console.log("delete" + p.Id);
+        //  console.log("delete" + p.Id);
           pList.push(this.$util.get("/ProofTask/DeleteTask/" + p.Id));
         }
       });
       this.taskList.forEach(p => {
         if (p.status == "add") {
-          console.log("add", p);
+         // console.log("add", p);
           pList.push(this.$util.post("/ProofTask/AddTask/", p));
         } else if (p.status == "edit") {
-          console.log("edit", p);
+         // console.log("edit", p);
           pList.push(this.$util.post("/ProofTask/UpdateTask", p));
         }
       });
       Promise.all(pList).then(re => {
-        console.log("任务全部完成");
+       // console.log("任务全部完成");
         this.paiDanModel = false;
       }).catch(error => {
         console.log("错误:", error);
@@ -318,6 +318,7 @@ export default {
       console.log("tlist", this.taskList);
     },
 
+
     // modalOk() {
     //   let _this = this;
     //   let proofPlanObj = {
@@ -333,11 +334,13 @@ export default {
     //     });
     //   });
     // }
+
+
   },
   mounted: function () {
     this.$util.get("/ProofWorker/GetProcessList").then(re => {
       this.processList = re.data;
-      console.log("proc", this.processList);
+     // console.log("proc", this.processList);
     });
   }
 };

@@ -8,13 +8,33 @@
         "browser": true
     },
     "extends": "eslint:recommended",
-    "plugins": ["html"],
+    "plugins": [
+        "html"
+    ],
     "rules": {
-        "indent": ["error", 4, {
-            "SwitchCase": 1
-        }],
-        "quotes": ["error", "single"],
-        "semi": ["error", "always"],
-        "no-console": ["error"]
+        "no-empty-pattern": "off",
+        "vue/no-unused-components": "off",
+        "no-unused-vars": "off",
+        "vue/no-parsing-error": "off",
+        "no-empty": "off",
+
+        "indent": [
+            "error",
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "no-console": [
+            "error"
+        ],
     }
 }
