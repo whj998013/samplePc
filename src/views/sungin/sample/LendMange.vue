@@ -3,18 +3,18 @@
 <template>
   <div>
 
-    <Tabs value="name0">
-      <TabPane label="借用审批" name="name0">
-        <Lend></Lend>
+    <Tabs value="tab1" @on-click="tabClick">
+      <TabPane label="借用审批" name="tab1">
+        <Lend v-if="tabPane.tab1"></Lend>
       </TabPane>
-      <TabPane label="借出归还" name="name1">
-        <LendOut></LendOut>
+      <TabPane label="借出归还" name="tab2">
+        <LendOut v-if="tabPane.tab2"></LendOut>
       </TabPane>
-      <TabPane label="历史记录" name="name2">
-        <LendOutRecord></LendOutRecord>
+      <TabPane label="历史记录" name="tab3">
+        <LendOutRecord v-if="tabPane.tab3"></LendOutRecord>
       </TabPane>
-      <TabPane  label="借样排行" name="name3">
-        <LendChart></LendChart>
+      <TabPane label="借样排行" name="tab4">
+        <LendChart v-if="tabPane.tab4"></LendChart>
       </TabPane>
     </Tabs>
   </div>
@@ -33,9 +33,21 @@ export default {
     LendOutRecord
   },
   data: function () {
-    return {};
+    return {
+      tabPane: {
+        tab1: true,
+        tab2: false,
+        tab3: false,
+        tab4: false
+      }
+
+    };
   },
-  methods: {},
+  methods: {
+    tabClick(name) {
+      eval('this.tabPane.' + name + '=true');
+    }
+  },
   mounted: function () {
     this.$bus.$emit("changeMenuItem", ["样衣管理", "借用管理"]);
   }

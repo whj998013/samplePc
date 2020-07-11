@@ -33,7 +33,7 @@ export default {
 
   },
   mounted: function () {
-    this.$bus.$emit('changeMenuItem', ['样衣管理', '找样衣']);
+    this.$bus.$emit('changeMenuItem', ['样纱仓库', '纱线管理']);
   }
 };
 </script>

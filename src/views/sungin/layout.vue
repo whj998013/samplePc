@@ -1,4 +1,8 @@
-
+<style>
+    .demo-spin-icon-load{
+        animation: ani-demo-spin 1s linear infinite;
+    }
+</style>
 <style scoped>
 .layout {
   border: 1px solid #d7dde4;
@@ -48,6 +52,7 @@
           </Col>
         </Row>
         <Card>
+
           <div id='ContentDiv' :style="{'min-height': minheight+'px'}">
             <Spin v-if="isLoading" fix size="large"></Spin>
             <router-view v-if="isRouterAlive"></router-view>
@@ -87,16 +92,33 @@ export default {
   mounted() {
 
     this.$bus.$on("BeginLoading", () => {
-      this.isLoading = true;
+      //this.isLoading = true;
+       this.$Spin.show({
+                    render: (h) => {
+                        return h('div', [
+                            h('Icon', {
+                                'class': 'demo-spin-icon-load',
+                                props: {
+                                    type: 'ios-loading',
+                                    size: 28
+                                }
+                            }),
+                            h('div', 'Loading')
+                        ])
+                    }
+                });
+
+
     });
     this.$bus.$on("EndLoading", () => {
-      this.isLoading = false;
+     // this.isLoading = false;
+      this.$Spin.hide();
     });
     this.$bus.$on("changeMenuItem", msg => {
       this.changemenuItem(msg);
     });
     if (this.currentUser.Role >= 2) this.isMange = true;
-    console.log("menubus",this.$bus.menuItem[0]);
+    console.log("menubus", this.$bus.menuItem[0]);
   },
 
   methods: {

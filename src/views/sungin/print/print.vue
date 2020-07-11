@@ -28,25 +28,26 @@ img {
           <div style="border-bottom :1px solid #e8eaec;">
             <h3><img style="width:35px;heigth:35px" src=".\logo.jpg">SUNGIN GROUP</img></h3>
           </div>
-          <h2>ID:{{sample.StyleId}}</h2>
+          
           <img :src="dataUrl+'/pic/minpic/'+picstr"></img>
         </div>
         </Col>
         <Col span="11" style="" class="brod">
+        <h2>ID:{{sample.StyleId}}</h2>
         <h4>STYLE NO:{{sample.StyleNo}}</h4>
         <h4>可外借:{{canlendout}}</h4>
-        <h4>现货:{{haveStock}}</h4>
+        <!-- <h4>现货:{{haveStock}}</h4> -->
         <h4>QUALITY:<span v-for="item in mList" :key="item.yranId">{{item.yarnId}}、{{item.counts==""?"":"COUNT："+item.counts+" "}}{{item.Material}}<br /></span></h4>
         <h4 v-if="sample.Counts!=''">COUNT:{{sample.Counts}}</h4>
         <h4>GAUGE:{{sample.Gauge}}&nbsp;&nbsp;&nbsp;&nbsp;WEIGHT:{{sample.Weight}}g</h4>
-        <h4>零售价:{{sample.SalePrice}}元</h4>
+        <!-- <h4>零售价:{{sample.SalePrice}}元</h4> -->
         <Row type="flex" justify="center">
           <Col span="12">
           <div id="qrcode" style="text-align:center"></div>
           </Col>
           <Col span="12">
           <img style="width:120px" src=".\logo2.png"></img>
-          <h3>钉钉扫码查看详情</h3>
+          <h4>钉钉扫码查看详情</h4>
           </Col>
         </Row>
 

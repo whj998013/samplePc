@@ -1,7 +1,8 @@
 <style scoped>
 </style>
 <template>
-  <div>      
+  <div>    
+    GarmentSotck. 
   </div>                       
 </template>
 <script>
@@ -16,7 +17,7 @@ export default {
     
   },
   mounted: function() {
-       this.$bus.$emit('changeMenuItem',['样衣管理','找样衣']);
+       this.$bus.$emit('changeMenuItem',['成衣仓库','库存管理']);
   }
 };
 </script>

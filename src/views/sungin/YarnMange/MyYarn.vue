@@ -58,7 +58,7 @@ export default {
   methods: {
     tabClick(v) {
       eval("this.tabPane." + v + "=true");
-      console.log(this.currentTab);
+    
     },
     reload() {
        if (this.tabPane.yarnIn) this.$refs.yarnIn.reload(this.dept);

@@ -268,7 +268,7 @@ export default {
     },
     //从服务器取得需审批的样衣清单
     getData() {
-      console.log("getdata");
+    
       this.$util.post("/LendOut/GetAllLendList", this.seachObj).then(result => {
         this.dataLend = result.data.list;
         console.log("datalend", result);
@@ -276,17 +276,21 @@ export default {
           item.date = new Date(item.CreateDate).toLocaleString();
         });
         this.seachObj.total = result.data.count;
+       
       });
+
     }
   },
   mounted: function () {
     //取得有借用申请的用户清单
+  
     this.$util.get("/LendOut/GetLendUserList/1").then(result => {
       result.data.map(item => {
         this.userList.push(item);
       });
       this.getData();
     });
+   
   }
 };
 </script>

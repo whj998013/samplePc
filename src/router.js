@@ -1,4 +1,4 @@
-const routers = [ 
+const routers = [
     {
         path: '/login',
         meta: {
@@ -13,7 +13,7 @@ const routers = [
         },
         component: (resolve) => require(['./views/login.vue'], resolve)
     },
-     
+
     {
         path: '/sample/printcode/:id',
         meta: {
@@ -39,6 +39,7 @@ const routers = [
                 component: (resolve) => require(['./views/sungin/sample/findSample.vue'], resolve)
             },
 
+            //样衣管理
             {
                 path: '/sample/findSample/',
                 meta: {
@@ -55,7 +56,7 @@ const routers = [
                 },
                 component: (resolve) => require(['./views/sungin/sample/mySample.vue'], resolve)
             },
-            
+
             {
                 path: '/sample/newSample',
                 meta: {
@@ -88,6 +89,8 @@ const routers = [
                 },
                 component: (resolve) => require(['./views/sungin/sample/LendMange.vue'], resolve)
             },
+
+            //打样管理
             {
                 path: '/Proof/MyProof',
                 meta: {
@@ -104,7 +107,7 @@ const routers = [
                 },
                 component: (resolve) => require(['./views/sungin/Proof/MyTask.vue'], resolve)
             },
-           
+
             {
                 path: '/Proof/ProofMange',
                 meta: {
@@ -113,7 +116,8 @@ const routers = [
                 },
                 component: (resolve) => require(['./views/sungin/Proof/ProofMange.vue'], resolve)
             },
-            
+
+            //样纱管理
             {
                 path: '/YarnMange/MyYarn',
                 meta: {
@@ -139,6 +143,36 @@ const routers = [
                 component: (resolve) => require(['./views/sungin/YarnMange/YarnMange.vue'], resolve)
             },
 
+            //仓库管理
+            {
+                path: '/warehouse/GarmentInSotck',
+                meta: {
+                    title: '成衣入库',
+                    requireAuth: true,
+                },
+                component: (resolve) => require(['./views/sungin/warehouse/GarmentInSotck.vue'], resolve)
+            },
+            {
+                path: '/warehouse/GarmentOutSotck',
+                meta: {
+                    title: '成衣出库',
+                    requireAuth: true,
+                },
+                component: (resolve) => require(['./views/sungin/warehouse/GarmentOutSotck.vue'], resolve)
+            },
+            {
+                path: '/warehouse/GarmentSotck',
+                meta: {
+                    title: '库存管理',
+                    requireAuth: true,
+                },
+                component: (resolve) => require(['./views/sungin/warehouse/GarmentSotck.vue'], resolve)
+            },
+
+
+            
+
+            //系统设置
             {
                 path: '/system/RoleSetting',
                 meta: {
@@ -155,9 +189,9 @@ const routers = [
                 },
                 component: (resolve) => require(['./views/sungin/system/SampleSetting.vue'], resolve)
             }
-           
+
         ]
 
     },
-   ];
+];
 export default routers;
