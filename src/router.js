@@ -145,31 +145,29 @@ const routers = [
 
             //仓库管理
             {
-                path: '/warehouse/GarmentInSotck',
+                path: '/warehouse/GarmentInStock',
                 meta: {
                     title: '成衣入库',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/sungin/warehouse/GarmentInSotck.vue'], resolve)
+                component: (resolve) => require(['./views/sungin/warehouse/GarmentInStock.vue'], resolve)
             },
             {
-                path: '/warehouse/GarmentOutSotck',
+                path: '/warehouse/GarmentOutStock',
                 meta: {
                     title: '成衣出库',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/sungin/warehouse/GarmentOutSotck.vue'], resolve)
+                component: (resolve) => require(['./views/sungin/warehouse/GarmentOutStock.vue'], resolve)
             },
             {
-                path: '/warehouse/GarmentSotck',
+                path: '/warehouse/GarmentStock',
                 meta: {
                     title: '库存管理',
                     requireAuth: true,
                 },
-                component: (resolve) => require(['./views/sungin/warehouse/GarmentSotck.vue'], resolve)
+                component: (resolve) => require(['./views/sungin/warehouse/GarmentStock.vue'], resolve)
             },
-
-
             
 
             //系统设置
