@@ -83,6 +83,7 @@ export default {
     }
   },
   mounted() {
+   
     if (!this.value) this.materialsList.items = this.value;
   },
   methods: {
@@ -121,7 +122,6 @@ export default {
     
       if (v!=undefined) {
         let re = this.materials.find(v => v.CnName == this.tempVal);
-        
         if (re) {
           this.materialsList.items[v].enName = re.EnName;
         } else if (this.materialsList.items[v].enName) this.materialsList.items[v].enName = "";
