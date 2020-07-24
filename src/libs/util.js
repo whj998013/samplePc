@@ -99,7 +99,7 @@ util.dataUrl = dataBaseUrl + "/src/sample";
 util.proofDataUrl = dataBaseUrl;
 util.baseUrl = ajaxUrl+'/';
 // util.baseUrl = ajaxUrl + "/apiaction";
-
+  
 
 util.ajax = axios.create({
     baseURL: util.baseUrl,
