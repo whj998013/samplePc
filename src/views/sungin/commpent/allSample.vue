@@ -28,7 +28,7 @@
       </Col>
     </Row>
     <Row type="flex">
-      <sampleview ref="view" action="/Sample/GetSampleList" :canSelect="canSelect" :limtView='limtView' :haveAction='haveAction' :haveLend='haveLend' :haveEdit='haveEdit' :haveDelete='haveDelete' :haveReturn='haveReturn' :havePrint='havePrint' :haveInStorage='haveInStorage'
+      <sampleview ref="view" action="apiaction/Sample/GetSampleList" :canSelect="canSelect" :limtView='limtView' :haveAction='haveAction' :haveLend='haveLend' :haveEdit='haveEdit' :haveDelete='haveDelete' :haveReturn='haveReturn' :havePrint='havePrint' :haveInStorage='haveInStorage'
         :haveAcceptInStorage='haveAcceptInStorage' :haveAcceptLend='haveAcceptLend' :haveAcceptReturn='haveAcceptReturn'></sampleview>
     </Row>
   </div>

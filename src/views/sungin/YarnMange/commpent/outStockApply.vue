@@ -143,7 +143,7 @@ export default {
         if (this.outStockOrder.Num > 0 && this.outStockOrder.CusName != '') {
           this.outStockOrder.BatchNum = this.row.BatchNum;
           console.log(this.outStockOrder);
-          await this.$util.post('/YarnOutStock/NewYarnOutApply', this.outStockOrder);
+          await this.$util.post('apiaction/YarnOutStock/NewYarnOutApply', this.outStockOrder);
           this.$Notice.success({
             title: '成功',
             desc: '已发出出库申请，正在等待审批，请在钉钉查看审批进程及结果。'
@@ -165,7 +165,7 @@ export default {
 
 
     async getCusList() {
-      let re = await this.$util.get("/Cus/GetCusList");
+      let re = await this.$util.get("apiaction/Cus/GetCusList");
       this.CusList = re.data;
     },
   },

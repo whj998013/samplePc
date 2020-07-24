@@ -80,7 +80,7 @@ export default {
         setTimeout(() => {
           IsLoging=false;
         }, 5000);
-        this.$util.post("/login/Weblogin", data).then(re => {
+        this.$util.post("apiaction/login/Weblogin", data).then(re => {
           if (re.data != null) {
             this.$Message.success("登录成功！");
             this.loginFinsh(re.data);

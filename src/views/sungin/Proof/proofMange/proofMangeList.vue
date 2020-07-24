@@ -143,7 +143,7 @@ export default {
     async FinshProof(row) {
       console.log("交样", row);
       this.$bus.BeginLoading();
-      let re = await this.$util.get("/ProofMange/FinshProof/" + row.ProofOrderId);
+      let re = await this.$util.get("apiaction/ProofMange/FinshProof/" + row.ProofOrderId);
       this.$Notice.success({
         title: '成功',
         desc: '已发出交样审批，请在钉钉查看审批并拍照上传照片。 '

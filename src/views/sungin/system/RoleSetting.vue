@@ -176,7 +176,7 @@ export default {
   },
   methods: {
     syncWorker() {
-      this.$util.get("/Worker/SyncWorker").then(p => {
+      this.$util.get("apiaction/Worker/SyncWorker").then(p => {
         this.$Notice.success({
           title: "成功",
           desc: "同步工艺程序成功！",
@@ -208,7 +208,7 @@ export default {
 
     upUserDataByDd() {
       this.$bus.BeginLoading();
-      this.$util.get("/RoleSetting/UpUserDataByDd").then(p => {
+      this.$util.get("apiaction/RoleSetting/UpUserDataByDd").then(p => {
         this.$Notice.success({
           title: "成功",
           desc: "同步用户角色成功！",
@@ -258,7 +258,7 @@ export default {
     },
     getData() {
       this.$bus.BeginLoading();
-      this.$util.get("/RoleSetting/GetUserRoleData").then(p => {
+      this.$util.get("apiaction/RoleSetting/GetUserRoleData").then(p => {
 
         this.setData(p);
       });
@@ -270,7 +270,7 @@ export default {
       let re = this.$refs.pTree.getCheckedAndIndeterminateNodes();
       let plist = re.map(p => p.key);
       let obj = { Role: this.currentRole.Role, PermissionKey: plist};
-      this.$util.post("/RoleSetting/SaveRoleData", obj).then(p => {
+      this.$util.post("apiaction/RoleSetting/SaveRoleData", obj).then(p => {
         this.getData();
       });
     }

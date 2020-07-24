@@ -137,7 +137,7 @@ export default {
     },
     async showTaskView(row) {
       let proofId = row.ProofOrderId;
-      let re = await this.$util.get("/ProofTask/GetTasks/" + proofId);
+      let re = await this.$util.get("apiaction/ProofTask/GetTasks/" + proofId);
       this.currentProof = re.data;
       console.log("rowclick", this.currentProof);
       this.showDrawer = true;

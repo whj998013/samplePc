@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     async   Show(BatchNum) {
-      let re = await this.$util.post("/YarnSeach/GetOutList/",{BatchNum:BatchNum} );
+      let re = await this.$util.post("apiaction/YarnSeach/GetOutList/",{BatchNum:BatchNum} );
       this.tableData = re.data;
       this.modal = true;
     }

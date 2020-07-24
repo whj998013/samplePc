@@ -15,13 +15,13 @@
     </Row>
     <Tabs @on-click="tabClick" v-model="currentTab">
       <TabPane label="用纱申请" name="outApply">
-        <OutStockApplyView v-if="tabPane.outApply" :dept="dept" ref="outApply" action="/YarnOutStock/GetYarnOutApplyList"></OutStockApplyView>
+        <OutStockApplyView v-if="tabPane.outApply" :dept="dept" ref="outApply" action="apiaction/YarnOutStock/GetYarnOutApplyList"></OutStockApplyView>
       </TabPane>
       <TabPane label="入库记录" name="yarnIn">
-        <YarnInStock v-if="tabPane.yarnIn" :dept="dept" ref="yarnIn" action="/MyYarn/GetMyYarnInStock"></YarnInStock>
+        <YarnInStock v-if="tabPane.yarnIn" :dept="dept" ref="yarnIn" action="apiaction/MyYarn/GetMyYarnInStock"></YarnInStock>
       </TabPane>
       <TabPane label="用纱记录" name="yarnOut">
-        <YarnOutStock v-if="tabPane.yarnOut" :dept="dept" ref="yarnOut" action="/MyYarn/GetMyYarnOutStock"></YarnOutStock>
+        <YarnOutStock v-if="tabPane.yarnOut" :dept="dept" ref="yarnOut" action="apiaction/MyYarn/GetMyYarnOutStock"></YarnOutStock>
       </TabPane>
 
     </Tabs>

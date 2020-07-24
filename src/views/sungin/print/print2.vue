@@ -62,7 +62,7 @@ export default {
       let p = new Promise((resolve, reject) => {
         console.log("getdata");
         this.$util
-          .get("/Print/GetSample", {
+          .get("apiaction/Print/GetSample", {
             params: { styleId: this.id }
           })
           .then(result => {

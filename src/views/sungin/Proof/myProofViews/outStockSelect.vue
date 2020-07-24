@@ -199,7 +199,7 @@ export default {
       
     },
     async getData() {
-      let re = await this.$util.post("/YarnOutStock/GetMyYarnOutApplyList", this.page);
+      let re = await this.$util.post("apiaction/YarnOutStock/GetMyYarnOutApplyList", this.page);
       console.log(re);
       this.page.pageId = re.data.SeachObj.PageId;
       this.page.pageSize = re.data.SeachObj.PageSize;

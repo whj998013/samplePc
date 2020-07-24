@@ -97,7 +97,9 @@ let dataBaseUrl = env === 'development' ? '/file' : '/file';
 
 util.dataUrl = dataBaseUrl + "/src/sample";
 util.proofDataUrl = dataBaseUrl;
-util.baseUrl = ajaxUrl + "/api";
+util.baseUrl = ajaxUrl+'/';
+// util.baseUrl = ajaxUrl + "/apiaction";
+
 
 util.ajax = axios.create({
     baseURL: util.baseUrl,
@@ -150,6 +152,8 @@ util.ajax.interceptors.response.use(function (response) {
 
 util.post = util.ajax.post;
 util.get = util.ajax.get;
+util.put=util.ajax.put;
+util.delete=util.ajax.delete;
 util.print = Print;
 
 util.removeByValue = (arr, val) => {

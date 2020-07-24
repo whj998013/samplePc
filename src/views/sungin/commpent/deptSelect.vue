@@ -50,7 +50,7 @@ export default {
       this.$emit("SelectChange", this.dept);
     },
     async getDeptData() {
-      let re = await this.$util.get("/Public/GetDeptPvList");
+      let re = await this.$util.get("apiaction/Public/GetDeptPvList");
       if (re.data.length > 0) {
         this.SetDeptOptions(this.options, re.data);
       }

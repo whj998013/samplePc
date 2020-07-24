@@ -90,7 +90,7 @@ export default {
         console.log("getdata");
         let _this = this;
         this.$util
-          .get("/Print/GetSample", {
+          .get("apiaction/Print/GetSample", {
             params: { styleId: this.id }
           })
           .then(result => {

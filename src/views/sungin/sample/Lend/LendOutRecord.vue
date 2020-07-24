@@ -74,7 +74,7 @@ export default {
   },
   data: function () {
     return {
-      action: "/LendOut/GetAllLendOutReturnList",
+      action: "apiaction/LendOut/GetAllLendOutReturnList",
       dateRange: [],
       modal: false,
       currentSmple: {},
@@ -265,7 +265,7 @@ export default {
     },
     async show(val) {
       let id = this.dataLend[val].StyleId;
-      let re = await this.$util.get("Sample/GetSampleInfo/" + id);
+      let re = await this.$util.get("apiaction/Sample/GetSampleInfo/" + id);
       this.currentSmple = re.data;
       this.modal = true;
     },
@@ -299,11 +299,11 @@ export default {
   mounted: function () {
     //取得有借用申请的用户清单
 
-    this.$util.get("/LendOut/GetLendUserList/4").then(result => {
+    this.$util.get("apiaction/LendOut/GetLendUserList/4").then(result => {
       this.userList = result.data;
     });
 
-    this.$util.get("/LendOut/GetInUserList").then(result => {
+    this.$util.get("apiaction/LendOut/GetInUserList").then(result => {
       this.inUserList = result.data;
     
     });

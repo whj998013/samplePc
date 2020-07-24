@@ -21,10 +21,10 @@
     </Row>
     <Tabs value="name0">
       <TabPane label="打样中" name="name0">
-        <proofMangeList ref="CurrentProof" action="/ProofMange/GetProofPlanList"></proofMangeList>
+        <proofMangeList ref="CurrentProof" action="apiaction/ProofMange/GetProofPlanList"></proofMangeList>
       </TabPane>
       <TabPane label="已完成打样" name="name2">
-        <proofMangeList ref="CurrentProof" action="/ProofMange/GetFinshPlanList"></proofMangeList>
+        <proofMangeList ref="CurrentProof" action="apiaction/ProofMange/GetFinshPlanList"></proofMangeList>
       </TabPane>
     </Tabs>
   </div>

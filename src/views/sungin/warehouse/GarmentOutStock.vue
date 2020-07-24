@@ -20,4 +20,4 @@ export default {
        this.$bus.$emit('changeMenuItem',['成衣仓库','出库管理']);
   }
 };
-</script>
+</script>    

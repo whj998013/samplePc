@@ -22,10 +22,10 @@
     </Row>
     <Tabs value="name0">
       <TabPane label="当前打样" name="name0">
-        <ProofList ref="CurrentProof" action="/MyProof/GetMyProofs" v-model="currnetProofs" @onEdit="edit"></ProofList>
+        <ProofList ref="CurrentProof" action="apiaction/MyProof/GetMyProofs" v-model="currnetProofs" @onEdit="edit"></ProofList>
       </TabPane>
       <TabPane label="已完成打样" name="name1">
-        <ProofList ref="FinshProof" action="/MyProof/GetMyFinshProofs" v-model="finshProofs"></ProofList>
+        <ProofList ref="FinshProof" action="apiaction/MyProof/GetMyFinshProofs" v-model="finshProofs"></ProofList>
       </TabPane>
     </Tabs>
     <!-- 新的打样申请  -->
@@ -99,7 +99,7 @@ export default {
     getProofNo() {
       return new Promise((resolve, reject) => {
         this.$util
-          .get("/NewProof/GetProofNo")
+          .get("apiaction/NewProof/GetProofNo")
           .then(result => {
             resolve(result.data);
           })

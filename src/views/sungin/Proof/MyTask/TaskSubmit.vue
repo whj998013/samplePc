@@ -24,7 +24,7 @@
       <Row>
         <Divider>上传文件</Divider>
         <Col span="8">
-        <Upload type="drag" :with-credentials="true" :action="baseUrl + '/ProofTask/UpLoadFile'" :data="upLoadData" :on-success="fileUploadOUpSuccess" :show-upload-list=false>
+        <Upload type="drag" :with-credentials="true" :action="baseUrl + 'apiaction/ProofTask/UpLoadFile'" :data="upLoadData" :on-success="fileUploadOUpSuccess" :show-upload-list=false>
           <div>
             <Icon type="ios-cloud-upload" size="100" style="color: #3399ff"></Icon>
             <p>点击或将文件拖入框内上传</p>
@@ -116,7 +116,7 @@ export default {
       if (!haveError) {
         console.log(this.currentTask);
         this.currentTask.nextTaskNO = this.$util.getID(8);
-        let re = await this.$util.post("/ProofTask/SubmitTask/", this.currentTask);
+        let re = await this.$util.post("apiaction/ProofTask/SubmitTask/", this.currentTask);
         
         this.$Message.info("任务完成");
         this.showSumitBox = false;
@@ -127,7 +127,7 @@ export default {
       console.log("row", row);
       this.havenextWorkerName = true;
       let proofId = row.ProofOrderId;
-      let re = await this.$util.get("/ProofTask/GetTasks/" + proofId);
+      let re = await this.$util.get("apiaction/ProofTask/GetTasks/" + proofId);
       this.upLoadData.TaskId = row.Id;
       this.upLoadData.ProofOrderId = row.ProofOrderId;
       this.upLoadData.ProcessName = row.ProcessName;
@@ -150,7 +150,7 @@ export default {
     //取得工序表
     processChange(val) {
       if (val > 0) {
-        this.$refs.wSelect.GetWorker("/ProofWorker/GetWorkerList/" + val);
+        this.$refs.wSelect.GetWorker("apiaction/ProofWorker/GetWorkerList/" + val);
         let pcs = this.processList.find(function (p) {
           return p.Id == val;
         });
@@ -164,7 +164,7 @@ export default {
       }
     },
     async getNextTask(TaskId) {
-      let re = await this.$util.get("/ProofTask/GetNextTask/" + TaskId);
+      let re = await this.$util.get("apiaction/ProofTask/GetNextTask/" + TaskId);
       console.log("re", re);
       if (re.data.length > 0) {
         this.NextTask.isHave = true;
@@ -186,7 +186,7 @@ export default {
     },
     async removeFile(f, index) {
       let fileid = f.Id;
-      let re = await this.$util.get("/ProofTask/DeleteTaskFile/" + fileid);
+      let re = await this.$util.get("apiaction/ProofTask/DeleteTaskFile/" + fileid);
       if ((re = "ok")) {
         this.uploadList.splice(index, 1);
       }
@@ -194,7 +194,7 @@ export default {
 
   },
   mounted: function () {
-    this.$util.get("/ProofWorker/GetProcessList").then(re => {
+    this.$util.get("apiaction/ProofWorker/GetProcessList").then(re => {
       this.processList = re.data;
 
     });
