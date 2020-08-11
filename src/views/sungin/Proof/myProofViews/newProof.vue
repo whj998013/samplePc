@@ -101,13 +101,13 @@
         <Divider>其它要求</Divider>
         <Col :xs="24" :sm="24" :md="12" :lg="12">
         <FormItem label='打样部门' prop="ProofDept">
-          <proofDeptSelect v-model="proof.ProofDept" action="apiaction/ProofWorker/GetProofDepts"></proofDeptSelect>
+          <proofDeptSelect v-model="proof.ProofDept" :action="$sra.proof_GetProofDepts"></proofDeptSelect>
         </FormItem>
         </Col>
 
         <Col :xs="24" :sm="24" :md="12" :lg="12">
         <FormItem label='指定工艺'>
-          <workerSelect v-model="proof.DesignatedGY" action="apiaction/ProofWorker/GetWorkerList/1"></workerSelect>
+          <workerSelect v-model="proof.DesignatedGY" :action='$sra.proof_get_gy_workers'></workerSelect>
         </FormItem>
         </Col>
         <!-- <Col v-if="false" :xs="24" :sm="24" :md="12" :lg="12">
@@ -134,7 +134,7 @@
         <Row>
           <Col span="8">
           <FormItem>
-            <Upload type="drag" :with-credentials="true" :action="baseUrl + 'apiaction/NewProof/UpLoadFile'" :on-success="fileUploadOUpSuccess" :data="proof" :show-upload-list=false>
+            <Upload type="drag" :with-credentials="true" :action="baseUrl + $sra.proof_NewProofUpLoadFile" :on-success="fileUploadOUpSuccess" :data="proof" :show-upload-list=false>
               <div>
                 <Icon type="ios-cloud-upload" size="42" style="color: #3399ff"></Icon>
                 <p>点击或将打样资料拖入框内上传</p>
@@ -310,9 +310,9 @@ export default {
             if (this.proof.FileList.length > 0) {
               let action = "";
               if (this.editMode) {
-                action = "apiaction/NewProof/UpdateProof"; //编辑模式
+                action = this.$sra.proof_UpdateProof; //编辑模式
               } else {
-                action = "apiaction/NewProof/SaveProof"; //新增模式
+                action = this.$sra.proof_SaveProof; //新增模式
               }
               console.log("proof", this.proof);
               this.$util.post(action, this.proof).then(result => {
@@ -351,7 +351,7 @@ export default {
     removeFile(file, index) {
       if (file.Id == 0) {
         this.$util
-          .post(this.baseUrl + "apiaction/NewProof/RemoveFile", file)
+          .post(this.baseUrl + this.$sra.proof_RemoveFile, file)
           .then(re => {
             console.log("re", re);
           });
@@ -437,7 +437,7 @@ export default {
       console.log("proof", this.proof);
     },
     GetClients() {
-      this.$util.get("apiaction/ProofMange/GetClients").then(re => {
+      this.$util.get(this.$sra.proof_GetClients).then(re => {
         this.clients = re.data;
       });
     }

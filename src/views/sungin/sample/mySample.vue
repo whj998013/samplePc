@@ -19,13 +19,13 @@
     <Tabs value="name0">
 
       <TabPane label="未入库样衣" name="name0">
-        <sampleview ref="view1" action="apiaction/MySample/GetNotInStorageSample" @needUpData='handleUpdata' haveEdit havePrint haveDelete haveInStorage></sampleview>
+        <sampleview ref="view1" :action=$sra.sample_GetNotInStorageSample @needUpData='handleUpdata' haveEdit havePrint haveDelete haveInStorage></sampleview>
       </TabPane>
       <TabPane label="已入库样衣" name="name1">
-        <sampleview ref="view2" action="apiaction/MySample/GetInStorageSample" @needUpData='handleUpdata' :haveEdit="InStrageAlowChange" havePrint showImport></sampleview>
+        <sampleview ref="view2" :action=$sra.sample_GetInStorageSample @needUpData='handleUpdata' :haveEdit="InStrageAlowChange" havePrint showImport></sampleview>
       </TabPane>
       <TabPane label="我借用的样衣" name="name2">
-        <sampleview ref="view3" action="apiaction/MySample/GetLendOutSample" @needUpData='handleUpdata' ba havePrint :havePage="false"></sampleview>
+        <sampleview ref="view3" :action=$sra.sample_GetLendOutSample @needUpData='handleUpdata' ba havePrint :havePage="false"></sampleview>
       </TabPane>
     </Tabs>
   </div>

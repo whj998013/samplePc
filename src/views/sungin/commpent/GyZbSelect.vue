@@ -19,7 +19,7 @@
         <span>选择工艺员：</span>
         </Col>
         <Col span="16">
-        <workerSelect v-model="gy" :HaveNoSelect="false" action="apiaction/ProofWorker/GetWorkerList/1"></workerSelect>
+        <workerSelect v-model="gy" :HaveNoSelect="false" :action="$sra.proof_get_gy_workers"></workerSelect>
         </Col>
       </Row>
       <br>

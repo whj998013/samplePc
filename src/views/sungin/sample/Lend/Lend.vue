@@ -236,7 +236,7 @@ export default {
     //执行退回申请
     doBackLend(lendId) {
       return new Promise(resolve => {
-        this.$util.post("apiaction/LendOut/DoBackLend", lendId).then(result => {
+        this.$util.post(this.$sra.sample_DoBackLend, lendId).then(result => {
           resolve(result);
         });
 
@@ -245,7 +245,7 @@ export default {
     //执行借出申请通过
     doInstroage(lendIdList) {
       return new Promise(resolve => {
-        this.$util.post("apiaction/LendOut/DoInstroage", lendIdList).then(result => {
+        this.$util.post(this.$sra.sample_DoInstroage, lendIdList).then(result => {
           resolve(result);
         });
       });
@@ -262,14 +262,14 @@ export default {
     //显示指定样定详请
     async show(val) {
       let id = this.dataLend[val].StyleId;
-      let re = await this.$util.get("apiaction/Sample/GetSampleInfo/" + id);
+      let re = await this.$util.get(this.$sra.sample_GetSampleInfo + id);
       this.currentSmple = re.data;
       this.modal = true;
     },
     //从服务器取得需审批的样衣清单
     getData() {
     
-      this.$util.post("apiaction/LendOut/GetAllLendList", this.seachObj).then(result => {
+      this.$util.post(this.$sra.sample_GetAllLendList, this.seachObj).then(result => {
         this.dataLend = result.data.list;
         console.log("datalend", result);
         this.dataLend.map(item => {
@@ -284,7 +284,7 @@ export default {
   mounted: function () {
     //取得有借用申请的用户清单
   
-    this.$util.get("apiaction/LendOut/GetLendUserList/1").then(result => {
+    this.$util.get(this.$sra.sample_GetLendUserList+'1').then(result => {
       result.data.map(item => {
         this.userList.push(item);
       });

@@ -132,7 +132,7 @@ export default {
         content: '<p>将发起钉钉申请，通过后即可在本页面下载文件。</p>',
         onOk: async () => {
           console.log("app", val);
-          let re = await this.$util.get("apiaction/MyProof/ApplyDownload/" + val.ProofOrderId);
+          let re = await this.$util.get(this.$sra.proof_ApplyDownload + val.ProofOrderId);
           
         },
       });
@@ -146,7 +146,7 @@ export default {
       };
 
       this.$util
-        .post("apiaction/MyProof/SubmitProof", proof)
+        .post( this.$sra.proof_SubmitProof, proof)
         .then(result => {
           this.$Notice.success({
             title: "成功",
@@ -170,7 +170,7 @@ export default {
     },
     deleteProof() {
       let proof = { ProofOrderId: this.CurrentRow.ProofOrderId };
-      this.$util.post("apiaction/MyProof/DeleteProof", proof).then(result => {
+      this.$util.post(this.$sra.proof_DeleteProof, proof).then(result => {
         this.$Notice.success({
           title: "成功",
           desc: this.CurrentRow.ProofStyle.ProofStyleNo + "款样衣已成功删除。"

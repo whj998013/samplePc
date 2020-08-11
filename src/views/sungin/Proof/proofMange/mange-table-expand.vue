@@ -229,7 +229,7 @@ export default {
   },
   methods: {
     async getProofRecord(ProofOrderId) {
-      let re = await this.$util.get("apiaction/MyProof/GetProofRecord/" + ProofOrderId);
+      let re = await this.$util.get(this.$sra.proof_GetProofRecord + ProofOrderId);
       this.taskList = re.data;
     }
   },

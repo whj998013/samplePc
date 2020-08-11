@@ -22,10 +22,10 @@
     </Row>
     <Tabs value="name0">
       <TabPane label="当前打样" name="name0">
-        <ProofList ref="CurrentProof" action="apiaction/MyProof/GetMyProofs" v-model="currnetProofs" @onEdit="edit"></ProofList>
+        <ProofList ref="CurrentProof" :action="$sra.proof_getmyproofs" v-model="currnetProofs" @onEdit="edit"></ProofList>
       </TabPane>
       <TabPane label="已完成打样" name="name1">
-        <ProofList ref="FinshProof" action="apiaction/MyProof/GetMyFinshProofs" v-model="finshProofs"></ProofList>
+        <ProofList ref="FinshProof" :action="$sra.proof_getmyfinshproofs" v-model="finshProofs"></ProofList>
       </TabPane>
     </Tabs>
     <!-- 新的打样申请  -->
@@ -99,7 +99,7 @@ export default {
     getProofNo() {
       return new Promise((resolve, reject) => {
         this.$util
-          .get("apiaction/NewProof/GetProofNo")
+          .get(this.$sra.proof_getNewProofNo)
           .then(result => {
             resolve(result.data);
           })

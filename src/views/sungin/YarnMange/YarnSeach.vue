@@ -91,7 +91,7 @@ export default {
           key: this.SeachWords,
           lab: this.lab
         }
-        let re = await this.$util.post("apiaction/YarnSeach/GetLabYarnList", obj);
+        let re = await this.$util.post(this.$sra.yarn_GetLabYarnList, obj);
         this.YarnList = re.data.Result;
         this.showPage = false;
         this.AdvanSeach = false;
@@ -124,7 +124,7 @@ export default {
         pageSize: this.pageObj.pageSize,
       };
 
-      let re = await this.$util.post("apiaction/YarnSeach/GetYarnList", qObj);
+      let re = await this.$util.post(this.$sra.yarn_GetYarnList, qObj);
       console.log("yarnlist", re);
       this.YarnList = re.data.Result;
       this.pageObj.pageId = re.data.SeachObj.PageId;

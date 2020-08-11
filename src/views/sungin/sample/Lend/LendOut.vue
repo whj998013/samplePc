@@ -241,7 +241,7 @@ export default {
     ///指行还回操作
     DoReturnLend(lendIdList) {
       return new Promise(resolve => {
-        this.$util.post("apiaction/LendOut/DoReturnLend", lendIdList).then(result => {
+        this.$util.post(this.$sra.sample_DoReturnLend, lendIdList).then(result => {
           resolve(result);
         });
       });
@@ -260,7 +260,7 @@ export default {
     },
     async show(val) {
       let id = this.dataLend[val].StyleId;
-      let re = await this.$util.get("apiaction/Sample/GetSampleInfo/" + id);
+      let re = await this.$util.get(this.$sra.sample_GetSampleInfo + id);
       this.currentSmple = re.data;
       this.modal = true;
 
@@ -268,7 +268,7 @@ export default {
     getData() {
       this.$bus.BeginLoading();
       this.$util
-        .post("apiaction/LendOut/GetAllLendOutList", this.seachObj)
+        .post(this.$sra.sample_GetAllLendOutList, this.seachObj)
         .then(result => {
           let today = new Date();
           this.dataLend = result.data.list;
@@ -291,13 +291,13 @@ export default {
   },
   mounted: function () {
     //取得有借用申请的用户清单
-    this.$util.get("apiaction/LendOut/GetLendUserList/2").then(result => {
+    this.$util.get(this.$sra.sample_GetLendUserList+'2').then(result => {
       result.data.map(item => {
         this.userList.push(item);
       });
       this.getData();
     });
-    this.$util.get("apiaction/LendOut/GetInUserList").then(result => {
+    this.$util.get(this.$sra.sample_GetInUserList).then(result => {
       this.inUserList = result.data;
     });
   }

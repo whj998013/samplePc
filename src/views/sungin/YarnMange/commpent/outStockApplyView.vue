@@ -304,7 +304,7 @@ export default {
         title: '确定吗',
         content: '<p>确定强制通过单号为"' + row.NO + '"的申请单吗？</p>',
         onOk: async () => {
-          let re = await this.$util.get("apiaction/YarnOutStock/AlowYarnOutStock/" + row.NO);
+          let re = await this.$util.get(this.$sra.yarn_AlowYarnOutStock + row.NO);
           this.GetData();
           this.$Message.info('已通过');
         },
@@ -318,7 +318,7 @@ export default {
         title: '确定吗',
         content: '<p>确定撤回并删除单号为"' + row.NO + '"的申请单吗？</p>',
         onOk: async () => {
-          let re = await this.$util.get("apiaction/YarnOutStock/DeleteYarnOutStock/" + row.NO);
+          let re = await this.$util.get(this.$sra.yarn_DeleteYarnOutStock + row.NO);
           this.GetData();
           this.$Message.info('删除成功');
         },

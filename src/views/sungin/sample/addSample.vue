@@ -204,12 +204,12 @@
         </Col>
       </Row>
       <Divider>上传样衣图片</Divider>
-      <picUp ref='picup' v-model="sample.PicList" :action="baseUrl+'apiaction/Sample/UpLoadPic'" :removeAction="baseUrl+'apiaction/Sample/RemoveFile'"></picUp>
+      <picUp ref='picup' v-model="sample.PicList" :action="baseUrl+$sra.sample_UpLoadPic" :removeAction="baseUrl+$sra.sample_RemoveFile"></picUp>
       <Divider>上传工艺单</Divider>
       <Row>
         </Col>
         <Col span="8">
-        <Upload type="drag" :on-remove='fileUploadRemoveFile' :on-preview='fileUploadOpenFile' :with-credentials=true :action="baseUrl+'apiaction/Sample/UpLoadFile'" :on-success='fileUploadOUpSuccess' :default-file-list='sample.FileList'>
+        <Upload type="drag" :on-remove='fileUploadRemoveFile' :on-preview='fileUploadOpenFile' :with-credentials=true :action="baseUrl+$sra.sample_UpLoadFile" :on-success='fileUploadOUpSuccess' :default-file-list='sample.FileList'>
           <div style="padding: 20px 0">
             <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
             <p>点击或将文件拖入框内上传</p>
@@ -392,7 +392,7 @@ export default {
           this.$bus.BeginLoading();
           console.log('savesample',this.sample);
           this.$util
-            .post("apiaction/sample/SaveSample", this.sample)
+            .post(this.$sra.sample_SaveSample, this.sample)
             .then(result => {
               this.$Message.success("保存成功!");
               this.$router.back(-1);
@@ -414,7 +414,7 @@ export default {
     ///删除上传的文件
     fileUploadRemoveFile(file) {
       this.$util
-        .post(this.baseUrl + "apiaction/sample/RemoveFile", {
+        .post(this.baseUrl + this.$sra.sample_RemoveFile, {
           filename: file.reallyName
         })
         .then(re => {
@@ -424,7 +424,7 @@ export default {
     ///上传文件返回
     fileUploadOUpSuccess(response, file, fileList) {
       file.reallyName = response.name;
-      file.url = this.dataUrl + "apiaction/uploadfile/" + response.name;
+      file.url = this.dataUrl + "src/sample/uploadfile/" + response.name;
       this.sample.FileList = Array.from(fileList, item => {
         return {
           name: item.name,
@@ -453,7 +453,7 @@ export default {
     },
     newStyle() {
       //从服务器取得新样衣的ID
-      this.$util.get("apiaction/sample/CreateSample").then(result => {
+      this.$util.get(this.$sra.sample_CreateSample).then(result => {
         if (result.data) {
           this.sample.StyleId = result.data.StyleId;
         }
@@ -464,7 +464,7 @@ export default {
 
       this.$bus.BeginLoading();
       this.$util
-        .get("apiaction/sample/GetEditSample", {
+        .get(this.$sra.sample_GetEditSample, {
           params: { StyleId: id }
         })
         .then(result => {

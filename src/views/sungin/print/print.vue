@@ -90,7 +90,7 @@ export default {
         console.log("getdata");
         let _this = this;
         this.$util
-          .get("apiaction/Print/GetSample", {
+          .get(this.$sra.sample_get_print_model, {
             params: { styleId: this.id }
           })
           .then(result => {

@@ -169,7 +169,14 @@ const routers = [
                 },
                 component: (resolve) => require(['./views/sungin/warehouse/GarmentStock.vue'], resolve)
             },
-            
+            {
+                path: '/warehouse/GarmentSetting',
+                meta: {
+                    title: '库存管理',
+                    requireAuth: true,
+                },
+                component: (resolve) => require(['./views/sungin/warehouse/GarmentSetting.vue'], resolve)
+            },
 
             //系统设置
             {

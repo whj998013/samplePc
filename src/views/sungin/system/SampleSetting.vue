@@ -51,7 +51,7 @@ export default {
   methods: {
     saveSetting() {
       this.$bus.BeginLoading();
-      this.$util.post("apiaction/SampleSetting/SaveSampleSetting", this.Setting).then(p => {
+      this.$util.post(this.$sra.setting_SaveSampleSetting, this.Setting).then(p => {
         this.$Notice.success({
           title: "成功",
           desc: "设置保存成功",
@@ -62,7 +62,7 @@ export default {
     },
     async YarnStockCorrect() {
       this.$bus.BeginLoading();
-      await this.$util.get("apiaction/YarnSetting/YarnStockCorrect");
+      await this.$util.get(this.$sra.setting_YarnStockCorrect);
       this.$bus.EndLoading();
     }
 

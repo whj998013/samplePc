@@ -6,13 +6,20 @@ import bus from './bus.js';
 import Util from './libs/util';
 import App from './app.vue';
 import dd from './libs/ddapi.js';
+import 'xe-utils';
+import VXETable from 'vxe-table';
+import 'vxe-table/lib/index.css';
 import 'view-design/dist/styles/iview.css';
+import sra from './libs/server_api_request_addr';
 Vue.prototype.$bus = bus;
 Vue.prototype.$Auth = bus.Auth;
 Vue.prototype.$util = Util;
 Vue.prototype.$dd = dd;
+Vue.prototype.$sra = sra;
 Vue.use(VueRouter);
 Vue.use(iView);
+Vue.use(VXETable);
+
 bus.upDateMenuItem();
 bus.getUserBycookie();
 
@@ -42,7 +49,7 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach(() => {
     iView.LoadingBar.finish();
-     window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
 });
 var v = new Vue({
     el: '#app',

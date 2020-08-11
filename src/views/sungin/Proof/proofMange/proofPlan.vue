@@ -51,7 +51,7 @@
           </Col>
           <Col span="14">
           <FormItem label="姓名">
-            <workerSelect v-model="currentTask.WorkerName" ref="wSelect" :HaveNoSelect="false" action="apiaction/ProofWorker/GetWorkerList/1"></workerSelect>
+            <workerSelect v-model="currentTask.WorkerName" ref="wSelect" :HaveNoSelect="false" :action=$sra.proof_GetWorkerList+'1'></workerSelect>
           </FormItem>
           </Col>
           <Col span="14">
@@ -234,7 +234,7 @@ export default {
     },
     //取得工序表
     processChange(val) {
-      this.$refs.wSelect.GetWorker("apiaction/ProofWorker/GetWorkerList/" + val);
+      this.$refs.wSelect.GetWorker(this.$sra.proof_GetWorkerList + val);
       let pcs = this.processList.find(function (p) {
         return p.Id == val;
       });
@@ -248,16 +248,16 @@ export default {
       this.proof.ProofTasks.forEach(p => {
         if (p.status == "deleted") {
         //  console.log("delete" + p.Id);
-          pList.push(this.$util.get("apiaction/ProofTask/DeleteTask/" + p.Id));
+          pList.push(this.$util.get(this.$sra.proof_DeleteTask + p.Id));
         }
       });
       this.taskList.forEach(p => {
         if (p.status == "add") {
          // console.log("add", p);
-          pList.push(this.$util.post("apiaction/ProofTask/AddTask/", p));
+          pList.push(this.$util.post(this.$sra.proof_AddTask, p));
         } else if (p.status == "edit") {
          // console.log("edit", p);
-          pList.push(this.$util.post("apiaction/ProofTask/UpdateTask", p));
+          pList.push(this.$util.post(this.$sra.proof_UpdateTask, p));
         }
       });
       Promise.all(pList).then(re => {
@@ -296,7 +296,7 @@ export default {
    //取得打样单任务
     async GetTasks(ProofOrderId) {
       this.ProofOrderId = ProofOrderId;
-      let re = await this.$util.get("apiaction/ProofTask/GetTasks/" + this.ProofOrderId);
+      let re = await this.$util.get(this.$sra.proof_GetTasks + this.ProofOrderId);
       //debugger;
       this.proof = re.data;
       this.taskList = [];
@@ -338,7 +338,7 @@ export default {
 
   },
   mounted: function () {
-    this.$util.get("apiaction/ProofWorker/GetProcessList").then(re => {
+    this.$util.get(this.$sra.proof_GetProcessList).then(re => {
       this.processList = re.data;
      // console.log("proc", this.processList);
     });

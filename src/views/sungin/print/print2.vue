@@ -62,7 +62,7 @@ export default {
       let p = new Promise((resolve, reject) => {
         console.log("getdata");
         this.$util
-          .get("apiaction/Print/GetSample", {
+          .get(this.$sra.sample_get_print_model, {
             params: { styleId: this.id }
           })
           .then(result => {

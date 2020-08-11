@@ -15,10 +15,10 @@
     </Row>
     <Tabs value="name0">
       <TabPane :label="label1" name="name0">
-        <taskList @TaskCount="setCount" action="apiaction/ProofTask/GetMyTasks"></taskList>
+        <taskList @TaskCount="setCount" :action='$sra.proof_GetMyTasks'></taskList>
       </TabPane>
       <TabPane label="已完成任务" name="name1">
-        <taskList action="apiaction/ProofTask/GetMyFinshTasks"></taskList>
+        <taskList :action='$sra.proof_GetMyFinshTasks'></taskList>
       </TabPane>
     </Tabs>
   </div>

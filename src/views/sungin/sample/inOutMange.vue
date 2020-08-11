@@ -20,7 +20,7 @@
           </Col>
         </Row>
         <Row type="flex">
-          <sampleview ref="view" action="apiaction/InOutStorage/GetInStorageList" haveAcceptInStorage haveEdit havePrint haveDelete can-select></sampleview>
+          <sampleview ref="view" :action=$sra.sample_GetInStorageList haveAcceptInStorage haveEdit havePrint haveDelete can-select></sampleview>
         </Row>
       </TabPane>
      
@@ -63,7 +63,7 @@ export default {
 
       console.log(styleList);
       this.$util
-        .post("apiaction/InOutStorage/AcceptInStorageList", styleList)
+        .post(this.$sra.sample_AcceptInStorageList, styleList)
         .then(result => {
           this.$Notice.success({
             title: "入库成功",
@@ -89,7 +89,7 @@ export default {
   mounted: function() {
     this.$bus.$emit("changeMenuItem", ["样衣管理", "入库管理"]);
     //取得有入库申请的用户清单
-    this.$util.get("apiaction/InOutStorage/GetInStorageUserList").then(result => {
+    this.$util.get(this.$sra.sample_GetInStorageUserList).then(result => {
       result.data.map(item => {
         this.userList.push(item);
       });

@@ -5,7 +5,7 @@
 
     <Tabs>
       <TabPane label="用纱申请" name="name1">
-        <OutStockApplyView ref="outApply" action="apiaction/YarnOutStock/GetYarnOutApplyList" HaveAlowButton GetAllDept></OutStockApplyView>
+        <OutStockApplyView ref="outApply" :action=$sra.yanr_GetYarnOutApplyList HaveAlowButton GetAllDept></OutStockApplyView>
       </TabPane>
       <TabPane label="样纱报表" name="name2">
 

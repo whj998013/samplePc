@@ -1,7 +1,4 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable quotes */
-/* eslint-disable no-console */
-/* eslint-disable no-undef */
+import sra from './server_api_request_addr';
 import dd from "dingtalk-jsapi";
 import cookie from "./cookie.js";
 import vue from "vue";
@@ -42,7 +39,7 @@ let loginApi = {
             let cookiestr = cookie.get("lh");
             console.log("cookid:" + cookiestr);
             if (cookiestr != null) {
-                Util.post("apiaction/login/CookieLogin", {
+                Util.post(sra.login_cookielogin, {
                     cookie: cookiestr
                 })
                     .then(re => {
@@ -74,7 +71,7 @@ let loginApi = {
                 dd.runtime.permission.requestAuthCode({
                     corpId: "ding99dd341fc99a25eb", // 企业id
                     onSuccess: function (info) {
-                        Util.post("apiaction/login/ddlogin", {
+                        Util.post(sra.login_ddlogin, {
                             code: info.code
                         }).then(re => {
                             // vue.$Message.success("钉钉登录成功！");

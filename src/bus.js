@@ -46,7 +46,7 @@ export default new Vue({
             if (lmi != null) {
                 this.menuItem = JSON.parse(localStorage.getItem('menuItem'));
             }
-            let re = await this.$util.get('apiaction/public/GetMenuItem');
+            let re = await this.$util.get(this.$sra.public_getmenu);
             localStorage.setItem('menuItem', JSON.stringify(re.data));
             this.menuItem = re.data;
         },
@@ -56,7 +56,7 @@ export default new Vue({
         },
         getSystemSetting() {
             return new Promise((resolve, reject) => {
-                this.$util.get('apiaction/SampleSetting/GetSampleSetting').then(result => {
+                this.$util.get(this.$sra.sample_getsetting).then(result => {
                     this.Setting = result.data;
                     resolve(result.data);
                 }).catch(re => {
@@ -67,7 +67,7 @@ export default new Vue({
         getSelectList() {
             return new Promise((resolve, reject) => {
                 if (this.selectData == null) {
-                    this.$util.get('apiaction/Public/GetSelectList').then(result => {
+                    this.$util.get(this.$sra.public_getselectlist).then(result => {
                         this.selectData = result.data;
                         resolve(result.data);
                     }).catch(re => {
