@@ -2,7 +2,6 @@
 </style>
 <template>
   <div>
-
     <Row type="flex" :gutter="16">
       <Col v-for="(item,i) in items" :key="item.Id">
       <sampleInfo v-if="show" class="sample" v-model="items[i]" :canSelect="canSelect" :limtView='limtView' :haveAction='haveAction' :haveLend='haveLend' :haveEdit='haveEdit' :haveDelete='haveDelete'
@@ -312,7 +311,7 @@ export default {
       console.log('添加待打印', val);
     },
     handleInStorage(val) {
-      let actionStr = "/InOutStorage/PutInStorage";
+      let actionStr = this.$sra.sample_view_PutInStorage;
       let _this = this;
       this.$Modal.confirm({
         title: "申请入库",
@@ -333,7 +332,7 @@ export default {
     },
     ///管理员确认入库
     handleAcceptInStorage(val) {
-      let actionStr = "/InOutStorage/AcceptInStorage";
+      let actionStr = this.$sra.sample_view_AcceptInStorage;
       let _this = this;
       this.$Modal.confirm({
         title: "确认入库",
@@ -362,7 +361,7 @@ export default {
     },
     //删除
     handleDelete(val) {
-      let actionStr = "/InOutStorage/DeleteSample";
+      let actionStr = this.$sra.sample_view_DeleteSample;
       let _this = this;
       this.$Modal.confirm({
         title: "确认删除",

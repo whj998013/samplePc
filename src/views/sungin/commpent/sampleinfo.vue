@@ -52,7 +52,6 @@ p {
           <DropdownItem name='onDelete' v-if="haveDelete">删除</DropdownItem>
           <DropdownItem name='onPrint' v-if="havePrint">打印二维码</DropdownItem>
           <DropdownItem name='addToPrint' v-if="havePrint">添加到待打印</DropdownItem>
-
         </DropdownMenu>
       </Dropdown>
       <Row>

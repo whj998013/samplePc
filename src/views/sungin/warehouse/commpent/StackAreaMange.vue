@@ -2,25 +2,7 @@
 </style>
 <template>
   <div>
-    <vxe-toolbar>
-      <template v-slot:buttons>
-        <vxe-button icon="fa fa-plus" @click="insertEvent()">新增</vxe-button>
-      </template>
-    </vxe-toolbar>
-    <vxe-table
-          border
-          show-overflow
-          ref="xTable"
-          class="my_table_insert"
-          max-height="400"
-          :data="tableData"
-          :edit-config="{trigger: 'click', mode: 'cell', icon: 'fa fa-pencil'}">
-          <vxe-table-column type="checkbox" width="60"></vxe-table-column>
-          <vxe-table-column type="seq" width="60"></vxe-table-column>
-          <vxe-table-column field="name" title="Name" sortable :edit-render="{name: 'input',autoselect: true, defaultValue: '默认的名字'}"></vxe-table-column>
-          <vxe-table-column field="sex" title="Sex" :edit-render="{name: 'input',autoselect: true}"></vxe-table-column>
-          <vxe-table-column field="age" title="Age" sortable :edit-render="{name: 'input',autoselect: true, defaultValue: 18}"></vxe-table-column>
-        </vxe-table>
+    <vxe-grid border resizable height="530" :proxy-config="tableProxy" :columns="tableColumn"></vxe-grid>
 
   </div>
 </template>
@@ -33,24 +15,32 @@ export default {
 
 
   },
-  data: function () {
+  data() {
     return {
-      tableData: [],
-      sexList: []
-    };
+      tableProxy: {
+        props: {
+          result: 'result',
+        },
+        ajax: {
+           query: async () => {
+            let re = await this.$util.get('/api/Location/');
+            return re.data;
+          }
+        }
+      },
+      tableColumn: [
+        { field: 'LocationId', title: '库位号' },
+        { field: 'Name', title: '库位名' },
+        { field: 'WarehouseName', title: '所属仓库' },
+        { field: 'AreaName', title: '所在区域' },
+
+      ]
+    }
+  },
+  created() {
+
   },
   methods: {
-    async insertEvent(row) {
-      let record = {
-        sex: '1'
-      }
-      let { row: newRow } = await this.$refs.xTable.insertAt(record, row);
-      await this.$refs.xTable.setActiveCell(newRow, 'name');
-      console.log(this.tableData);
-
-    },
-  },
-  mounted: function () {
 
   }
 };

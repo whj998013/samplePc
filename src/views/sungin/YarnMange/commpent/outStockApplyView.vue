@@ -25,7 +25,6 @@
           {{ $util.getGmtDate(row.ApplyDate)}}
         </template>
         <template slot-scope="{ row }" slot="stats">
-
           <div v-html="getState(row.Stats)"></div>
         </template>
         <template slot-scope="{ row }" slot="action">
@@ -35,8 +34,8 @@
             <Button icon="md-close" @click="deleteStock(row)" :disabled="!(row.Stats<2||row.Stats>=10)" type="error" size="small">
             </Button>
           </ButtonGroup>
-
         </template>
+
       </Table>
     </Row>
     <br>

@@ -14,6 +14,9 @@ let sra={
     public_getselectlist:'apiaction/Public/GetSelectList',
     public_getdeptpvlist:'apiaction/Public/GetDeptPvList',
 
+    sample_view_PutInStorage:'apiaction/InOutStorage/PutInStorage',
+    sample_view_AcceptInStorage:'apiaction/InOutStorage/AcceptInStorage',
+    sample_view_DeleteSample:'apiaction/InOutStorage/DeleteSample',
     sample_getsetting:'apiaction/SampleSetting/GetSampleSetting',
     sample_getsamplelist:'apiaction/Sample/GetSampleList',
     sample_get_print_model:'apiaction/Print/GetSample',
