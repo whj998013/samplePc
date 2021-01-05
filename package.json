@@ -16,7 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "@riophae/vue-treeselect": "0.0.38",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "babel-preset-stage-3": "^6.24.1",
     "dingtalk-jsapi": "^2.4.8",
     "echarts": "^4.2.1",
